@@ -1,6 +1,9 @@
 
 import RPi.GPIO
 
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+
 class GPIO(object):
     OUT = RPi.GPIO.OUT
     IN = RPi.GPIO.IN
@@ -9,7 +12,7 @@ class GPIO(object):
         self.pin = pin
 
     def dir(self, direction):
-        RPi.GPIO.setup(self.pin, self.OUT)
+        RPi.GPIO.setup(self.pin, direction)
 
     def write(self, output):
         RPi.GPIO.output(self.pin, output)
