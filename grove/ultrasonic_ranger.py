@@ -39,7 +39,7 @@ class UltrasonicRanger(object):
         if dt > 500:
             print('Warning: the distance from the ultrasonic ranger is not accurate')
 
-        distance = int((t2 - t1) * 1000000 / 29 / 2)    # cm
+        distance = ((t2 - t1) * 1000000 / 29 / 2)    # cm
 
         return distance
 
