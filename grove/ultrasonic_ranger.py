@@ -1,3 +1,10 @@
+""""
+The driver is for Grove - Ultrasonic Ranger
+which is a non-contact distance measurement module which works with 40KHz sound wave. 
+
+https://www.seeedstudio.com/Grove-Ultrasonic-Ranger-p-960.html
+"""
+
 import time
 from grove.gpio import GPIO
 

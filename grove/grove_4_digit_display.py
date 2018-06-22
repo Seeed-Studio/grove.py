@@ -1,3 +1,9 @@
+"""
+The driver is for Grove - 4 Digit Display which has 4 red seven-segment displays
+
+https://www.seeedstudio.com/Grove-4-Digit-Display-p-1198.html
+"""
+
 import time
 from grove.gpio import GPIO
 
