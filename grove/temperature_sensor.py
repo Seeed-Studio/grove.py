@@ -14,8 +14,10 @@ class TemperatureSensor:
     @property
     def temperature(self):
         value = self.adc.read(self.channel)
+        if value <= 0 or value >= 1000:
+            return float('nan')
 
-        r = 1. / value - 1.
+        r = 1000. / value - 1.
         r = self.R0 * r
 
         return 1. / (math.log10(r / self.R0) / self.B + 1 / 298.15) - 273.15
