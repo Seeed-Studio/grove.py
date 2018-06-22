@@ -41,7 +41,7 @@ charmap = {
     'Y': 0x66,
     'Z': 0x5b,
     '-': 0x40,
-    '_': 0x20,
+    '_': 0x08,
     ' ': 0x00
 }
 
@@ -95,8 +95,11 @@ class Grove4DigitDisplay(object):
                     break
                 data = int(data / 10)
 
-            if negative and index >= 0:
-                self.data[index] = charmap['-']
+            if negative:
+                if index >= 0:
+                    self.data[index] = charmap['-']
+                else:
+                    self.data = charmap['_'] + [charmap['9']] * 3
         else:
             raise ValueError('Not support {}'.format(type(data)))
         self._show()
