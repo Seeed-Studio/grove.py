@@ -40,6 +40,8 @@ charmap = {
     'V': 0x3e,
     'Y': 0x66,
     'Z': 0x5b,
+    '-': 0x40,
+    '_': 0x20,
     ' ': 0x00
 }
 
@@ -52,6 +54,8 @@ BRIGHT_HIGHEST = 7
 
 
 class Grove4DigitDisplay(object):
+    colon_index = 1
+
     def __init__(self, clk, dio, brightness=BRIGHT_DEFAULT):
         self.brightness = brightness
 
@@ -65,16 +69,36 @@ class Grove4DigitDisplay(object):
         self.data = [0] * 4
         self._show()
 
-    def show(self, text):
-        for i, c in enumerate(text):
-            if c in charmap:
-                self.data[i] = charmap[c]
+    def show(self, data):
+        if type(data) is str:
+            for i, c in enumerate(data):
+                if c in charmap:
+                    self.data[i] = charmap[c]
+                else:
+                    self.data[i] = 0
+                if i == self.colon_index and self.show_colon:
+                    self.data[i] |= 0x80
+                if i == 3:
+                    break
+        elif type(data) is int:
+            self.data = [0, 0, 0, charmap['0']]
+            if data < 0:
+                negative = True
+                data = -data
             else:
-                self.data[i] = 0
-            if self.show_colon:
-                self.data[i] |= 0x80
-            if i == 3:
-                break
+                negative = False
+            index = 3
+            while data != 0:
+                self.data[index] = charmap[str(data % 10)]
+                index -= 1
+                if index < 0:
+                    break
+                data = int(data / 10)
+
+            if negative and index >= 0:
+                self.data[index] = charmap['-']
+        else:
+            raise ValueError('Not support {}'.format(type(data)))
         self._show()
 
     def _show(self):
@@ -98,7 +122,7 @@ class Grove4DigitDisplay(object):
         else:
             self.data[index] = 0
 
-        if self.show_colon:
+        if index == self.colon_index and self.show_colon:
             self.data[index] |= 0x80
 
         with self:
@@ -121,11 +145,10 @@ class Grove4DigitDisplay(object):
 
     def set_colon(self, enable):
         self.show_colon = enable
-        for i in range(4):
-            if self.show_colon:
-                self.data[i] |= 0x80
-            else:
-                self.data[i] &= 0x7F
+        if self.show_colon:
+            self.data[self.colon_index] |= 0x80
+        else:
+            self.data[self.colon_index] &= 0x7F
         self._show()
 
     def _transfer(self, data):
