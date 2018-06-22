@@ -9,7 +9,7 @@ class Bus:
         if bus is None:
             bus = 1     # for Pi 2+
 
-        if not bus.instance:
+        if not Bus.instance:
             Bus.instance = smbus.SMBus(bus)
 
     def __getattr__(self, name):
