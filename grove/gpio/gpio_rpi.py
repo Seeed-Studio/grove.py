@@ -10,7 +10,7 @@ class GPIO(object):
     
     def __init__(self, pin, direction=None):
         self.pin = pin
-        if direction:
+        if direction is not None:
             self.dir(direction)
 
     def dir(self, direction):

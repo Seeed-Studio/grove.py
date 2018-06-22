@@ -7,7 +7,7 @@ class GPIO(object):
     
     def __init__(self, pin, direction=None):
         self.instance = mraa.Gpio(pin)
-        if direction:
+        if direction is not None:
             self.instance.dir(direction)
         
     def __getattr__(self, name):
