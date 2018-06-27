@@ -5,13 +5,14 @@ which is a non-contact distance measurement module which works with 40KHz sound 
 https://www.seeedstudio.com/Grove-Ultrasonic-Ranger-p-960.html
 """
 
+import sys
 import time
 from grove.gpio import GPIO
 
 usleep = lambda x: time.sleep(x / 1000000.0)
 
 
-class UltrasonicRanger(object):
+class GroveUltrasonicRanger(object):
     def __init__(self, pin):
         self.dio =GPIO(pin)
 
@@ -51,10 +52,18 @@ class UltrasonicRanger(object):
         return distance
 
 
-def main():
-    sonar = UltrasonicRanger(32)
+Grove = GroveUltrasonicRanger
 
-    for _ in range(100):
+
+def main():
+    if len(sys.argv) < 2:
+        print('Usage: {} pin_number'.format(sys.argv[0]))
+        sys.exit(1)
+
+    sonar = Grove(int(sys.argv[1]))
+
+    print('Detecting distance...')
+    while True:
         print('{} cm'.format(sonar.get_distance()))
         time.sleep(1)
 

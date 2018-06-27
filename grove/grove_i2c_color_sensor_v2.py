@@ -29,7 +29,7 @@ _PON        = 0x01
 _GAINS  = (1, 4, 16, 60)
 
 
-class I2cColorSensorV2:
+class GroveI2cColorSensorV2:
     """Driver for Grove I2C Color Sensor (TCS34725)"""
 
     def __init__(self, bus=None, address=0x29):
@@ -144,16 +144,17 @@ class I2cColorSensorV2:
         self.bus.write_i2c_block_data(self.address, command, data)
 
 
-Grove = I2cColorSensorV2
+Grove = GroveI2cColorSensorV2
 
 
 def main():
-    sensor = I2cColorSensorV2()
+    sensor = GroveI2cColorSensorV2()
 
+    print('Raw data of red-filtered, green-filtered, blue-filtered and unfiltered photodiodes')
     while True:
-        print(sensor.raw)
-        r, g, b = sensor.rgb
-        print('Detected color: #{0:02X}{1:02X}{2:02X}'.format(r, g, b))
+        # r, g, b = sensor.rgb
+        r, g, b, clear = sensor.raw
+        print((r, g, b, clear))
         time.sleep(1.0)
 
 if __name__ == '__main__':

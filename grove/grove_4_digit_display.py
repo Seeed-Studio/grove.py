@@ -4,6 +4,7 @@ The driver is for Grove - 4 Digit Display which has 4 red seven-segment displays
 https://www.seeedstudio.com/Grove-4-Digit-Display-p-1198.html
 """
 
+import sys
 import time
 from grove.gpio import GPIO
 
@@ -204,12 +205,22 @@ class Grove4DigitDisplay(object):
         self._stop()
 
 
-def main():
-    display = Grove4DigitDisplay(12, 13)
+Grove = Grove4DigitDisplay
 
-    for i in range(8):
-        display.show(str(i))
-        display.set_colon(i & 1)
+
+def main():
+    if len(sys.argv) < 3:
+        print('Usage: {} clk dio'.format(sys.argv[0]))
+        sys.exit(1)
+
+    display = Grove(int(sys.argv[1]), int(sys.argv[2]))
+
+    count = 0
+    while True:
+        t = time.strftime("%H%M", time.localtime(time.time()))
+        display.show(t)
+        display.set_colon(count & 1)
+        count += 1
         time.sleep(1)
 
 
