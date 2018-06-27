@@ -1,0 +1,17 @@
+deploy:
+  true:
+    python: 2.7
+    repo: Seeed-Studio/grove.py
+    tags: true
+  distributions: sdist
+  password:
+    secure: MmA+cEFuU9yHrPnm821fezjB8Czkws6hr/mMm7XOsgT1u/8VQ1hOqUYLqoCULrKDjOTZlpOL2ttLHCHLRYS32jcvj4w4HjwAL3WSkXCU/TvXZ0LjO0g71OU5yQ5i/LXgCz5p+NYnQnpLs3pOjlWsc049U9cKDcZPbw1cGWFTiYRrBB1vFmjaUFDVJ9RoVa15LfFa/rZfmgnjNh6blv7SJ/Mk1xDJftU1uXtWKiSD+YkeXWBNqowyvfYjpC5SstctxwbcNblSziSYrfbj/1adTS6sWooZ7Uz7t66minZdGT2fU9Hqpz3rM4Q7Lo6ZntIpB+3g367TGYuPXfluhnoogT2sUt1xI00z7gVo+zVZEu/n/bJK4/L+103VCdkQIbJqFwrUvqm3LH5/ye7RStjXFIHIMd76ARbqugbvL6YX2WixYOEFYZ+j/AWELXfuoaNGDNpBVDiz9kffTFpYgpI+62iW/gZoFryydplxi8RRCBCXPkfqrH4LaxmucuwMwErMnNnEOFkKi8yH92EFnxO/QNhZZYHoYXJTWNXffZTEMPtZS5oABvT87IXU2PFr9yd9rH57/6HT/wWP0O90hLASU81cT0Q5mlew2cOuU42rOjGx/LyYgHXy3vytPGOjsHJzottuPcDquyB4nluGY3Ri7QfMeVi5ZbDxZQ4oCK/gmsU=
+  provider: pypi
+  user: yihui
+install: pip install -U tox-travis
+language: python
+python:
+- 3.5
+- 3.4
+- 2.7
+script: tox
