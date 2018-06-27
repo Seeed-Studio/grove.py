@@ -38,8 +38,8 @@ class GroveI2cColorSensorV2:
 
         self.awake = False
 
-        if self.id in (0x44, 0x4D):
-            raise ValueError('Not find a Grove I2C Color Sensor')
+        if self.id not in (0x44, 0x4D):
+            raise ValueError('Not find a Grove I2C Color Sensor V2')
 
         self.set_integration_time(24)
         self.set_gain(4)

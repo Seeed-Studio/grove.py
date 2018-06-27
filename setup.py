@@ -41,7 +41,7 @@ setup(name='grove.py',
       entry_points={
           'console_scripts': [
               'grove_4_digit_display=grove.grove_4_digit_display:main',
-              'grove_i2c_color_sensor=grove.grove_i2c_color_sensor:main',
+              'grove_i2c_color_sensor_v2=grove.grove_i2c_color_sensor_v2:main',
               'grove_ultrasonic_ranger=grove.grove_ultrasonic_ranger:main',
               'grove_temperature_sensor=grove.grove_temperature_sensor:main',
           ],
