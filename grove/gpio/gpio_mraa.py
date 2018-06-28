@@ -27,7 +27,9 @@ class GPIO(mraa.Gpio):
 
     @on_event.setter
     def on_event(self, handle):
-        if self._event_handle is None and callable(handle):
-            self._event_handle = handle
+        if not callable(handle):
+            return
+        if self._event_handle is None:
             self.isr(mraa.EDGE_BOTH, self._on_event, self)
 
+        self._event_handle = handle
