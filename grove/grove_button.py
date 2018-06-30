@@ -22,7 +22,7 @@ class GroveButton(GPIO):
             return
 
         if self.on_event is None:
-            self.on_event = self._event_handle
+            self.on_event = self._handle_event
 
         self._on_press = callback
 
@@ -56,7 +56,7 @@ Grove = GroveButton
 
 def main():
     import sys
-    
+
     if len(sys.argv) < 2:
         print('Usage: {} pin'.format(sys.argv[0]))
         sys.exit(1)
