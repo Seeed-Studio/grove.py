@@ -2,18 +2,19 @@ grove.py
 ========
 
 [![Build Status](https://travis-ci.org/Seeed-Studio/grove.py.svg?branch=master)](https://travis-ci.org/Seeed-Studio/grove.py)
+[![](https://img.shields.io/pypi/v/grove.py.svg)](https://pypi.python.org/pypi/grove.py)
 
 Python library for Seeedstudio Grove Devices on Raspberry Pi.
 
 ### Installation
-```
+```shell
 sudo pip install grove.py
 ```
 
 ### Usage
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
-```
+```shell
 grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
@@ -21,7 +22,7 @@ grove_ultrasonic_sensor 12 13
 ```
 
 #### For digital output device like Grove - LED
-```
+```python
 import time
 from grove.grove_led import GroveLed
 
@@ -35,7 +36,7 @@ while True:
 ```
 
 #### For digital input device like Grove - Button
-```
+```python
 import time
 from grove.grove_button import GroveButton
 
@@ -52,7 +53,7 @@ while True:
 ```
 
 #### Basic GPIO Input & Output
-```
+```python
 import time
 from grove.gpio import GPIO
 
@@ -71,7 +72,7 @@ while True:
 ```
 
 #### For Grove 4 Digit Display
-```
+```python
 import time
 from grove.grove_4_digit_display import Grove4DigitDisplay
 
@@ -87,7 +88,7 @@ while True:
 ```
 
 #### For Grove I2C Color Sensor V2
-```
+```python
 import time
 from grove.grove_i2c_color_sensor_v2 import GroveI2CColorSensorV2
 sensor = GroveI2cColorSensorV2()
