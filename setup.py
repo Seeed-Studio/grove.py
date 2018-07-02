@@ -31,7 +31,7 @@ if is_pi():
 
 setup(
     name='grove.py',
-    version='0.1',
+    version='0.2',
     description='Python library for Seeedstudio Grove devices',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -43,6 +43,8 @@ setup(
     install_requires=requirements,
     entry_points={
         'console_scripts': [
+            'grove_led=grove.grove_led:main',
+            'grove_button=grove.grove_button:main',
             'grove_4_digit_display=grove.grove_4_digit_display:main',
             'grove_i2c_color_sensor_v2=grove.grove_i2c_color_sensor_v2:main',
             'grove_ultrasonic_ranger=grove.grove_ultrasonic_ranger:main',
