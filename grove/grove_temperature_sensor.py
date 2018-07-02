@@ -34,7 +34,7 @@ def main():
         print('Usage: {} adc_channel'.format(sys.argv[0]))
         sys.exit(1)
 
-    sensor = Grove(int(sys.argv[1]))
+    sensor = GroveTemperatureSensor(int(sys.argv[1]))
 
     print('Detecting temperature...')
     while True:

@@ -1,7 +1,5 @@
 
 import time
-from PIL import Image
-import numpy as np
 
 from grove.i2c import Bus
 
@@ -192,6 +190,9 @@ class GroveOledDisplay128x64(object):
             self.putc(c)
 
     def show_image(self, image):
+        from PIL import Image
+        import numpy as np
+        
         im = Image.open(image)
 
         bw = im.convert('1')

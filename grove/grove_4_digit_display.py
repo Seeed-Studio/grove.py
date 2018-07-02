@@ -213,7 +213,7 @@ def main():
         print('Usage: {} clk dio'.format(sys.argv[0]))
         sys.exit(1)
 
-    display = Grove(int(sys.argv[1]), int(sys.argv[2]))
+    display = Grove4DigitDisplay(int(sys.argv[1]), int(sys.argv[2]))
 
     count = 0
     while True:

@@ -60,7 +60,7 @@ def main():
         print('Usage: {} pin_number'.format(sys.argv[0]))
         sys.exit(1)
 
-    sonar = Grove(int(sys.argv[1]))
+    sonar = GroveUltrasonicRanger(int(sys.argv[1]))
 
     print('Detecting distance...')
     while True:
