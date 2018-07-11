@@ -39,10 +39,10 @@ class GroveLed(GPIO):
         super(GroveLed, self).__init__(pin, GPIO.OUT)
 
     def on(self):
-        super(GroveLed, self).write(1)
+        self.write(1)
 
     def off(self):
-        super(GroveLed, self).write(0)
+        self.write(0)
 
 
 Grove = GroveLed
