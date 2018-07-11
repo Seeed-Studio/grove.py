@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - Recorder v3.0(https://www.seeedstudio.com/Grove-Recorder-v3.0-p-2709.html)
+# This library is for Grove - mini PIR motion sensor(https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html)
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
@@ -11,7 +11,7 @@
 The MIT License (MIT)
 
 Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018 Seeed Technology Co.,Ltd. 
+Copyright (C) 2018  Seeed Technology Co.,Ltd. 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,50 +31,54 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-from RPi import GPIO
 import time
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-class GroveRecorder():
-    def __init__(self, play_pin, record_pin):
-        self.play_pin = play_pin
-        self.record_pin = record_pin
-
-        GPIO.setup(self.play_pin, GPIO.OUT)
-        GPIO.setup(self.record_pin, GPIO.OUT)
-        GPIO.output(self.play_pin, 1)
-        GPIO.output(self.record_pin, 1)
-
-    def record(self, duration):
-        GPIO.output(self.record_pin, 0)
-        time.sleep(duration)
-        GPIO.output(self.record_pin, 1)
-
-    def play(self):
-        GPIO.output(self.play_pin, 0)
-        time.sleep(.5)
-        GPIO.output(self.play_pin, 1)
+from grove.gpio import GPIO
 
 
-Grove = GroveRecorder
+class GroveMiniPIRMotionSensor(GPIO):
+    def __init__(self, pin):
+        super(GroveMiniPIRMotionSensor, self).__init__(pin, GPIO.IN)
+        self._on_detect = None
+
+    @property
+    def on_detect(self):
+        return self._on_detect
+
+    @on_detect.setter
+    def on_detect(self, callback):
+        if not callable(callback):
+            return
+
+        if self.on_event is None:
+            self.on_event = self._handle_event
+
+        self._on_detect = callback
+
+    def _handle_event(self, pin, value):
+        if value:
+            if callable(self._on_detect):
+                self._on_detect()
+
+Grove = GroveMiniPIRMotionSensor
+
 
 def main():
     import sys
-    import time
 
-    if len(sys.argv) < 4:
-        print('Usage: {} [play_pin] [record_pin] [record_duration]'.format(sys.argv[0]))
+    if len(sys.argv) < 2:
+        print('Usage: {} pin'.format(sys.argv[0]))
         sys.exit(1)
 
-    device = GroveRecorder(int(sys.argv[1]), int(sys.argv[2]))
-    print("Start recording for {} seconds".format(int(sys.argv[3])))
-    device.record(int(sys.argv[3]))
-    time.sleep(1)
-    print("Start playing..")
-    device.play()
-    
+    pir = GroveMiniPIRMotionSensor(int(sys.argv[1]))
+
+    def callback():
+        print('Motion detected.')
+
+    pir.on_detect = callback
+
+    while True:
+        time.sleep(1)
+
+
 if __name__ == '__main__':
     main()
-
