@@ -21,7 +21,7 @@ sudo pip3 install grove.py
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
-sudo pip install -e .
+sudo pip install .
 ```
 
 ### Usage
