@@ -6,9 +6,22 @@ grove.py
 
 Python library for Seeedstudio Grove Devices on Raspberry Pi.
 
-### Installation
+### Install from pypi 
+- For Python2
 ```shell
 sudo pip install grove.py
+```
+
+- For Python3
+```shell
+sudo pip3 install grove.py
+```
+### Install from source code
+
+```shell
+git clone https://github.com/Seeed-Studio/grove.py
+cd grove.py
+sudo pip install -e .
 ```
 
 ### Usage
