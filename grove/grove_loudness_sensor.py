@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - Relay(https://www.seeedstudio.com/s/Grove-Relay-p-769.html)
+# This library is for Grove - Loudness Sensor(https://www.seeedstudio.com/Grove-Loudness-Sensor-p-1382.html)
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
@@ -31,44 +31,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-from grove.gpio import GPIO
+import math
+import sys
+import time
+from grove.adc import ADC
 
 
-class GroveRelay(GPIO):
-    def __init__(self, pin):
-        super(GroveRelay, self).__init__(pin, GPIO.OUT)
+class GroveLoudnessSensor:
 
-    def on(self):
-        self.write(1)
+    def __init__(self, channel):
+        self.channel = channel
+        self.adc = ADC()
 
-    def off(self):
-        self.write(0)
+    @property
+    def value(self):
+        return self.adc.read(self.channel)
 
-
-Grove = GroveRelay
+Grove = GroveLoudnessSensor
 
 
 def main():
-    import sys
-    import time
-
     if len(sys.argv) < 2:
-        print('Usage: {} pin'.format(sys.argv[0]))
+        print('Usage: {} adc_channel'.format(sys.argv[0]))
         sys.exit(1)
 
-    relay = GroveRelay(int(sys.argv[1]))
+    sensor = GroveLoudnessSensor(int(sys.argv[1]))
 
+    print('Detecting loud...')
     while True:
-        try:
-            relay.on()
-            time.sleep(1)
-            relay.off()
-            time.sleep(1)
-        except KeyboardInterrupt:
-            relay.off()
-            print("exit")
-            exit(1)            
+        value = sensor.value
+        if value > 10:
+            print("Loud value {}, Loud Detected.".format(value))
+            time.sleep(.5)
 
 if __name__ == '__main__':
     main()
-
