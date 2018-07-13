@@ -6,7 +6,9 @@ grove.py
 
 Python library for Seeedstudio Grove Devices on Raspberry Pi.
 
-### Install from pypi 
+
+
+### Install grove.py from pypi 
 - For Python2
 ```shell
 sudo pip install grove.py
@@ -16,12 +18,35 @@ sudo pip install grove.py
 ```shell
 sudo pip3 install grove.py
 ```
-### Install from source code
+### Install grove.py from source code
 
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
 sudo pip install .
+```
+
+### Install MRAA and UPM for Raspberry Pi
+
+- Add repository
+```
+echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
+```
+
+- Add public GPG key
+```
+curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
+```
+or
+```
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
+```
+
+
+- Install MRAA & UPM
+```
+sudo apt update
+sudo apt install python-mraa python-upm
 ```
 
 ### Usage
