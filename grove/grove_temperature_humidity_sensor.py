@@ -33,18 +33,20 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 class DHT():
     DHT_TYPE = {
         'DHT11': '11',
-        'DHT22': '22',
-        'AM2302': 'AM2302'
+        'DHT22': '22'
     }
+
+    MAX_CNT = 50
+
     def __init__(self, dht_type, pin):        
         self.pin = pin
-        self.MAX_CNT = 30000
-        if dht_type != self.DHT_TYPE['DHT11'] and dht_type != self.DHT_TYPE['DHT22'] and dht_type != self.DHT_TYPE['AM2302']:
-            print('ERROR: Please use 11|22|AM2302 as dht type.')
+        if dht_type != self.DHT_TYPE['DHT11'] and dht_type != self.DHT_TYPE['DHT22']:
+            print('ERROR: Please use 11|22 as dht type.')
             exit(1)
         self.dht_type = dht_type
         GPIO.setup(self.pin, GPIO.OUT)
@@ -71,14 +73,19 @@ class DHT():
         collector = []
         total_cnt = 0
         for i in range(42):
-            cnt = 0            
+            cnt_pulse_high = 0 
+            cnt_pulse_low = 0 
             while(GPIO.input(self.pin) and i != 41):
                 total_cnt += 1
-                cnt += 1
-            collector.append(cnt)
+                cnt_pulse_high += 1
+                if cnt_pulse_high > self.MAX_CNT:
+                    self.sysExit("Read failed, please check if connection OK.")
+            collector.append(cnt_pulse_high)
             
             while(not GPIO.input(self.pin) and i != 41):
-                pass
+                cnt_pulse_low += 1
+                if cnt_pulse_low > self.MAX_CNT:
+                    self.sysExit("Read failed, please check if connection OK.")
         
         average_cnt = total_cnt / 42
         for i in range(42):
@@ -96,13 +103,15 @@ class DHT():
         if self.dht_type == self.DHT_TYPE['DHT11']:
             humi = int(data1)
             temp = int(data3)
-        elif self.dht_type == self.DHT_TYPE['DHT22'] or self.dht_type == self.DHT_TYPE['AM2302']:
-            humi = float(int(data[2,18],2)*0.1)
-            temp = float(int(data[19,34],2)*0.2*(0.5-int(data[18],2)))
+        elif self.dht_type == self.DHT_TYPE['DHT22']:
+            humi = float(int(data[2:18], 2)*0.1)
+            temp = float(int(data[19:34],2)*0.2*(0.5-int(data[18], 2)))
 
         return humi, temp
 
-
+    def sysExit(self, exit_code):
+        print("Exit: {}".format(exit_code))
+        exit(0)
 
 Grove = DHT
 
@@ -117,9 +126,11 @@ def main():
 
     sensor = DHT(sys.argv[1], int(sys.argv[2]))
     Type = sys.argv[1]
-    humi, temp = sensor.read()
-
-    print('DHT{0}, humidity {1}%, temperature {2}*'.format(Type, humi, temp))
+    
+    while True:
+        humi, temp = sensor.read()
+        print('DHT{0}, humidity {1}%, temperature {2}*'.format(Type, humi, temp))
+        time.sleep(1)
 
 
 if __name__ == '__main__':
