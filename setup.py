@@ -71,7 +71,8 @@ setup(
             'grove_touch_sensor=grove.grove_touch_sensor:main',
             'grove_ultrasonic_ranger=grove.grove_ultrasonic_ranger:main',
             'grove_water_sensor=grove.grove_water_sensor:main',
-            'grove_collision_sensor=grove.grove_collision_sensor:main'           
+            'grove_collision_sensor=grove.grove_collision_sensor:main',
+            'grove_pwm_buzzer=grove.grove_pwm_buzzer:main'
         ],
     },
     zip_safe=False,

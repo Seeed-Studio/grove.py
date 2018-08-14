@@ -53,6 +53,7 @@ sudo apt install python-mraa python-upm
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
 ```shell
+sudo grove_pwm_buzzer
 grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
@@ -137,4 +138,13 @@ while True:
     r, g, b, clear = sensor.raw
     print((r, g, b, clear))
     time.sleep(1.0)
+```
+
+#### For Grove Buzzer PWM mode
+```python
+from upm import pyupm_buzzer as GroveBuzzer
+
+buzzer = GroveBuzzer.Buzzer(32)
+# 1000 Hz sound last 2 seconds
+print(buzzer.playSound(1000, 2000000))
 ```
