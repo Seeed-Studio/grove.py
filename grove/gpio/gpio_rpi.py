@@ -1,6 +1,7 @@
 
 import RPi.GPIO
 
+RPi.GPIO.setwarnings(False)
 RPi.GPIO.setmode(RPi.GPIO.BCM)
 
 
