@@ -91,6 +91,14 @@ while True:
 
 ```
 
+#### For Red/Yellow/Blue LED Button
+```python
+# single click to light on
+# double click to blink
+# long press   to light off
+grove_ryb_led_button
+```
+
 #### Basic GPIO Input & Output
 ```python
 import time

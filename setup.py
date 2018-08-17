@@ -47,6 +47,7 @@ setup(
             'grove_4_digit_display=grove.grove_4_digit_display:main',
             'grove_air_quality_sensor_v1_3=grove.grove_air_quality_sensor_v1_3:main',
             'grove_button=grove.grove_button:main',
+            'grove_ryb_led_button=grove.grove_ryb_led_button:main',
             'grove_gesture_sensor=grove.grove_gesture_sensor:main',
             'grove_i2c_color_sensor_v2=grove.grove_i2c_color_sensor_v2:main',
             'grove_light_sensor_v1.2=grove.grove_light_sensor_v1.2:main',
