@@ -33,19 +33,21 @@ THE SOFTWARE.
 '''
 from __future__ import print_function
 from enum import Enum
-from grove.button import *
-from grove.led    import *
+from grove.button      import *
+from grove.led         import *
+from grove.temperature import *
 import sys
 
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "PWM"))
+    TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
 
     def __init__(self):
         pass
 
     def __avail_list(self, typ, enum):
-        print("getButton: Wrong Button type specified {}".format(typ))
+        print("Factory.get: Wrong {} type specified {}".format(enum, typ))
         print("Available types: ", end='')
         for name,_ in enum.__members__.items():
             print(name, ',', sep='', end='')
@@ -74,6 +76,17 @@ class __factory(object):
         else:
             self.__avail_list(typ, self.OneLedEnum)
             sys.exit(1)
+
+    def getTemper(self, typ, channel = None):
+        if typ == "NTC-ADC":
+            return TemperTypedNTC(channel)
+        elif typ == "MCP9808-I2C":
+            return TemperMCP9808()
+        else:
+            self.__avail_list(typ, self.TemperEnum)
+            sys.exit(1)
+
+
 
 Factory = __factory()
 

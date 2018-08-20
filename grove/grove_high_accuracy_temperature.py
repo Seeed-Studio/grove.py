@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# We use python module smbus2 instead of smbus.
+# This library is for Grove - I2C High Accuracy Temperature Sensor(MCP9808)
+# (https://www.seeedstudio.com/Grove-I2C-High-Accuracy-Temperature-Sensor-MCP980-p-3108.html)
 #
+# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
+#
+
 '''
 ## License
 
@@ -29,21 +32,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import smbus2 as smbus
+import sys
+import time
+from grove.factory import Factory
+from grove.temperature import Temper
+
+def main():
+    print("Insert Grove - I2C-High-Accuracy-Temperature")
+    print("  to Grove-Base-Hat any I2C slot")
+
+    sensor = Factory.getTemper("MCP9808-I2C")
+    sensor.resolution(Temper.RES_1_16_CELSIUS)
+
+    print('Detecting temperature...')
+    while True:
+        print('{} Celsius'.format(sensor.temperature))
+        time.sleep(1)
 
 
-class Bus:
-    instance = None
-    MRAA_I2C = 0
-
-    def __init__(self, bus=None):
-        if bus is None:
-            bus = 1     # for Pi 2+
-
-        if not Bus.instance:
-            Bus.instance = smbus.SMBus(bus)
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
-
+if __name__ == '__main__':
+    main()
 

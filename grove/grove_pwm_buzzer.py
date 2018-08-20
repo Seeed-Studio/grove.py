@@ -5,6 +5,8 @@
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
 # Author: Peter Yang <linsheng.yang@seeed.cc>
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
+#
 # Author: Sarah Knepper <sarah.knepper@intel.com>
 # Copyright (c) 2015 Intel Corporation.
 #
@@ -32,10 +34,12 @@ import time
 from upm import pyupm_buzzer as upmBuzzer
 
 def main():
-    # Create the buzzer object using RaspberryPi SLOT PIN32
-    #
+    print("Insert Grove-Buzzer to Grove-Base-Hat slot PWM[12 13 VCC GND]")
+
     # Grove Base Hat for Raspberry Pi
-    #   PWM JST SLOT SILK - PWM[12 13 VCC GND]
+    #   PWM JST SLOT - PWM[12 13 VCC GND]
+    #
+    # Create the buzzer object using RaspberryPi slot PIN32(GPIO12)
     buzzer = upmBuzzer.Buzzer(32)
 
     chords = [upmBuzzer.BUZZER_DO, upmBuzzer.BUZZER_RE, upmBuzzer.BUZZER_MI,

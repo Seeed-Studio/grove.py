@@ -39,12 +39,13 @@ class OneLed(object):
     MAX_BRIGHT = 100
 
     def __init__(self, pin):
-        self.__light = False
+        self._light = False
         self._bright = self.MAX_BRIGHT
         self.__blink_on = 0.0
         self.__blink_off = 0.0
         self.__thrd = None
         self.__thr_exit = False
+        self._r, self._g, self._b = 0,0,0
 
     def __thrd_exit(self):
         if not self.__thrd is None:
@@ -85,15 +86,17 @@ class OneLed(object):
 
     def light(self, on):
         if type(on) != bool:
-            return self.__light
+            return self._light
         self.__thrd_exit()
-        self.__light = on
-        self._lighton(self.__light)
-        return self.__light
+        self._light = on
+        self._lighton(self._light)
+        return self._light
 
     # Set color
-    def color(self, c):
-        pass
+    def color(self, r = None, g = 0, b = 0):
+        if type(r) == int:
+            self._r, self._g, self, _b = r, g, b
+        return self._r, self._g, self._b
 
     @property
     def brightness(self):

@@ -35,7 +35,7 @@ from time import sleep
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-class DHT():
+class DHT(object):
     DHT_TYPE = {
         'DHT11': '11',
         'DHT22': '22'

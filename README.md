@@ -58,6 +58,7 @@ grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
 grove_ultrasonic_sensor 12 13
+......
 ```
 
 #### For digital output device like Grove - LED
@@ -156,3 +157,14 @@ buzzer = GroveBuzzer.Buzzer(32)
 # 1000 Hz sound last 2 seconds
 print(buzzer.playSound(1000, 2000000))
 ```
+
+#### For Grove I2C Grove - Temperature Sensor
+```python
+grove_temperature_sensor
+```
+
+#### For Grove I2C High Accuracy Temperature Sensor(MCP9808)
+```python
+grove_high_accuracy_temperature
+```
+

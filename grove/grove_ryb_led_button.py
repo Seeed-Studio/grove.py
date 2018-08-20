@@ -65,13 +65,13 @@ class GroveLedButton(object):
 
         self.__led.brightness = self.__led.MAX_BRIGHT
         event = evt['code']
-        if event == Button.EV_SINGLE_CLICK:
+        if event & Button.EV_SINGLE_CLICK:
             self.__led.light(True)
             print("turn on  LED")
-        elif event == Button.EV_DOUBLE_CLICK:
+        elif event & Button.EV_DOUBLE_CLICK:
             self.__led.blink()
             print("blink    LED")
-        elif event == Button.EV_LONG_PRESS:
+        elif event & Button.EV_LONG_PRESS:
             self.__led.light(False)
             print("turn off LED")
 

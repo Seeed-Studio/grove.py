@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# We use python module smbus2 instead of smbus.
+# This is the library for Grove Base Hat.
 #
+# Temper(ature) Classes
+#
+
 '''
 ## License
 
@@ -29,21 +31,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import smbus2 as smbus
+import math
+import threading
+from grove.i2c import Bus as I2C
+from grove.temperature import Temper
+from upm.pyupm_mcp9808 import MCP9808
 
+class TemperMCP9808(Temper):
+    def __init__(self):
+        self.mcp = MCP9808(I2C.MRAA_I2C)
+        self.mcp.setMode(True)  # Celsius
+        self._resolution = Temper.RES_1_2_CELSIUS
 
-class Bus:
-    instance = None
-    MRAA_I2C = 0
+    def _derive_res(self, res):
+        ares = -1
+        if res >= Temper.RES_1_2_CELSIUS:
+            ares = MCP9808.RES_LOW
+        elif res >= Temper.RES_1_4_CELSIUS:
+            ares = MCP9808.RES_MIDDLE
+        elif res >= Temper.RES_1_8_CELSIUS:
+            ares = MCP9808.RES_HIGH
+        elif res >= Temper.RES_1_16_CELSIUS:
+            ares = MCP9808.RES_PRECISION
 
-    def __init__(self, bus=None):
-        if bus is None:
-            bus = 1     # for Pi 2+
+        if ares < 0:
+            return False
+        self.mcp.setResolution(ares)
+        # print("ares = {}".format(ares))
+        return True
 
-        if not Bus.instance:
-            Bus.instance = smbus.SMBus(bus)
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
-
+    @property
+    def temperature(self):
+        return self.mcp.getTemp()
 

@@ -67,6 +67,7 @@ setup(
             'grove_switch=grove.grove_switch:main',
             'grove_temperature_humidity_sensor=grove.grove_temperature_humidity_sensor:main',
             'grove_temperature_sensor=grove.grove_temperature_sensor:main',
+            'grove_high_accuracy_temperature=grove.grove_high_accuracy_temperature:main',
             'grove_thumb_joystick=grove.grove_thumb_joystick:main',
             'grove_tilt_switch=grove.grove_tilt_switch:main',
             'grove_touch_sensor=grove.grove_touch_sensor:main',

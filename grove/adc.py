@@ -34,7 +34,7 @@ THE SOFTWARE.
 '''
 import grove.i2c
 
-
+# Grove Base Hat for RPI I2C Registers
 # 0x10 ~ 0x17: ADC raw data
 # 0x20 ~ 0x27: input voltage
 # 0x29: output voltage (Grove power supply voltage)
