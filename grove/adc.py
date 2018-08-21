@@ -34,12 +34,18 @@ THE SOFTWARE.
 '''
 import grove.i2c
 
+RPI_HAT_PID      = 0x0004
+RPI_ZERO_HAT_PID = 0x0005
+RPI_HAT_NAME     = 'Grove Base Hat RPi'
+RPI_ZERO_HAT_NAME= 'Grove Base Hat RPi Zero'
+
 # Grove Base Hat for RPI I2C Registers
 # 0x10 ~ 0x17: ADC raw data
 # 0x20 ~ 0x27: input voltage
 # 0x29: output voltage (Grove power supply voltage)
 # 0x30 ~ 0x37: input voltage / output voltage
 class ADC(object):
+
     def __init__(self, address=0x04):
         self.address = address
         self.bus = grove.i2c.Bus()
@@ -61,10 +67,10 @@ class ADC(object):
     @property
     def name(self):
         id = self.read_register(0x0)
-        if id == 0x4:
-            return 'Grove Base HAT RPi'
-        elif id == 0x5:
-            return 'Grove Base HAT RPi Zero'
+        if id == RPI_HAT_PID:
+            return RPI_HAT_NAME
+        elif id == RPI_ZERO_HAT_PID:
+            return RPI_ZERO_HAT_NAME
 
     @property
     def version(self):

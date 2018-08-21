@@ -32,15 +32,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 from __future__ import print_function
+import sys
 from enum import Enum
 from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
-import sys
 
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
-    OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "PWM"))
+    OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
 
     def __init__(self):
@@ -70,9 +70,8 @@ class __factory(object):
             return OneLedTypedGpio(pin, False)
         elif typ == "GPIO-HIGH":
             return OneLedTypedGpio(pin, True)
-        elif typ == "PWM":
-            # TODO
-            return None
+        elif typ == "WS2812-PWM":
+            return OneLedTypedWs2812(pin)
         else:
             self.__avail_list(typ, self.OneLedEnum)
             sys.exit(1)
