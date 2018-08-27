@@ -34,6 +34,7 @@ THE SOFTWARE.
 import time
 import threading
 from grove.gpio import GPIO
+from neopixel import *
 
 class OneLed(object):
     MAX_BRIGHT = 100
@@ -45,7 +46,7 @@ class OneLed(object):
         self.__blink_off = 0.0
         self.__thrd = None
         self.__thr_exit = False
-        self._r, self._g, self._b = 0,0,0
+        self._r, self._g, self._b = 255,255,255
 
     def __thrd_exit(self):
         if not self.__thrd is None:
@@ -84,7 +85,7 @@ class OneLed(object):
     def _lighton(self, b = True):
         pass
 
-    def light(self, on):
+    def light(self, on = None):
         if type(on) != bool:
             return self._light
         self.__thrd_exit()
@@ -92,9 +93,15 @@ class OneLed(object):
         self._lighton(self._light)
         return self._light
 
+    # To be derived
+    def _setcolor(self, r, g, b):
+        return False
+
     # Set color
     def color(self, r = None, g = 0, b = 0):
-        if type(r) == int:
+        if type(r) != int:
+            return self._r, self._g, self._b
+        if self._setcolor(r, g, b):
             self._r, self._g, self, _b = r, g, b
         return self._r, self._g, self._b
 
@@ -107,6 +114,7 @@ class OneLed(object):
     def brightness(self, bright):
         self._bright = bright
 
+
 class OneLedTypedGpio(OneLed):
     def __init__(self, pin, high_enable = True):
         super(OneLedTypedGpio, self).__init__(pin)
@@ -118,6 +126,35 @@ class OneLedTypedGpio(OneLed):
         # print("write {} {}".format(self._bright, int(v)))
         self.__gpio.write(int(v))
 
-class OneLedTypedPwm(OneLed):
-    pass
+
+class OneLedTypedWs2812(OneLed):
+    def __init__(self, pin):
+        ws2812_pins = { 12:0, 13:1, 18:0, 19:1}
+        if not pin in ws2812_pins.keys():
+            print("OneLedTypedWs2812: pin {} could not used with WS2812".format(pin))
+            return
+        super(OneLedTypedWs2812, self).__init__(pin)
+
+        # LED strip configuration:
+        LED_COUNT      = 1       # Number of LED pixels.
+        LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
+        LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
+        LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
+        LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+        LED_CHANNEL    = ws2812_pins.get(pin) # set to '1' for GPIOs 13, 19, 41, 45 or 53
+
+        # Create NeoPixel object with appropriate configuration.
+        self.strip = Adafruit_NeoPixel(LED_COUNT, pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+        # Intialize the library (must be called once before other functions).
+        self.strip.begin()
+
+    def _lighton(self, on):
+        if not on:
+            r,g,b = 0,0,0
+        else:
+            r = self._bright * self._r / OneLed.MAX_BRIGHT
+            g = self._bright * self._g / OneLed.MAX_BRIGHT
+            b = self._bright * self._b / OneLed.MAX_BRIGHT
+        self.strip.setPixelColor(0, Color(r,g,b))
+        self.strip.show()
 

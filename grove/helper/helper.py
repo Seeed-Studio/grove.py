@@ -52,17 +52,20 @@ class SlotHelper(object):
 
     def __init__(self, slot):
         adc = ADC()
-        print("Hat Name = '{}'".format(adc.name))
-        if adc.name == RPI_HAT_NAME:
-            self.__hat_type = RPI_HAT_PID
-            self.__slots_gpio = _SlotsGPIORpi
-            self.__slots_adc  = _SlotsADCRpi
-            self.__slots_pwm  = _SlotsPWMRpi
-        else:
+        name = adc.name
+        print("Hat Name = '{}'".format(name))
+        if name == RPI_ZERO_HAT_NAME:
             self.__hat_type = RPI_ZERO_HAT_PID
             self.__slots_gpio = _SlotsGPIORpiZero
             self.__slots_adc  = _SlotsADCRpiZero
             self.__slots_pwm  = _SlotsPWMRpiZero
+        elif name != RPI_HAT_NAME:
+            print("Unknown hat, assume {}".format(RPI_HAT_NAME))
+        if name != RPI_ZERO_HAT_NAME:
+            self.__hat_type = RPI_HAT_PID
+            self.__slots_gpio = _SlotsGPIORpi
+            self.__slots_adc  = _SlotsADCRpi
+            self.__slots_pwm  = _SlotsPWMRpi
         maps = {                       \
                 SlotHelper.GPIO:self.__slots_gpio, \
                 SlotHelper.ADC :self.__slots_adc,  \
@@ -89,7 +92,7 @@ class SlotHelper(object):
                 SlotHelper.PWM : "PWM",   \
                 }
 
-        print(" <pin> could use one of below values")
+        print(" <pin> could be one of below values")
         print("       in the pin column for {} function".format(maps.get(self._slot)))
         print("   And connect the device to corresponding slot")
         print("==============")

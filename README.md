@@ -23,7 +23,10 @@ sudo pip3 install grove.py
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
+# Python2
 sudo pip install .
+# Python3
+sudo pip3 install .
 ```
 
 ### Install MRAA and UPM for Raspberry Pi
@@ -77,23 +80,19 @@ while True:
 
 #### For digital input device like Grove - Button
 ```python
-import time
-from grove.grove_button import GroveButton
-
-button = GroveButton(12)
-
-def on_press(t):
-    print('Button is pressed')
-
-button.on_press = on_press
+pin = 12
+button = Factory.getButton("GPIO-HIGH", pin)
 
 while True:
+    if button.is_pressed():
+        print('Button is pressed')
+    else:
+        print('Button is released')
     time.sleep(1)
-
 ```
 
 #### For Red/Yellow/Blue LED Button
-```python
+```shell
 # single click to light on
 # double click to blink
 # long press   to light off
@@ -159,12 +158,19 @@ print(buzzer.playSound(1000, 2000000))
 ```
 
 #### For Grove I2C Grove - Temperature Sensor
-```python
+```shell
 grove_temperature_sensor
 ```
 
 #### For Grove I2C High Accuracy Temperature Sensor(MCP9808)
-```python
+```shell
 grove_high_accuracy_temperature
+```
+
+#### For Grove Mech Keycap
+ws281x library is needed
+```shell
+pip install rpi_ws281x
+grove_mech_keycap
 ```
 

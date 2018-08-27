@@ -34,7 +34,7 @@ setup(
     version='0.3',
     description='Python library for Seeedstudio Grove devices',
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    # long_description_content_type='text/markdown',
     author='Yihui Xiong',
     author_email='yihui.xiong@seeed.cc',
     url='https://github.com/seeed-studio/grove.py',
@@ -75,6 +75,7 @@ setup(
             'grove_water_sensor=grove.grove_water_sensor:main',
             'grove_collision_sensor=grove.grove_collision_sensor:main',
             'grove_pwm_buzzer=grove.grove_pwm_buzzer:main'
+            'grove_mech_keycap=grove.grove_mech_keycap:main'
         ],
     },
     zip_safe=False,
