@@ -37,11 +37,30 @@ from enum import Enum
 from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
+from grove.gpio        import *
+
+# GPIOWrapper settings
+_wrapper_pir_motion = {
+    'high-enable' : True,
+    'direction'   : GPIO.IN,
+    'status-attr' : "has_motion",
+    'enable-attr' : "nothing",
+    'disable-attr': "nothing"
+}
+
+_wrapper_buzzer = {
+    'high-enable' : True,
+    'direction'   : GPIO.OUT,
+    'status-attr' : "sounding",
+    'enable-attr' : "on",
+    'disable-attr': "off"
+}
 
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
+    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer"))
 
     def __init__(self):
         pass
@@ -85,6 +104,13 @@ class __factory(object):
             self.__avail_list(typ, self.TemperEnum)
             sys.exit(1)
 
+    def getGpioWrapper(self, typ, pin):
+        if typ == "PIRMotion":
+            return GPIOWrapper(pin, _wrapper_pir_motion)
+        elif typ == "Buzzer":
+            return GPIOWrapper(pin, _wrapper_buzzer)
+        else:
+            self.__avail_list(typ, self.GPIOWrapperEnum)
 
 
 Factory = __factory()

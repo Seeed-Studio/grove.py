@@ -32,6 +32,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
+import sys
 import grove.i2c
 
 RPI_HAT_PID      = 0x0004
@@ -78,8 +79,14 @@ class ADC(object):
 
     # read 16 bits register
     def read_register(self, n):
-        self.bus.write_byte(self.address, n)
-        return self.bus.read_word_data(self.address, n)
+        try:
+            self.bus.write_byte(self.address, n)
+            return self.bus.read_word_data(self.address, n)
+        except IOError:
+            print("Check whether I2C enabled and   {}  or  {}  inserted".format \
+                    (RPI_HAT_NAME, RPI_ZERO_HAT_NAME))
+            sys.exit(2)
+            return 0
 
 
 if __name__ == '__main__':

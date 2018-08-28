@@ -104,18 +104,44 @@ grove_ryb_led_button
 import time
 from grove.gpio import GPIO
 
-led = GPIO(12, GPIO.IN)
-button = GPIO(22, GPIO.OUT)
-
-def on_button_event(pin, value):
-    print('pin {} is {}'.format(pin, value))
-    led.write(value)
-
-button.on_event = on_button_event
+led = GPIO(12, GPIO.OUT)
+button = GPIO(22, GPIO.IN)
 
 while True:
-    time.sleep(1)
+    if button.read():
+        led.write(1)
+    else:
+        led.write(0)
+    time.sleep(0.1)
+```
 
+#### PIR Motion Sensor
+#### mini PIR motion sensor
+```python
+import time
+from grove.factory import Factory
+
+### connect to pin 5(slot D5)
+pir = Factory.getGpioWrapper("PIRMotion", 5)
+while True:
+    if pir.has_motion():
+        print("Hi, people is moving")
+    else:
+        print("Watching")
+    time.sleep(1)
+```
+
+#### Buzzer
+```python
+import time
+from grove.factory import Factory
+
+buzzer = Factory.getGpioWrapper("Buzzer", 12)
+while True:
+    buzzer.on()
+    time.sleep(1)
+    buzzer.off()
+    time.sleep(3)
 ```
 
 #### For Grove 4 Digit Display
