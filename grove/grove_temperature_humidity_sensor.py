@@ -48,16 +48,17 @@ class DHT(object):
         if dht_type != self.DHT_TYPE['DHT11'] and dht_type != self.DHT_TYPE['DHT22']:
             print('ERROR: Please use 11|22 as dht type.')
             exit(1)
+        self._dht_type = '11'
         self.dht_type = dht_type
         GPIO.setup(self.pin, GPIO.OUT)
 
     @property
     def dht_type(self):
-        return self.dht_type
+        return self._dht_type
 
     @dht_type.setter
     def dht_type(self, type):
-        self.dht_type = type
+        self._dht_type = type
 
     def read(self):
         # Send Falling signal to trigger sensor output data
@@ -100,10 +101,10 @@ class DHT(object):
         data4 = int(data[26:34], 2)
         data5 = int(data[34:42], 2)
 
-        if self.dht_type == self.DHT_TYPE['DHT11']:
+        if self._dht_type == self.DHT_TYPE['DHT11']:
             humi = int(data1)
             temp = int(data3)
-        elif self.dht_type == self.DHT_TYPE['DHT22']:
+        elif self._dht_type == self.DHT_TYPE['DHT22']:
             humi = float(int(data[2:18], 2)*0.1)
             temp = float(int(data[19:34],2)*0.2*(0.5-int(data[18], 2)))
 

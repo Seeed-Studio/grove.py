@@ -183,7 +183,22 @@ buzzer = GroveBuzzer.Buzzer(32)
 print(buzzer.playSound(1000, 2000000))
 ```
 
-#### For Grove I2C Grove - Temperature Sensor
+#### For Grove Temperature & Humidity Sensor(DHT11)
+```python
+import time
+from grove.grove_temperature_humidity_sensor import DHT
+
+# DHT11 type
+# insert to GPIO pin 5, slot D5
+dht11 = DHT("11", 5)
+
+while True:
+    humi, temp = dht11.read()
+    print('humidity {0}%, temperature {1}*'.format(humi, temp))
+    time.sleep(1)
+```
+
+#### For Grove Temperature Sensor
 ```shell
 grove_temperature_sensor
 ```
