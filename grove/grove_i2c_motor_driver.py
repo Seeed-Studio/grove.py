@@ -35,41 +35,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-
-import time,sys
-import RPi.GPIO as GPIO
+from __future__ import division
 from grove.i2c import Bus
+import time
 
-# use the bus that matches your raspi version
-rev = GPIO.RPI_REVISION
-if rev == 2 or rev == 3:
-    #bus = smbus.SMBus(1)
-    bus = Bus(1)
-else:
-    bus = Bus(0)
-    #bus = smbus.SMBus(0)
 
-class motor_driver:
-	
-	MotorSpeedSet             = 0x82
-	PWMFrequenceSet           = 0x84
-	DirectionSet              = 0xaa
-	MotorSetA                 = 0xa1
-	MotorSetB                 = 0xa5
-	Nothing                   = 0x01
-	EnableStepper             = 0x1a
-	UnenableStepper           = 0x1b
-	Stepernu                  = 0x1c
-	I2CMotorDriverAdd         = 0x0f  #Set the address of the I2CMotorDriver
+class MotorDriver(object):
+	__MotorSpeedSet             = 0x82
+	__PWMFrequenceSet           = 0x84
+	__DirectionSet              = 0xaa
+	__MotorSetA                 = 0xa1
+	__MotorSetB                 = 0xa5
+	__Nothing                   = 0x01
+	__EnableStepper             = 0x1a
+	__UnenableStepper           = 0x1b
+	__Stepernu                  = 0x1c
+	I2CAddr                     = 0x0f  #Set the address of the I2CMotorDriver
+	SPEED_MAX                   = 100
 
 	def __init__(self,address=0x0f):
-		self.I2CMotorDriverAdd=address
+		self.I2CAddr = address
+		self.bus = Bus()
 
 	def __del__(self):
-		self.MotorSpeedSetAB(0, 0)
+		self.set_speed(0, 0)
 
 	#Maps speed from 0-100 to 0-255
-	def map_vals(self,value, leftMin, leftMax, rightMin, rightMax):
+	def _map_vals(self,value, leftMin, leftMax, rightMin, rightMax):
 		#http://stackoverflow.com/questions/1969240/mapping-a-range-of-values-to-another
 		# Figure out how 'wide' each range is
 		leftSpan = leftMax - leftMin
@@ -82,23 +74,34 @@ class motor_driver:
 		return int(rightMin + (valueScaled * rightSpan))
 		
 	#Set motor speed
-	def MotorSpeedSetAB(self,MotorSpeedA,MotorSpeedB):
-		MotorSpeedA=self.map_vals(MotorSpeedA,0,100,0,255)
-		MotorSpeedB=self.map_vals(MotorSpeedB,0,100,0,255)
-		bus.write_i2c_block_data(self.I2CMotorDriverAdd, self.MotorSpeedSet, [MotorSpeedA,MotorSpeedB])
+	def set_speed(self, speed1 = 0, speed2 = 0):
+		s1 = self._map_vals(speed1, 0, 100, 0, 255)
+		s2 = self._map_vals(speed2, 0, 100, 0, 255)
+		self.bus.write_i2c_block_data(self.I2CAddr, self.__MotorSpeedSet, [s1, s2])
 		time.sleep(.02)
 	
 	#Set motor direction
-	def MotorDirectionSet(self,Direction):
-		bus.write_i2c_block_data(self.I2CMotorDriverAdd, self.DirectionSet, [Direction,0])
+	def set_dir(self, clock_wise1 = True, clock_wise2 = True):
+		dir1 = 0b10 if clock_wise1 else 0b01
+		dir2 = 0b10 if clock_wise2 else 0b01
+		dir = (dir2 << 2) | dir1
+		self.bus.write_i2c_block_data(self.I2CAddr, self.__DirectionSet, [dir, 0])
 		time.sleep(.02)
-		
-if __name__ == "__main__":		
-	m= motor_driver()
+
+Grove = MotorDriver
+
+def main():
+	print("Make sure I2C-Motor-Driver inserted")
+	print("  in one I2C slot of Grove-Base-Hat")
+	motor = MotorDriver()
 	while True:
-		m.MotorSpeedSetAB(100,100)
-		m.MotorDirectionSet(0b1010)
+		motor.set_speed(MotorDriver.SPEED_MAX, MotorDriver.SPEED_MAX)
+		motor.set_dir(True, True)
 		time.sleep(2)
-		m.MotorSpeedSetAB(100,100)
-		m.MotorDirectionSet(0b0101)
+		motor.set_speed(MotorDriver.SPEED_MAX * 0.7, MotorDriver.SPEED_MAX * 0.7)
+		motor.set_dir(False, False)
 		time.sleep(2)
+
+if __name__ == '__main__':
+	main()
+

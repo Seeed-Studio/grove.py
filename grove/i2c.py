@@ -30,7 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 import smbus2 as smbus
-
+import RPi.GPIO as GPIO
 
 class Bus:
     instance = None
@@ -38,8 +38,12 @@ class Bus:
 
     def __init__(self, bus=None):
         if bus is None:
-            bus = 1     # for Pi 2+
-
+            # use the bus that matches your raspi version
+            rev = GPIO.RPI_REVISION
+            if rev == 2 or rev == 3:
+                bus = 1  # for Pi 2+
+            else:
+                bus = 0
         if not Bus.instance:
             Bus.instance = smbus.SMBus(bus)
 
