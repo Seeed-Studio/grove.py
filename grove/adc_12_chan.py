@@ -71,17 +71,17 @@ def main():
     raw_data=ADC.get_all_adc_raw_data()
     vol_data=ADC.get_all_vol_milli_data()
     ratio_data=ADC.get_all_ratio_0_1_data()
-    print raw_data
-    print vol_data
-    print ratio_data
+    print(raw_data)
+    print(vol_data)
+    print(ratio_data)
 
     raw=ADC.get_nchan_adc_raw_data(0)
-    print "channel 0 raw data = %d" %raw
+    print("channel 0 raw data = %d" % raw)
     mili=ADC.get_nchan_vol_milli_data(0)
-    print "channel 0 milli vol = %d mv" %mili
-    ratio=ADC.get_nchan_ratio_0_1_data(0)
+    print("channel 0 milli vol = %d mv" % mili)
+    ratio = ADC.get_nchan_ratio_0_1_data(0)
     ratio = ratio*0.1
-    print "channel 0 radio = %f" %ratio+"%"
+    print("channel 0 radio = %f" % ratio + "%")
     
     
 

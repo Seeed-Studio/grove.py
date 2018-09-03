@@ -236,7 +236,8 @@ grove_high_accuracy_temperature
 #### For Grove Mech Keycap
 ws281x library is needed
 ```shell
-pip install rpi_ws281x
+sudo pip install rpi_ws281x
+sudo pip3 install rpi_ws281x
 grove_mech_keycap
 ```
 

@@ -70,7 +70,7 @@ class GPIOWrapper(GPIO):
         elif attr == self.__disable_attr:
             return self.__disable
         else:
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
     def __setattr__(self, attr, value):
         if attr == "enable":

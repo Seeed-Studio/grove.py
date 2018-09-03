@@ -34,7 +34,7 @@ THE SOFTWARE.
 import time
 import threading
 from grove.gpio import GPIO
-from neopixel import *
+from rpi_ws281x import *
 
 class OneLed(object):
     MAX_BRIGHT = 100
@@ -144,7 +144,7 @@ class OneLedTypedWs2812(OneLed):
         LED_CHANNEL    = ws2812_pins.get(pin) # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
         # Create NeoPixel object with appropriate configuration.
-        self.strip = Adafruit_NeoPixel(LED_COUNT, pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+        self.strip = PixelStrip(LED_COUNT, pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         # Intialize the library (must be called once before other functions).
         self.strip.begin()
 

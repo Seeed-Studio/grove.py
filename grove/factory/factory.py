@@ -111,6 +111,7 @@ class __factory(object):
             return GPIOWrapper(pin, _wrapper_buzzer)
         else:
             self.__avail_list(typ, self.GPIOWrapperEnum)
+            sys.exit(1)
 
 
 Factory = __factory()
