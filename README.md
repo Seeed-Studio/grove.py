@@ -144,6 +144,19 @@ while True:
     time.sleep(3)
 ```
 
+#### Electromagnet
+```python
+import time
+from grove.factory import Factory
+
+magnet = Factory.getGpioWrapper("Electromagnet", 12)
+while True:
+    magnet.on()
+    time.sleep(1)
+    magnet.off()
+    time.sleep(3)
+```
+
 #### For Grove 4 Digit Display
 ```python
 import time

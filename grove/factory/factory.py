@@ -56,11 +56,19 @@ _wrapper_buzzer = {
     'disable-attr': "off"
 }
 
+_wrapper_electromagnet = {
+    'high-enable' : True,
+    'direction'   : GPIO.OUT,
+    'status-attr' : "nothing",
+    'enable-attr' : "on",
+    'disable-attr': "off"
+}
+
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
-    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer"))
+    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet"))
 
     def __init__(self):
         pass
@@ -109,6 +117,8 @@ class __factory(object):
             return GPIOWrapper(pin, _wrapper_pir_motion)
         elif typ == "Buzzer":
             return GPIOWrapper(pin, _wrapper_buzzer)
+        elif typ == "Electromagnet":
+            return GPIOWrapper(pin, _wrapper_electromagnet)
         else:
             self.__avail_list(typ, self.GPIOWrapperEnum)
             sys.exit(1)

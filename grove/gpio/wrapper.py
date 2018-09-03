@@ -49,6 +49,9 @@ class GPIOWrapper(GPIO):
         v = self.read()
         return self.__high_en == bool(v)
 
+    def is_enabled(self):
+        return self.__is_enabled()
+
     def __enable(self):
         self.write(1 if self.__high_en else 0)
 
