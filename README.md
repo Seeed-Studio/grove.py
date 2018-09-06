@@ -19,7 +19,6 @@ sudo pip install grove.py
 sudo pip3 install grove.py
 ```
 ### Install grove.py from source code
-
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
@@ -45,12 +44,23 @@ or
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
 ```
 
-
 - Install MRAA & UPM
 ```
 sudo apt update
 sudo apt install python-mraa python-upm
 ```
+
+### Install library raspberry-gpio-python
+```
+sudo apt-get install python-rpi.gpio python3-rpi.gpio
+```
+
+### Install library rpi_ws281x
+```
+sudo pip install rpi_ws281x
+sudo pip3 install rpi_ws281x
+```
+
 
 ### Usage
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
@@ -64,7 +74,7 @@ grove_ultrasonic_sensor 12 13
 ......
 ```
 
-#### For digital output device like Grove - LED
+#### Digital output device like Grove - LED
 ```python
 import time
 from grove.grove_led import GroveLed
@@ -78,7 +88,7 @@ while True:
     time.sleep(1)
 ```
 
-#### For digital input device like Grove - Button
+#### Digital input device like Grove - Button
 ```python
 pin = 12
 button = Factory.getButton("GPIO-HIGH", pin)
@@ -91,7 +101,7 @@ while True:
     time.sleep(1)
 ```
 
-#### For Red/Yellow/Blue LED Button
+#### Red/Yellow/Blue LED Button
 ```shell
 # single click to light on
 # double click to blink
@@ -157,7 +167,7 @@ while True:
     time.sleep(3)
 ```
 
-#### For Grove 4 Digit Display
+#### 4 Digit Display
 ```python
 import time
 from grove.grove_4_digit_display import Grove4DigitDisplay
@@ -173,7 +183,7 @@ while True:
     time.sleep(1)
 ```
 
-#### For Grove I2C Color Sensor V2
+#### I2C Color Sensor V2
 ```python
 import time
 from grove.grove_i2c_color_sensor_v2 import GroveI2CColorSensorV2
@@ -187,7 +197,7 @@ while True:
     time.sleep(1.0)
 ```
 
-#### For Grove I2C Motor Driver
+#### I2C Motor Driver
 use along with DC-Motor
 ```python
 import time
@@ -212,7 +222,7 @@ while True:
     time.sleep(2)
 ```
 
-#### For Grove Buzzer PWM mode
+#### Buzzer PWM mode
 ```python
 from upm import pyupm_buzzer as GroveBuzzer
 
@@ -221,7 +231,7 @@ buzzer = GroveBuzzer.Buzzer(32)
 print(buzzer.playSound(1000, 2000000))
 ```
 
-#### For Grove Temperature & Humidity Sensor(DHT11)
+#### Temperature & Humidity Sensor(DHT11)
 ```python
 import time
 from grove.grove_temperature_humidity_sensor import DHT
@@ -236,21 +246,49 @@ while True:
     time.sleep(1)
 ```
 
-#### For Grove Temperature Sensor
+#### LCD 16x2 Characters
+#### OLED Display 1.12"
+```python
+import time
+from grove.factory import Factory
+
+# LCD 16x2 Characters
+lcd = Factory.getLcd("JHD1802")
+# If it's OLED Display 1.12"
+# lcd = Factory.getLcd("SH1107G")
+rows, cols = lcd.size()
+print("LCD model: {}".format(lcd.name()))
+print("LCD type : {} x {}".format(cols, rows))
+
+lcd.setCursor(0, 0)
+lcd.write("hello world!")
+lcd.setCursor(0, cols - 1)
+lcd.write('X')
+lcd.setCursor(rows - 1, 0)
+for i in range(cols):
+    lcd.write(chr(ord('A') + i))
+time.sleep(3)
+
+lcd.clear()
+```
+
+#### Temperature Sensor
 ```shell
 grove_temperature_sensor
 ```
 
-#### For Grove I2C High Accuracy Temperature Sensor(MCP9808)
+#### Thumb Joystick
+```shell
+grove_thumb_joystick
+```
+
+#### I2C High Accuracy Temperature Sensor(MCP9808)
 ```shell
 grove_high_accuracy_temperature
 ```
 
-#### For Grove Mech Keycap
-ws281x library is needed
+#### Mech Keycap
 ```shell
-sudo pip install rpi_ws281x
-sudo pip3 install rpi_ws281x
 grove_mech_keycap
 ```
 

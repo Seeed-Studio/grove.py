@@ -38,6 +38,7 @@ from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
 from grove.gpio        import *
+from grove.lcd         import *
 
 # GPIOWrapper settings
 _wrapper_pir_motion = {
@@ -69,6 +70,7 @@ class __factory(object):
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
     GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet"))
+    LcdEnum = Enum('Lcd', ("JHD1802", "SH1107G"))
 
     def __init__(self):
         pass
@@ -122,6 +124,14 @@ class __factory(object):
         else:
             self.__avail_list(typ, self.GPIOWrapperEnum)
             sys.exit(1)
+
+    def getLcd(self, typ):
+        if typ == "JHD1802":
+            return JHD1802()
+        elif typ == "SH1107G":
+            return SH1107G_SSD1327()
+        else:
+            self._avail_list(typ, self.LcdEnum)
 
 
 Factory = __factory()

@@ -75,7 +75,8 @@ setup(
             'grove_water_sensor=grove.grove_water_sensor:main',
             'grove_collision_sensor=grove.grove_collision_sensor:main',
             'grove_pwm_buzzer=grove.grove_pwm_buzzer:main',
-            'grove_mech_keycap=grove.grove_mech_keycap:main'
+            'grove_mech_keycap=grove.grove_mech_keycap:main',
+            'grove_lcd_1.2inches=grove.lcd.sh1107g:main'
         ],
     },
     zip_safe=False,
