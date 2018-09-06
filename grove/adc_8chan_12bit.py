@@ -1,3 +1,29 @@
+'''
+## License
+
+The MIT License (MIT)
+
+Grove 8 channels 12 bit ADC Hat for the Raspberry Pi, used to connect grove sensors.
+Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+'''
 import time
 from grove.i2c import Bus
 
@@ -17,10 +43,6 @@ class Pi_hat_adc():
         self.bus=Bus(bus_num)
         self.addr=addr
 
-    #The default address is 0x04,but you can change the address to any address
-    def change_i2c_addr(self,addr):
-        self.bus.write_byte_data(self.addr,REG_SET_ADDR,addr)
-        self.addr=addr
     
     #get all raw adc data,THe max value is 4095,cause it is 12 Bit ADC
     def get_all_adc_raw_data(self):
@@ -67,23 +89,20 @@ class Pi_hat_adc():
 
 ADC = Pi_hat_adc()
 def main():
-    #ADC.change_i2c_addr(0X04)
     raw_data=ADC.get_all_adc_raw_data()
     vol_data=ADC.get_all_vol_milli_data()
     ratio_data=ADC.get_all_ratio_0_1_data()
+    print("raw data for each channel:(1-8chan)(12 bit-max=4096):")
     print(raw_data)
+    print("voltage for each channel:(unit:mv,max=3300mv):")
     print(vol_data)
+    print ("ratio for each channel(unit 0.1%,max=100.0%):")
     print(ratio_data)
 
-    raw=ADC.get_nchan_adc_raw_data(0)
-    print("channel 0 raw data = %d" % raw)
-    mili=ADC.get_nchan_vol_milli_data(0)
-    print("channel 0 milli vol = %d mv" % mili)
-    ratio = ADC.get_nchan_ratio_0_1_data(0)
-    ratio = ratio*0.1
-    print("channel 0 radio = %f" % ratio + "%")
-    
-    
+    print(" ")
+    print("NOTICE!!!:")
+    print("The default setting of ADC PIN is floating_input.")
+    print(" ")
 
 if __name__ == '__main__':
     main()
