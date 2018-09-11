@@ -242,7 +242,7 @@ dht11 = DHT("11", 5)
 
 while True:
     humi, temp = dht11.read()
-    print('humidity {0}%, temperature {1}*'.format(humi, temp))
+    print('DHT{0}, humidity {1:.1f}%, temperature {2:.1f}*'.format(dht11.dht_type, humi, temp))
     time.sleep(1)
 ```
 
