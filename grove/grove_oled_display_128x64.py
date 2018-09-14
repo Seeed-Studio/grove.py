@@ -241,11 +241,14 @@ class GroveOledDisplay128x64(object):
                 self.send_data(data)
 
 
-if __name__ == "__main__":
+def main():
     display = GroveOledDisplay128x64()
 
     display.set_cursor(0, 0)
     display.puts('hello')
     display.set_cursor(1, 4)
     display.puts('world')
+
+if __name__ == "__main__":
+    main()
 

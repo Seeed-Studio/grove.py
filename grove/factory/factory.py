@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 #
 # This is the library for Grove Base Hat.
 #
@@ -64,17 +64,22 @@ _wrapper_electromagnet = {
     'enable-attr' : "on",
     'disable-attr': "off"
 }
-
+_wrapper_relay = {
+    'high-enable' : True,
+    'direction'   : GPIO.OUT,
+    'status-attr' : "nothing",
+    'enable-attr' : "on",
+    'disable-attr': "off"
+}
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
-    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet"))
+    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
     LcdEnum = Enum('Lcd', ("JHD1802", "SH1107G"))
 
     def __init__(self):
         pass
-
     def __avail_list(self, typ, enum):
         print("Factory.get: Wrong {} type specified {}".format(enum, typ))
         print("Available types: ", end='')
@@ -121,6 +126,8 @@ class __factory(object):
             return GPIOWrapper(pin, _wrapper_buzzer)
         elif typ == "Electromagnet":
             return GPIOWrapper(pin, _wrapper_electromagnet)
+        elif typ == "Relay":
+            return GPIOWrapper(pin, _wrapper_relay)
         else:
             self.__avail_list(typ, self.GPIOWrapperEnum)
             sys.exit(1)
@@ -135,4 +142,3 @@ class __factory(object):
 
 
 Factory = __factory()
-

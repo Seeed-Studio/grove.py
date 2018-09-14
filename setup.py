@@ -50,7 +50,7 @@ setup(
             'grove_ryb_led_button=grove.grove_ryb_led_button:main',
             'grove_gesture_sensor=grove.grove_gesture_sensor:main',
             'grove_i2c_color_sensor_v2=grove.grove_i2c_color_sensor_v2:main',
-            'grove_light_sensor_v1.2=grove.grove_light_sensor_v1.2:main',
+            'grove_light_sensor_v1_2=grove.grove_light_sensor_v1_2:main',
             'grove_i2c_motor_driver=grove.grove_i2c_motor_driver:main',
             'grove_led=grove.grove_led:main',  
             'grove_loudness_sensor=grove.grove_loudness_sensor:main',
