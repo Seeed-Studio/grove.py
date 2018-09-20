@@ -235,6 +235,33 @@ while True:
     time.sleep(2)
 ```
 
+use along with Stepper Motor 28BYJ48
+```python
+from grove.factory import Factory
+import time
+
+motor = Factory.getStepperMotor("28BYJ48")
+ANGLE = 360 # rotate 360 degrees = 1 cycle
+motor.rotate(ANGLE)
+# set speed to max rpm, for Motor 28BYJ48, it's 12 RPM.
+# direction is clockwise, anti-clockwise use negative value (-12)
+SPEED = motor.speed_max # SPEED = 12
+motor.speed(SPEED)
+motor.enable(True) # enable the motor, begin to run
+
+seconds = ANGLE / 360.0 / SPEED * 60
+print("Motor {} rotate {} degrees, time = {:.2f}".format(motor.name, ANGLE, time.time()))
+print("      with speed {} RPM".format(SPEED))
+print("      will be stop after {:4.2f} seconds".format(seconds))
+while True:
+    left = motor.rotate()
+    if left < 1e-5: break
+    print("Angle left {:6.2f} degrees, time = {:.2f}".format(left, time.time()))
+    time.sleep(1.0)
+
+print("Motor run ended, time = {:.2f} !".format(time.time()))
+```
+
 #### Buzzer PWM mode
 ```python
 from upm import pyupm_buzzer as GroveBuzzer
@@ -270,7 +297,7 @@ lcd = Factory.getLcd("JHD1802")
 # If it's OLED Display 1.12"
 # lcd = Factory.getLcd("SH1107G")
 rows, cols = lcd.size()
-print("LCD model: {}".format(lcd.name()))
+print("LCD model: {}".format(lcd.name))
 print("LCD type : {} x {}".format(cols, rows))
 
 lcd.setCursor(0, 0)
@@ -280,8 +307,8 @@ lcd.write('X')
 lcd.setCursor(rows - 1, 0)
 for i in range(cols):
     lcd.write(chr(ord('A') + i))
-time.sleep(3)
 
+time.sleep(3)
 lcd.clear()
 ```
 

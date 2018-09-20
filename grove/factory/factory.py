@@ -39,6 +39,7 @@ from grove.led         import *
 from grove.temperature import *
 from grove.gpio        import *
 from grove.lcd         import *
+from grove.motor       import *
 
 # GPIOWrapper settings
 _wrapper_pir_motion = {
@@ -64,6 +65,7 @@ _wrapper_electromagnet = {
     'enable-attr' : "on",
     'disable-attr': "off"
 }
+
 _wrapper_relay = {
     'high-enable' : True,
     'direction'   : GPIO.OUT,
@@ -71,15 +73,36 @@ _wrapper_relay = {
     'enable-attr' : "on",
     'disable-attr': "off"
 }
+
+_stepper_motor_28BYJ48 = {
+    'name'        : "28BYJ48",
+    'var-ratio'   : 64,
+    'stride-angle': 5.625,
+    'rpm-max'     : 12,
+    'sequences'   :
+        [ 0b0001, 0b0011, 0b0010, 0b0110, 0b0100, 0b1100, 0b1000, 0b1001 ]
+}
+
+_stepper_motor_YH42BYGH40 = {
+    'name'        : "YH42BYGH40",
+    'var-ratio'   : 1.0,
+    'stride-angle': 0.9,
+    'rpm-max'     : 250,
+    'sequences'   :
+        [ 0b0001, 0b0101, 0b0100, 0b0110, 0b0010, 0b1010, 0b1000, 0b1001 ]
+}
+
 class __factory(object):
     ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
     GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
+    StepperMotorEnum = Enum('StepperMotor', ("28BYJ48", "YH42BYGH40"))
     LcdEnum = Enum('Lcd', ("JHD1802", "SH1107G"))
 
     def __init__(self):
         pass
+
     def __avail_list(self, typ, enum):
         print("Factory.get: Wrong {} type specified {}".format(enum, typ))
         print("Available types: ", end='')
@@ -132,6 +155,15 @@ class __factory(object):
             self.__avail_list(typ, self.GPIOWrapperEnum)
             sys.exit(1)
 
+    def getStepperMotor(self, typ):
+        if typ == "28BYJ48":
+            return I2CStepperMotor(_stepper_motor_28BYJ48)
+        elif typ == "YH42BYGH40":
+            return I2CStepperMotor(_stepper_motor_YH42BYGH40)
+        else:
+            self._avail_list(typ, self.StepperMotorEnum)
+            sys.exit(1)
+
     def getLcd(self, typ):
         if typ == "JHD1802":
             return JHD1802()
@@ -139,6 +171,9 @@ class __factory(object):
             return SH1107G_SSD1327()
         else:
             self._avail_list(typ, self.LcdEnum)
+            sys.exit(1)
+
 
 
 Factory = __factory()
+
