@@ -72,6 +72,11 @@ sudo pip install .
 sudo pip3 install .
 ```
 
+#### One line script to install/update all above
+```shell
+curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
+```
+
 ## Usage
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
@@ -84,7 +89,7 @@ grove_ultrasonic_sensor 12 13
 ......
 ```
 
-### Digital output device like Grove - LED
+### Grove - LED
 ```python
 import time
 from grove.grove_led import GroveLed
@@ -111,7 +116,7 @@ while True:
     time.sleep(5)
 ```
 
-### Digital input device like Grove - Button
+### Button
 ```python
 pin = 12
 button = Factory.getButton("GPIO-HIGH", pin)

@@ -128,6 +128,7 @@ class __factory(object):
         elif typ == "GPIO-HIGH":
             return OneLedTypedGpio(pin, True)
         elif typ == "WS2812-PWM":
+            from grove.led.one_led_ws2812 import OneLedTypedWs2812
             return OneLedTypedWs2812(pin)
         else:
             self.__avail_list(typ, self.OneLedEnum)
