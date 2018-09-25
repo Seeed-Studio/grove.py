@@ -176,10 +176,11 @@ class JHD1802(LCDBase):
         self._bus.address(self._addr)
         if self._bus.writeByte(0):
             print("Check if the LCD {} inserted, then try again"
-                    .format(self.name()))
+                    .format(self.name))
             sys.exit(1)
         self.jhd = upmjhd.Jhd1313m1(0, address, address)
 
+    @property
     def name(self):
         return "JHD1802"
 
@@ -237,7 +238,7 @@ class SH1107G_SSD1327(LCDBase):
         # print(" id = 0x{:2x}".format(id))
         self._sh1107 = (id & 0x3F) == 0x07
         if not self._sh1107:
-            self._ssd1327 = SSD1327()
+            self._ssd1327 = SSD1327(0)
             return
 
         blk =     [0xAE]   # Display OFF
@@ -290,6 +291,7 @@ class SH1107G_SSD1327(LCDBase):
             print("*** Check if LCD module inserted ***")
             sys.exit(1)
 
+    @property
     def name(self):
         return "SH1107G" if self._sh1107 else "SSD1327"
 
@@ -367,7 +369,7 @@ def main():
     lcd = SH1107G_SSD1327()
     # lcd = JHD1802()
     rows, cols = lcd.size()
-    print("LCD model: {}".format(lcd.name()))
+    print("LCD model: {}".format(lcd.name))
     print("LCD type : {} x {}".format(cols, rows))
 
     lcd.backlight(False)
@@ -381,8 +383,8 @@ def main():
     lcd.setCursor(rows - 1, 0)
     for i in range(cols):
         lcd.write(chr(ord('A') + i))
-    time.sleep(3)
 
+    time.sleep(3)
     lcd.clear()
 
 if __name__ == '__main__':
