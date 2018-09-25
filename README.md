@@ -6,19 +6,63 @@ grove.py
 
 Python library for Seeedstudio Grove Devices on Raspberry Pi.
 
+## Installation
+### Install Dependencies
+#### Install MRAA and UPM for Raspberry Pi
 
+- Add repository
 
-### Install grove.py from pypi 
+```shell
+echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
+```
+
+- Add public GPG key
+
+```shell
+curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
+```
+or
+
+```shell
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
+```
+
+- Install MRAA & UPM
+
+```shell
+sudo apt update
+# Python2
+sudo apt install python-mraa python-upm
+# Python3
+sudo apt install python3-mraa python3-upm
+```
+
+#### Install library raspberry-gpio-python
+```shell
+sudo apt update
+sudo apt install python-rpi.gpio python3-rpi.gpio
+```
+
+#### Install library rpi_ws281x
+```shell
+sudo pip install rpi_ws281x
+sudo pip3 install rpi_ws281x
+```
+
+### Install grove.py
+#### From PyPI 
 - For Python2
+
 ```shell
 sudo pip install grove.py
 ```
 
 - For Python3
+
 ```shell
 sudo pip3 install grove.py
 ```
-### Install grove.py from source code
+#### From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
@@ -28,41 +72,7 @@ sudo pip install .
 sudo pip3 install .
 ```
 
-### Install MRAA and UPM for Raspberry Pi
-
-- Add repository
-```
-echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
-```
-
-- Add public GPG key
-```
-curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
-```
-or
-```
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
-```
-
-- Install MRAA & UPM
-```
-sudo apt update
-sudo apt install python-mraa python-upm
-```
-
-### Install library raspberry-gpio-python
-```
-sudo apt-get install python-rpi.gpio python3-rpi.gpio
-```
-
-### Install library rpi_ws281x
-```
-sudo pip install rpi_ws281x
-sudo pip3 install rpi_ws281x
-```
-
-
-### Usage
+## Usage
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
 ```shell
@@ -74,7 +84,7 @@ grove_ultrasonic_sensor 12 13
 ......
 ```
 
-#### Digital output device like Grove - LED
+### Digital output device like Grove - LED
 ```python
 import time
 from grove.grove_led import GroveLed
@@ -88,7 +98,7 @@ while True:
     time.sleep(1)
 ```
 
-#### Relay
+### Relay
 ```python
 import time
 from grove.factory import Factory
@@ -101,7 +111,7 @@ while True:
     time.sleep(5)
 ```
 
-#### Digital input device like Grove - Button
+### Digital input device like Grove - Button
 ```python
 pin = 12
 button = Factory.getButton("GPIO-HIGH", pin)
@@ -114,7 +124,7 @@ while True:
     time.sleep(1)
 ```
 
-#### Red/Yellow/Blue LED Button
+### Red/Yellow/Blue LED Button
 ```shell
 # single click to light on
 # double click to blink
@@ -122,7 +132,7 @@ while True:
 grove_ryb_led_button
 ```
 
-#### Basic GPIO Input & Output
+### Basic GPIO Input & Output
 ```python
 import time
 from grove.gpio import GPIO
@@ -138,7 +148,7 @@ while True:
     time.sleep(0.1)
 ```
 
-#### PIR Motion Sensor
+### PIR Motion Sensor
 #### mini PIR motion sensor
 ```python
 import time
@@ -154,7 +164,7 @@ while True:
     time.sleep(1)
 ```
 
-#### Buzzer
+### Buzzer
 ```python
 import time
 from grove.factory import Factory
@@ -167,7 +177,7 @@ while True:
     time.sleep(3)
 ```
 
-#### Electromagnet
+### Electromagnet
 ```python
 import time
 from grove.factory import Factory
@@ -180,7 +190,7 @@ while True:
     time.sleep(3)
 ```
 
-#### 4 Digit Display
+### 4 Digit Display
 ```python
 import time
 from grove.grove_4_digit_display import Grove4DigitDisplay
@@ -196,7 +206,7 @@ while True:
     time.sleep(1)
 ```
 
-#### I2C Color Sensor V2
+### I2C Color Sensor V2
 ```python
 import time
 from grove.grove_i2c_color_sensor_v2 import GroveI2CColorSensorV2
@@ -210,7 +220,7 @@ while True:
     time.sleep(1.0)
 ```
 
-#### I2C Motor Driver
+### I2C Motor Driver
 use along with DC-Motor
 ```python
 import time
@@ -271,7 +281,7 @@ buzzer = GroveBuzzer.Buzzer(32)
 print(buzzer.playSound(1000, 2000000))
 ```
 
-#### Temperature & Humidity Sensor(DHT11)
+### Temperature & Humidity Sensor(DHT11)
 ```python
 import time
 from grove.grove_temperature_humidity_sensor import DHT
@@ -286,7 +296,7 @@ while True:
     time.sleep(1)
 ```
 
-#### LCD 16x2 Characters
+### LCD 16x2 Characters
 #### OLED Display 1.12"
 ```python
 import time
@@ -312,23 +322,22 @@ time.sleep(3)
 lcd.clear()
 ```
 
-#### Temperature Sensor
+### Temperature Sensor
 ```shell
 grove_temperature_sensor
 ```
 
-#### Thumb Joystick
+### Thumb Joystick
 ```shell
 grove_thumb_joystick
 ```
 
-#### I2C High Accuracy Temperature Sensor(MCP9808)
+### I2C High Accuracy Temperature Sensor(MCP9808)
 ```shell
 grove_high_accuracy_temperature
 ```
 
-#### Mech Keycap
+### Mech Keycap
 ```shell
 grove_mech_keycap
 ```
-
