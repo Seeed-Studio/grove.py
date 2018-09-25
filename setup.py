@@ -27,6 +27,7 @@ def is_pi():
 
 if is_pi():
     requirements.append('RPi.GPIO')
+    requirements.append('rpi_ws281x')
 
 
 setup(
