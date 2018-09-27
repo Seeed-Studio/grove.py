@@ -64,6 +64,8 @@ class DHT(object):
     @dht_type.setter
     def dht_type(self, type):
         self._dht_type = type
+        self._last_temp = 0.0
+        self._last_humi = 0.0
 
     def _read(self):
         # Send Falling signal to trigger sensor output data
@@ -153,13 +155,14 @@ class DHT(object):
 
         return humi, temp
 
-    def read(self, retries = 5):
+    def read(self, retries = 10):
         for i in range(retries):
             humi, temp = self._read()
             if not humi is None:
                 break
         if humi is None:
-            return 0.0, 0.0
+            return self._last_humi, self._last_temp
+        self._last_humi,self_lat_temp = humi, temp
         return humi, temp
 
 Grove = DHT
