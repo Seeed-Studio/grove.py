@@ -117,8 +117,8 @@ if [ "$do_uninstall" == "true" ]; then
   # To remove all users installation
   pip  uninstall -y $_package_name
   pip3 uninstall -y $_package_name
-  apt-get remove python-grove-py
-  apt-get remove python3-grove-py
+  apt-get -y remove python-grove-py
+  apt-get -y remove python3-grove-py
   exit 0
 fi
 
@@ -137,12 +137,12 @@ fi
 ## install MRAA & UPM
 apt update
 ### python2
-apt install python-mraa  python-upm
+apt install -y python-mraa  python-upm
 ### python3
-apt install python3-mraa python3-upm
+apt install -y python3-mraa python3-upm
 
 ## install library raspberry-gpio-python
-apt install python-rpi.gpio python3-rpi.gpio
+apt install -y python-rpi.gpio python3-rpi.gpio
 
 ## install library rpi_ws281x
 pip  install rpi_ws281x
