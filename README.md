@@ -6,7 +6,16 @@ grove.py
 
 Python library for Seeedstudio Grove Devices on Raspberry Pi.
 
-## Installation
+<br><br>
+# Archtecture
+To operate grove sensors, the grove.py depends many hardware interface libraries such as mraa/smbus2/rpi.gpi/rpi_ws281x. 
+
+<br>
+
+![](images/grove-py-arch.png)
+
+<br><br>
+# Installation
 ### Install Dependencies
 #### Install MRAA and UPM for Raspberry Pi
 
@@ -49,8 +58,10 @@ sudo pip install rpi_ws281x
 sudo pip3 install rpi_ws281x
 ```
 
+<br>
+
 ### Install grove.py
-#### From PyPI 
+#### From PyPI
 - For Python2
 
 ```shell
@@ -72,12 +83,17 @@ sudo pip install .
 sudo pip3 install .
 ```
 
-#### One line script to install/update all above
+<br>
+
+### Online install
+install/update all dependencies and latest grove.py
 ```shell
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
 
-## Usage
+<br><br>
+# Usage
+## CLI(command line interface)
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
 ```shell
@@ -89,6 +105,37 @@ grove_ultrasonic_sensor 12 13
 ......
 ```
 
+### Temperature Sensor
+```shell
+grove_temperature_sensor
+```
+
+### Thumb Joystick
+```shell
+grove_thumb_joystick
+```
+
+### I2C High Accuracy Temperature Sensor(MCP9808)
+```shell
+grove_high_accuracy_temperature
+```
+
+### Mech Keycap
+```shell
+grove_mech_keycap
+```
+
+### Red/Yellow/Blue LED Button
+```shell
+# single click to light on
+# double click to blink
+# long press   to light off
+grove_ryb_led_button
+```
+
+<br><br>
+## GUI(graphical user interface)
+You can copy below codes directly, and paste into any Python IDE (such as Thonny Python IDE) to run the demo and see the effect.
 ### Grove - LED
 ```python
 import time
@@ -127,14 +174,6 @@ while True:
     else:
         print('Button is released')
     time.sleep(1)
-```
-
-### Red/Yellow/Blue LED Button
-```shell
-# single click to light on
-# double click to blink
-# long press   to light off
-grove_ryb_led_button
 ```
 
 ### Basic GPIO Input & Output
@@ -325,24 +364,4 @@ for i in range(cols):
 
 time.sleep(3)
 lcd.clear()
-```
-
-### Temperature Sensor
-```shell
-grove_temperature_sensor
-```
-
-### Thumb Joystick
-```shell
-grove_thumb_joystick
-```
-
-### I2C High Accuracy Temperature Sensor(MCP9808)
-```shell
-grove_high_accuracy_temperature
-```
-
-### Mech Keycap
-```shell
-grove_mech_keycap
 ```
