@@ -289,17 +289,51 @@ while True:
     time.sleep(2)
 ```
 
-use along with Stepper Motor 28BYJ48
+use along with Stepper Motor 24BYJ48/28BYJ48
+
+connections between 24BYJ48/28BYJ48 and I2C-Motor-Driver
+<div>
+  <table border="0">
+    <tr align="center">
+      <th>I2C-Motor-Driver</th>
+      <th>24BYJ48 Lines</th>
+      <th>28BYJ48 Lines</th>
+    </tr>
+    <tr align="center">
+      <td>J1.M1-/OUT1</td>
+      <td>Blue</td>
+      <td>Blue</td>
+    </tr>
+    <tr align="center">
+      <td>J1.M1+/OUT2</td>
+      <td>Pink</td>
+      <td>Orange</td>
+    </tr>
+    <tr align="center">
+      <td>J2.M2-/OUT3</td>
+      <td>Orange</td>
+      <td>Yellow</td>
+    </tr>
+    <tr align="center">
+      <td>J2.M1-/OUT4</td>
+      <td>Yellow</td>
+      <td>Pink</td>
+    </tr>
+  </table>
+</div>
+
 ```python
 from grove.factory import Factory
 import time
 
-motor = Factory.getStepperMotor("28BYJ48")
+motor = Factory.getStepperMotor("24BYJ48")
+# If it's 28BYJ48
+# motor = Factory.getStepperMotor("28BYJ48")
 ANGLE = 360 # rotate 360 degrees = 1 cycle
 motor.rotate(ANGLE)
-# set speed to max rpm, for Motor 28BYJ48, it's 12 RPM.
-# direction is clockwise, anti-clockwise use negative value (-12)
-SPEED = motor.speed_max # SPEED = 12
+# set speed to max rpm, for Motor 24BYJ48, it's 30 RPM.
+# direction is clockwise, anti-clockwise use negative value (-30)
+SPEED = motor.speed_max # SPEED = 30
 motor.speed(SPEED)
 motor.enable(True) # enable the motor, begin to run
 

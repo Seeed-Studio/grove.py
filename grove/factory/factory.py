@@ -83,6 +83,15 @@ _stepper_motor_28BYJ48 = {
         [ 0b0001, 0b0011, 0b0010, 0b0110, 0b0100, 0b1100, 0b1000, 0b1001 ]
 }
 
+_stepper_motor_24BYJ48 = {
+    'name'        : "24BYJ48",
+    'var-ratio'   : 32,
+    'stride-angle': 5.625,
+    'rpm-max'     : 30,
+    'sequences'   :
+        [ 0b0001, 0b0011, 0b0010, 0b0110, 0b0100, 0b1100, 0b1000, 0b1001 ]
+}
+
 _stepper_motor_YH42BYGH40 = {
     'name'        : "YH42BYGH40",
     'var-ratio'   : 1.0,
@@ -97,7 +106,7 @@ class __factory(object):
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
     GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
-    StepperMotorEnum = Enum('StepperMotor', ("28BYJ48", "YH42BYGH40"))
+    StepperMotorEnum = Enum('StepperMotor', ("28BYJ48", "24BYJ48", "YH42BYGH40"))
     LcdEnum = Enum('Lcd', ("JHD1802", "SH1107G"))
 
     def __init__(self):
@@ -159,6 +168,8 @@ class __factory(object):
     def getStepperMotor(self, typ):
         if typ == "28BYJ48":
             return I2CStepperMotor(_stepper_motor_28BYJ48)
+        elif typ == "24BYJ48":
+            return I2CStepperMotor(_stepper_motor_24BYJ48)
         elif typ == "YH42BYGH40":
             return I2CStepperMotor(_stepper_motor_YH42BYGH40)
         else:
