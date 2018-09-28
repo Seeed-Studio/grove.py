@@ -155,7 +155,7 @@ class DHT(object):
 
         return humi, temp
 
-    def read(self, retries = 10):
+    def read(self, retries = 15):
         for i in range(retries):
             humi, temp = self._read()
             if not humi is None:
