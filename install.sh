@@ -136,6 +136,8 @@ fi
 
 ## install MRAA & UPM
 apt update
+### libmraa
+apt install -y libmraa1
 ### python2
 apt install -y python-mraa  python-upm
 ### python3

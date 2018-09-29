@@ -31,6 +31,7 @@
 from __future__ import print_function
 
 import time
+from mraa import getGpioLookup
 from upm import pyupm_buzzer as upmBuzzer
 
 def main():
@@ -38,9 +39,11 @@ def main():
 
     # Grove Base Hat for Raspberry Pi
     #   PWM JST SLOT - PWM[12 13 VCC GND]
+    pin = 12
     #
-    # Create the buzzer object using RaspberryPi slot PIN32(GPIO12)
-    buzzer = upmBuzzer.Buzzer(32)
+    # Create the buzzer object using RaspberryPi GPIO12
+    mraa_pin = getGpioLookup("GPIO%d" % pin)
+    buzzer = upmBuzzer.Buzzer(mraa_pin)
 
     chords = [upmBuzzer.BUZZER_DO, upmBuzzer.BUZZER_RE, upmBuzzer.BUZZER_MI,
               upmBuzzer.BUZZER_FA, upmBuzzer.BUZZER_SOL, upmBuzzer.BUZZER_LA,
