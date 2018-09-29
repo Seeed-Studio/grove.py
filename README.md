@@ -165,6 +165,9 @@ while True:
 
 ### Button
 ```python
+import time
+from grove.factory import Factory
+
 pin = 12
 button = Factory.getButton("GPIO-HIGH", pin)
 
@@ -296,8 +299,8 @@ connections between 24BYJ48/28BYJ48 and I2C-Motor-Driver
   <table border="0">
     <tr align="center">
       <th>I2C-Motor-Driver</th>
-      <th>24BYJ48 Lines</th>
-      <th>28BYJ48 Lines</th>
+      <th>24BYJ48 Wires</th>
+      <th>28BYJ48 Wires</th>
     </tr>
     <tr align="center">
       <td>J1.M1-/OUT1</td>
@@ -315,7 +318,7 @@ connections between 24BYJ48/28BYJ48 and I2C-Motor-Driver
       <td>Yellow</td>
     </tr>
     <tr align="center">
-      <td>J2.M1-/OUT4</td>
+      <td>J2.M2+/OUT4</td>
       <td>Yellow</td>
       <td>Pink</td>
     </tr>
@@ -352,9 +355,15 @@ print("Motor run ended, time = {:.2f} !".format(time.time()))
 
 #### Buzzer PWM mode
 ```python
+from mraa import getGpioLookup
 from upm import pyupm_buzzer as GroveBuzzer
 
-buzzer = GroveBuzzer.Buzzer(32)
+# Grove Base Hat for Raspberry Pi
+#   PWM JST SLOT - PWM[12 13 VCC GND]
+pin = 12
+# Create the buzzer object using RaspberryPi GPIO12
+mraa_pin = getGpioLookup("GPIO%d" % pin)
+buzzer = GroveBuzzer.Buzzer(mraa_pin)
 # 1000 Hz sound last 2 seconds
 print(buzzer.playSound(1000, 2000000))
 ```

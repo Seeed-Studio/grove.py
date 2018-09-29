@@ -61,7 +61,7 @@ def main():
     print('Detecting sound...')
     while True:
         print('Sound value: {0}'.format(sensor.sound))
-        time.sleep(.1)
+        time.sleep(.3)
 
 if __name__ == '__main__':
     main()
