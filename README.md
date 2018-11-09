@@ -16,6 +16,8 @@ To operate grove sensors, the grove.py depends many hardware interface libraries
 
 <br><br>
 # Installation
+For beginner or library user only, please install with online method.<br>
+For developer, please install dependencies and then install grove.py with source code.
 ### Install Dependencies
 #### Install MRAA and UPM for Raspberry Pi
 
@@ -93,7 +95,7 @@ curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo b
 
 <br><br>
 # Usage
-## CLI(command line interface)
+## CLI (command line interface)
 After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
 ```shell
@@ -101,7 +103,7 @@ sudo grove_pwm_buzzer
 grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
-grove_ultrasonic_sensor 12 13
+grove_ultrasonic_ranger 12 13
 ......
 ```
 
@@ -134,7 +136,7 @@ grove_ryb_led_button
 ```
 
 <br><br>
-## GUI(graphical user interface)
+## GUI (graphical user interface)
 You can copy below codes directly, and paste into any Python IDE (such as Thonny Python IDE) to run the demo and see the effect.
 ### Grove - LED
 ```python
@@ -268,7 +270,7 @@ while True:
 ```
 
 ### I2C Motor Driver
-use along with DC-Motor
+Use along with DC-Motor.
 ```python
 import time
 from grove.grove_i2c_motor_driver import MotorDriver
@@ -292,9 +294,10 @@ while True:
     time.sleep(2)
 ```
 
-use along with Stepper Motor 24BYJ48/28BYJ48
+<br>
+Use along with Stepper Motor 24BYJ48/28BYJ48.
 
-connections between 24BYJ48/28BYJ48 and I2C-Motor-Driver
+Connections between 24BYJ48/28BYJ48 and I2C-Motor-Driver:
 <div>
   <table border="0">
     <tr align="center">

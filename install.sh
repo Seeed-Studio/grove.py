@@ -101,6 +101,31 @@ do_i2c() {
   modprobe i2c-dev
 }
 
+function apt_install() {
+  pkg_name=$1
+
+  for ((i = 0; i < 3; i++)); {
+    apt-get install -y $pkg_name
+    pkg_status=$(dpkg -s $pkg_name | egrep "Status:.*" | awk '{ printf "%s", $2; }')
+    [ "$pkg_status" == "install" ] && return 0
+  }
+  return 1
+}
+
+function pip_install() {
+  local fields
+  pkg_name=$1
+  pip_cmd=${2}
+
+  fields=( $pip_cmd )
+  for ((i = 0; i < 3; i++)); {
+    $pip_cmd
+    pkg_status=$(${fields[0]} list --format=legacy | egrep "$pkg_name " | awk '{ printf "%s", $1; }')
+    [ "$pkg_status" == "$pkg_name" ] && return 0
+  }
+  return 1
+}
+
 do_uninstall=false
 if [ "$1" == "uninstall" ]; then
   do_uninstall=true
@@ -134,22 +159,6 @@ if ! apt-key list | egrep "$_seeed_apt_key" > /dev/null; then
   curl https://seeed-studio.github.io/pi_repo/public.key | apt-key add -
 fi
 
-## install MRAA & UPM
-apt update
-### libmraa
-apt install -y libmraa1
-### python2
-apt install -y python-mraa  python-upm
-### python3
-apt install -y python3-mraa python3-upm
-
-## install library raspberry-gpio-python
-apt install -y python-rpi.gpio python3-rpi.gpio
-
-## install library rpi_ws281x
-pip  install rpi_ws281x
-pip3 install rpi_ws281x
-
 ### install I2C ###
 if [ $(get_i2c) -ne 0 ]; then
   # enable i2c interface
@@ -158,9 +167,43 @@ if [ $(get_i2c) -ne 0 ]; then
 fi
 echo I2C interface enabled...
 
+
+## Initial installation
+r=0
+
+## install MRAA & UPM
+apt update
+
+### libmraa
+(( r == 0 )) && { apt_install libmraa1;    r=$?; }
+
+### python2
+(( r == 0 )) && { apt_install python-mraa; r=$?; }
+(( r == 0 )) && { apt_install python-upm;  r=$?; }
+
+### python3
+(( r == 0 )) && { apt_install python3-mraa;r=$?; }
+(( r == 0 )) && { apt_install python3-upm; r=$?; }
+
+## install library raspberry-gpio-python
+(( r == 0 )) && { apt_install python-rpi.gpio;  r=$?; }
+(( r == 0 )) && { apt_install python3-rpi.gpio; r=$?; }
+
+## install library rpi-ws281x
+(( r == 0 )) && { pip_install rpi-ws281x 'pip  install rpi-ws281x'; r=$?; }
+(( r == 0 )) && { pip_install rpi-ws281x 'pip3 install rpi-ws281x'; r=$?; }
+
 # install this python repository
-pip  install --upgrade $_repo_package_url
-pip3 install --upgrade $_repo_package_url
+(( r == 0 )) && { pip_install grove.py "pip  install --upgrade $_repo_package_url"; r=$?; }
+(( r == 0 )) && { pip_install grove.py "pip3 install --upgrade $_repo_package_url"; r=$?; }
+(( r == 0 )) && { which grove_button > /dev/null; r=$?; }
+
+(( r != 0 )) && {
+	echo "-------------------------------------------------------"
+	echo "     Grove.py installation FAILED, FAILED, FAILED      "
+	echo "-------------------------------------------------------"
+	exit 1
+}
 
 sync
 sleep 1
