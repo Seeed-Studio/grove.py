@@ -162,7 +162,7 @@ class DHT(object):
                 break
         if humi is None:
             return self._last_humi, self._last_temp
-        self._last_humi,self._lat_temp = humi, temp
+        self._last_humi,self._last_temp = humi, temp
         return humi, temp
 
 Grove = DHT
