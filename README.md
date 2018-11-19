@@ -96,6 +96,6 @@ sudo pip3 install .
 
 <br><br>
 ## GUI (graphical user interface)
-See the link below for details
+See the link below for details:
 
 [demon and execute](doc/README.md)

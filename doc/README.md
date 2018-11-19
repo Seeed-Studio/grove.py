@@ -9,35 +9,12 @@ grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
 grove_ultrasonic_ranger 12 13
-......
-```
-
-### Temperature Sensor
-```shell
 grove_temperature_sensor
-```
-
-### Thumb Joystick
-```shell
 grove_thumb_joystick
-```
-
-### I2C High Accuracy Temperature Sensor(MCP9808)
-```shell
 grove_high_accuracy_temperature
-```
-
-### Mech Keycap
-```shell
 grove_mech_keycap
-```
-
-### Red/Yellow/Blue LED Button
-```shell
-# single click to light on
-# double click to blink
-# long press   to light off
 grove_ryb_led_button
+......
 ```
 
 <br><br>
