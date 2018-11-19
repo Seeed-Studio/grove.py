@@ -77,7 +77,10 @@ setup(
             'grove_collision_sensor=grove.grove_collision_sensor:main',
             'grove_pwm_buzzer=grove.grove_pwm_buzzer:main',
             'grove_mech_keycap=grove.grove_mech_keycap:main',
-            'grove_lcd_1.2inches=grove.lcd.sh1107g:main'
+            'grove_lcd_1.2inches=grove.lcd.sh1107g:main',
+            'grove_uv_sensor=grove.grove_uv_sensor:main',
+            'grove_tem_hum_sht35=grove.grove_I2C_High_Accuracy_tem_hum_SHT35_sensor:main',
+            'grove_button_i2c=grove.button.grove_button_i2c:main'
         ],
     },
     zip_safe=False,
