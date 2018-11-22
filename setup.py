@@ -32,7 +32,7 @@ if is_pi():
 
 setup(
     name='grove.py',
-    version='0.5',
+    version='0.6',
     description='Python library for Seeedstudio Grove devices',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -80,7 +80,8 @@ setup(
             'grove_lcd_1.2inches=grove.lcd.sh1107g:main',
             'grove_uv_sensor=grove.grove_uv_sensor:main',
             'grove_tem_hum_sht35=grove.grove_I2C_High_Accuracy_tem_hum_SHT35_sensor:main',
-            'grove_button_i2c=grove.button.grove_button_i2c:main'
+            'grove_button_i2c=grove.button.grove_button_i2c:main',
+            'grove_temperature_humidity_sensor_sht31=grove.grove_temperature_humidity_sensor_sht3x:main'
         ],
     },
     zip_safe=False,
