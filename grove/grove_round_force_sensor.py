@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - Servo(https://www.seeedstudio.com/Grove-Servo-p-1241.html)
+# This code is for Grove - Grove - Round Force Sensor FSR402 (https://www.seeedstudio.com/Grove-Round-Force-Sensor-FSR40-p-3110.html)
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
@@ -32,52 +32,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 from __future__ import print_function
-import RPi.GPIO as IO
+import math
 import sys
 import time
-from numpy import interp
+from grove.adc import ADC
 
-IO.setwarnings(False)
-IO.setmode(IO.BCM)
 
-class GroveServo:
-    MIN_DEGREE = 0
-    MAX_DEGREE = 180
-    INIT_DUTY = 2.5
-
+class GroveRoundForceSensor(ADC):
     def __init__(self, channel):
-        IO.setup(channel,IO.OUT)
-        self.pwm = IO.PWM(channel,50)
-        self.pwm.start(GroveServo.INIT_DUTY)
+        self.channel = channel
+        self.adc = ADC()
+    
+    @property
+    def value(self):
+        return self.adc.read(self.channel)
 
-    def __del__(self):
-        self.pwm.stop()
 
-    def setAngle(self, angle):
-        # Map angle from range 0 ~ 180 to range 25 ~ 125
-        angle = max(min(angle, GroveServo.MAX_DEGREE), GroveServo.MIN_DEGREE)
-        tmp = interp(angle, [0, 180], [25, 125])
-        self.pwm.ChangeDutyCycle(round(tmp/10.0, 1))
+Grove = GroveRoundForceSensor
 
-Grove = GroveServo
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: {} servo_channel'.format(sys.argv[0]))
-        sys.exit(1)
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.ADC)
+    pin = sh.argv2pin()
 
-    servo = GroveServo(int(sys.argv[1]))
+    sensor = GroveRoundForceSensor(int(pin))
 
     while True:
-        for x in range(0, 180):
-            print(x, "degree")
-            servo.setAngle(x)
-            time.sleep(0.05)
-        for x in range(180, 0, -1):
-            print(x, "degree")
-            servo.setAngle(x)
-            time.sleep(0.05)
+        fsr = sensor.value
+        print('FSR Value: {}'.format(fsr), end='')
+        if fsr < 10:
+            print(" - No pressure")
+        elif fsr < 600:
+            print(" - Light squeeze")
+        else:
+            print(" - Big squeeze")
+        time.sleep(1.0)
+
 
 if __name__ == '__main__':
     main()
-

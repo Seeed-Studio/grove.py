@@ -82,7 +82,8 @@ setup(
             'grove_tem_hum_sht35=grove.grove_I2C_High_Accuracy_tem_hum_SHT35_sensor:main',
             'grove_button_i2c=grove.button.grove_button_i2c:main',
             'grove_temperature_humidity_sensor_sht31=grove.grove_temperature_humidity_sensor_sht3x:main',
-            'grove_optical_rotary_encoder=grove.grove_optical_rotary_encoder:main'
+            'grove_optical_rotary_encoder=grove.grove_optical_rotary_encoder:main',
+            'grove_round_force_sensor=grove.grove_round_force_sensor:main'
         ],
     },
     zip_safe=False,
