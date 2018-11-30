@@ -7,7 +7,7 @@ class GPIO(mraa.Gpio):
     IN = mraa.DIR_IN
     
     def __init__(self, pin, direction=None):
-        super(GPIO, self).__init__(pin)
+        super(GPIO, self).__init__(pin, raw = True)
         self.pin = pin
 
         if direction is not None:

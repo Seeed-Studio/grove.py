@@ -42,7 +42,7 @@ def main():
     pin = 12
     #
     # Create the buzzer object using RaspberryPi GPIO12
-    mraa_pin = getGpioLookup("GPIO%d" % pin)
+    mraa_pin = getGpioLookup("GPIO%02d" % pin)
     buzzer = upmBuzzer.Buzzer(mraa_pin)
 
     chords = [upmBuzzer.BUZZER_DO, upmBuzzer.BUZZER_RE, upmBuzzer.BUZZER_MI,
