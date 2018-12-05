@@ -83,6 +83,7 @@ setup(
             'grove_button_i2c=grove.button.grove_button_i2c:main',
             'grove_temperature_humidity_sensor_sht31=grove.grove_temperature_humidity_sensor_sht3x:main',
             'grove_optical_rotary_encoder=grove.grove_optical_rotary_encoder:main',
+            'grove_3_axis_accelerometer_adxl372=grove.grove_3_axis_accelerometer_adxl372:main',
             'grove_round_force_sensor=grove.grove_round_force_sensor:main'
         ],
     },
