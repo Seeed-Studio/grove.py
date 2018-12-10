@@ -193,6 +193,10 @@ apt update
 (( r == 0 )) && { pip_install rpi-ws281x 'pip  install rpi-ws281x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-ws281x 'pip3 install rpi-ws281x'; r=$?; }
 
+## install library rpi-vl53l0x
+(( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
+(( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
+
 ## install library smbus2
 (( r == 0 )) && { pip_install smbus2 'pip  install smbus2'; r=$?; }
 (( r == 0 )) && { pip_install smbus2 'pip3 install smbus2'; r=$?; }

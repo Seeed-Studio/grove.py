@@ -49,6 +49,7 @@ class Bus:
                 bus = 0
         if not Bus.instance:
             Bus.instance = smbus.SMBus(bus)
+        self.bus = bus
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
