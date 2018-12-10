@@ -31,6 +31,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
+import time
 from grove.gpio import GPIO
 
 
@@ -49,14 +50,11 @@ Grove = GroveRelay
 
 
 def main():
-    import sys
-    import time
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    if len(sys.argv) < 2:
-        print('Usage: {} pin'.format(sys.argv[0]))
-        sys.exit(1)
-
-    relay = GroveRelay(int(sys.argv[1]))
+    relay = GroveRelay(pin)
 
     while True:
         try:

@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 #
 # This library is for Grove - Button(https://www.seeedstudio.com/s/Grove-Button-p-766.html)

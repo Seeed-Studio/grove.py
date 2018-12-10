@@ -63,13 +63,11 @@ Grove = GrovePiezoVibrationSensor
 
 
 def main():
-    import sys
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    if len(sys.argv) < 2:
-        print('Usage: {} pin'.format(sys.argv[0]))
-        sys.exit(1)
-
-    pir = GrovePiezoVibrationSensor(int(sys.argv[1]))
+    pir = GrovePiezoVibrationSensor(pin)
 
     def callback():
         print('Detected.')

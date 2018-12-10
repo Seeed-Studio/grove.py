@@ -44,7 +44,7 @@ _TIMEOUT2 = 10000
 
 class GroveUltrasonicRanger(object):
     def __init__(self, pin):
-        self.dio =GPIO(pin)
+        self.dio = GPIO(pin)
 
     def _get_distance(self):
         self.dio.dir(GPIO.OUT)
@@ -95,11 +95,11 @@ Grove = GroveUltrasonicRanger
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: {} pin_number'.format(sys.argv[0]))
-        sys.exit(1)
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    sonar = GroveUltrasonicRanger(int(sys.argv[1]))
+    sonar = GroveUltrasonicRanger(int(pin))
 
     print('Detecting distance...')
     while True:

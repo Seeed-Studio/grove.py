@@ -33,7 +33,6 @@ THE SOFTWARE.
 '''
 from __future__ import print_function
 import RPi.GPIO as IO
-import sys
 import time
 from numpy import interp
 
@@ -62,11 +61,11 @@ class GroveServo:
 Grove = GroveServo
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: {} servo_channel'.format(sys.argv[0]))
-        sys.exit(1)
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    servo = GroveServo(int(sys.argv[1]))
+    servo = GroveServo(pin)
 
     while True:
         for x in range(0, 180):

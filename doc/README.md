@@ -7,7 +7,7 @@ sudo grove_pwm_buzzer
 grove_i2c_color_sensor_v2
 grove_led 12
 grove_button 22
-grove_ultrasonic_ranger 12 13
+grove_ultrasonic_ranger 12
 grove_temperature_sensor
 grove_thumb_joystick
 grove_high_accuracy_temperature

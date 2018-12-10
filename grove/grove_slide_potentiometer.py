@@ -32,7 +32,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 import math
-import sys
 import time
 from grove.adc import ADC
 
@@ -51,11 +50,11 @@ Grove = GroveSlidePotentiometer
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: {} adc_channel'.format(sys.argv[0]))
-        sys.exit(1)
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.ADC)
+    pin = sh.argv2pin()
 
-    sensor = GroveSlidePotentiometer(int(sys.argv[1]))
+    sensor = GroveSlidePotentiometer(pin)
 
     while True:
         print('Slide potentiometer value: {}'.format(sensor.value))

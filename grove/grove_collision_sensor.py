@@ -88,13 +88,11 @@ Grove = GroveCollisionSensor
 
 
 def main():
-    import sys
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    if len(sys.argv) < 2:
-        print('Usage: {} pin'.format(sys.argv[0]))
-        sys.exit(1)
-
-    button = GroveCollisionSensor(int(sys.argv[1]))
+    button = GroveCollisionSensor(pin)
 
     def on_collision(t):
         print('Collision')

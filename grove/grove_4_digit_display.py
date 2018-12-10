@@ -235,11 +235,11 @@ Grove = Grove4DigitDisplay
 
 
 def main():
-    if len(sys.argv) < 3:
-        print('Usage: {} clk dio'.format(sys.argv[0]))
-        sys.exit(1)
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin()
 
-    display = Grove4DigitDisplay(int(sys.argv[1]), int(sys.argv[2]))
+    display = Grove4DigitDisplay(pin, pin + 1)
 
     count = 0
     while True:
