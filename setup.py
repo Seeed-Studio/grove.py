@@ -79,12 +79,12 @@ setup(
             'grove_mech_keycap=grove.grove_mech_keycap:main',
             'grove_lcd_1.2inches=grove.lcd.sh1107g:main',
             'grove_uv_sensor=grove.grove_uv_sensor:main',
-            'grove_tem_hum_sht35=grove.grove_I2C_High_Accuracy_tem_hum_SHT35_sensor:main',
             'grove_button_i2c=grove.button.grove_button_i2c:main',
             'grove_temperature_humidity_sensor_sht31=grove.grove_temperature_humidity_sensor_sht3x:main',
             'grove_optical_rotary_encoder=grove.grove_optical_rotary_encoder:main',
             'grove_3_axis_accelerometer_adxl372=grove.grove_3_axis_accelerometer_adxl372:main',
             'grove_round_force_sensor=grove.grove_round_force_sensor:main',
+            'grove_temperature_humidity_bme680=grove.grove_temperature_humidity_bme680:main',
             'grove_time_of_flight_distance=grove.grove_time_of_flight_distance:main'
         ],
     },

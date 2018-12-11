@@ -41,6 +41,7 @@ _SlotsADCRpi      = { 0:"A0",  2:"A2",   4:"A4",   6:"A6"  }
 _SlotsADCRpiZero  = { 0:"A0",  2:"A2",   4:"A4"            }
 _SlotsPWMRpi      = {         12:"PWM",           18:"D18" }
 _SlotsPWMRpiZero  = {         12:"PWM"                     }
+_SlotsNull        = { }
 
 class SlotHelper(object):
     # Slot types
@@ -66,10 +67,12 @@ class SlotHelper(object):
             self.__slots_gpio = _SlotsGPIORpi
             self.__slots_adc  = _SlotsADCRpi
             self.__slots_pwm  = _SlotsPWMRpi
+        self.__slots_i2c = _SlotsNull
         maps = {                       \
                 SlotHelper.GPIO:self.__slots_gpio, \
                 SlotHelper.ADC :self.__slots_adc,  \
                 SlotHelper.PWM :self.__slots_pwm,  \
+                SlotHelper.I2C :self.__slots_i2c,  \
                 }
 
         self._slots = maps.get(slot)
