@@ -53,9 +53,10 @@ class DHT(object):
         if dht_type != self.DHT_TYPE['DHT11'] and dht_type != self.DHT_TYPE['DHT22']:
             print('ERROR: Please use 11|22 as dht type.')
             exit(1)
-        self._dht_type = '11'
         self.dht_type = dht_type
         GPIO.setup(self.pin, GPIO.OUT)
+        self._last_temp = 0.0
+        self._last_humi = 0.0
 
     @property
     def dht_type(self):
@@ -64,8 +65,6 @@ class DHT(object):
     @dht_type.setter
     def dht_type(self, type):
         self._dht_type = type
-        self._last_temp = 0.0
-        self._last_humi = 0.0
 
     def _read(self):
         # Send Falling signal to trigger sensor output data
@@ -169,15 +168,17 @@ Grove = DHT
 
 
 def main():
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin(" [dht_type]")
+
     import sys
+    typ = '11'
+    if len(sys.argv) >= 3:
+        typ = sys.argv[2]
+
     import time
-
-    if len(sys.argv) < 3:
-        print('Usage: {} dht_type pin'.format(sys.argv[0]))
-        sys.exit(1)
-
-    typ = sys.argv[1]
-    sensor = DHT(typ, int(sys.argv[2]))
+    sensor = DHT(typ, pin)
     
     while True:
         humi, temp = sensor.read()

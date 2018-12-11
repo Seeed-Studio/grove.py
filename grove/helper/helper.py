@@ -93,6 +93,7 @@ class SlotHelper(object):
                 SlotHelper.GPIO: "GPIO",  \
                 SlotHelper.ADC : "ADC",   \
                 SlotHelper.PWM : "PWM",   \
+                SlotHelper.I2C : "I2C",   \
                 }
 
         print(" <pin> could be one of below values")
@@ -104,9 +105,11 @@ class SlotHelper(object):
         for pin, slot in self._slots.items():
             print('{:^5}|{:^5} '.format(pin, slot))
 
-    def argv2pin(self):
+    def argv2pin(self, extra=''):
         if len(sys.argv) < 2:
-            print('Usage: {} <pin>'.format(sys.argv[0]))
+            usage = 'Usage: {} <pin>'.format(sys.argv[0])
+            usage += extra
+            print(usage)
             self.list_avail()
             sys.exit(1)
 

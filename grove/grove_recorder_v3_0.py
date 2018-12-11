@@ -61,16 +61,19 @@ class GroveRecorder():
 Grove = GroveRecorder
 
 def main():
+    from grove.helper import SlotHelper
+    sh = SlotHelper(SlotHelper.GPIO)
+    pin = sh.argv2pin(" [record_duration]")
+
     import sys
+    duration = 3
+    if len(sys.argv) >= 3:
+        duration = int(sys.argv[2])
+
     import time
-
-    if len(sys.argv) < 4:
-        print('Usage: {} [play_pin] [record_pin] [record_duration]'.format(sys.argv[0]))
-        sys.exit(1)
-
-    device = GroveRecorder(int(sys.argv[1]), int(sys.argv[2]))
-    print("Start recording for {} seconds".format(int(sys.argv[3])))
-    device.record(int(sys.argv[3]))
+    device = GroveRecorder(pin, pin + 1)
+    print("Start recording for {} seconds".format(duration))
+    device.record(duration)
     time.sleep(1)
     print("Start playing..")
     device.play()

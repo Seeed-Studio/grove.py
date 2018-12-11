@@ -56,7 +56,7 @@ def main():
     sh = SlotHelper(SlotHelper.ADC)
     pin = sh.argv2pin()
 
-    sensor = GroveThumbJoystick(int(pin), int(pin + 1))
+    sensor = GroveThumbJoystick(pin, pin + 1)
 
     while True:
         x, y = sensor.value
