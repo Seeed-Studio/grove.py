@@ -85,6 +85,7 @@ setup(
             'grove_3_axis_accelerometer_adxl372=grove.grove_3_axis_accelerometer_adxl372:main',
             'grove_round_force_sensor=grove.grove_round_force_sensor:main',
             'grove_temperature_humidity_bme680=grove.grove_temperature_humidity_bme680:main',
+            'grove_3_axis_digital_accelerometer=grove.grove_3_axis_digital_accelerometer:main',
             'grove_time_of_flight_distance=grove.grove_time_of_flight_distance:main'
         ],
     },
