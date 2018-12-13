@@ -58,7 +58,8 @@ class GroveLedButton(object):
         self.__on_event = callback
 
     def __handle_event(self, evt):
-        # print("event index:{} event:{} pressed:{}".format(evt['index'], evt['code'], evt['presesed']))
+        # print("event index:{} event:{} pressed:{}"
+        #       .format(evt['index'], evt['code'], evt['presesed']))
         if callable(self.__on_event):
             self.__on_event(evt['index'], evt['code'], evt['time'])
             return

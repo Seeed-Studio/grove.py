@@ -56,7 +56,7 @@ def main():
     sh = SlotHelper(SlotHelper.ADC)
     pin = sh.argv2pin()
 
-    sensor = GroveRoundForceSensor(int(pin))
+    sensor = GroveRoundForceSensor(pin)
 
     while True:
         fsr = sensor.value

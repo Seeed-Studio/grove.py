@@ -86,6 +86,7 @@ setup(
             'grove_round_force_sensor=grove.grove_round_force_sensor:main',
             'grove_temperature_humidity_bme680=grove.grove_temperature_humidity_bme680:main',
             'grove_3_axis_digital_accelerometer=grove.grove_3_axis_digital_accelerometer:main',
+            'grove_i2c_thermocouple_amplifier_mcp9600=grove.grove_i2c_thermocouple_amplifier_mcp9600:main',
             'grove_time_of_flight_distance=grove.grove_time_of_flight_distance:main'
         ],
     },

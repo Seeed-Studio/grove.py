@@ -99,7 +99,7 @@ def main():
     sh = SlotHelper(SlotHelper.GPIO)
     pin = sh.argv2pin()
 
-    sonar = GroveUltrasonicRanger(int(pin))
+    sonar = GroveUltrasonicRanger(pin)
 
     print('Detecting distance...')
     while True:

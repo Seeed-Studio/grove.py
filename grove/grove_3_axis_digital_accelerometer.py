@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - 3-Axis Digital Accelerometer(+/-400g)
+# This code is for Grove - 3-Axis Digital Accelerometer(+/-400g)
 # (https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-400-p-1897.html)
+#
 # which is a low power high performance 3-axis linear accelerometer belonging
 # to the "nano" family, with digital I2C serial interface standard output.
 #

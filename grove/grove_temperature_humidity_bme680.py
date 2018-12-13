@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# This library is for Grove -  Grove - Temperature, Humidity, Pressure and Gas Sensor (BME680)
+# This code is for Grove -  Grove - Temperature, Humidity, Pressure and Gas Sensor (BME680)
 # (https://www.seeedstudio.com/Grove-Temperature-Humidity-Pressure-and-Gas-Sensor-BME68-p-3109.html)
 # which is a multiple function sensor which can measure temperature, pressure, humidity and gas
 # at the same time. 

@@ -54,7 +54,7 @@ def main():
     sh = SlotHelper(SlotHelper.ADC)
     pin = sh.argv2pin()
 
-    sensor = GroveRotaryAngleSensor(int(pin))
+    sensor = GroveRotaryAngleSensor(pin)
 
     while True:
         print('Rotary Value: {}'.format(sensor.value))
