@@ -77,7 +77,6 @@ def main():
     time.sleep(1)
     print("Start playing..")
     device.play()
-    
+
 if __name__ == '__main__':
     main()
-

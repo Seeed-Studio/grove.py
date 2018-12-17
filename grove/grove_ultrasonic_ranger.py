@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - Ultrasonic Ranger(https://www.seeedstudio.com/Grove-Ultrasonic-Ranger-p-960.html)
+# This is the code for Grove - Ultrasonic Ranger
+# (https://www.seeedstudio.com/Grove-Ultrasonic-Ranger-p-960.html)
 # which is a non-contact distance measurement module which works with 40KHz sound wave. 
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
@@ -32,7 +33,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-
 import sys
 import time
 from grove.gpio import GPIO

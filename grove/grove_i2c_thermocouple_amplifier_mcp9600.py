@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# This is the library for Grove - I2C Thermocouple Amplifier (MCP9600).
+# This is the code for Grove - I2C Thermocouple Amplifier (MCP9600).
 # (https://www.seeedstudio.com/Grove-I2C-Thermocouple-Amplifier-MCP960-p-3199.html)
 #
 # which is a thermocouple-to-digital converter with integrated 

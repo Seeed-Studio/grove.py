@@ -189,6 +189,9 @@ apt update
 (( r == 0 )) && { apt_install python-rpi.gpio;  r=$?; }
 (( r == 0 )) && { apt_install python3-rpi.gpio; r=$?; }
 
+## install library libbma456
+(( r == 0 )) && { apt_install libbma456; r=$?; }
+
 ## install library rpi-ws281x
 (( r == 0 )) && { pip_install rpi-ws281x 'pip  install rpi-ws281x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-ws281x 'pip3 install rpi-ws281x'; r=$?; }
