@@ -119,3 +119,10 @@ class SlotHelper(object):
             sys.exit(1)
         return pin
 
+def root_check():
+    import os
+    if os.geteuid() != 0:
+        print("This program must be run as root.")
+        print("sudo required for non-root user, Aborting.")
+        sys.exit(1)
+

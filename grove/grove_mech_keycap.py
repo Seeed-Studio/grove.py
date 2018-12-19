@@ -76,6 +76,9 @@ class GroveKeycap(object):
 Grove = GroveKeycap
 
 def main():
+    from grove import helper
+    helper.root_check()
+
     from grove.helper import SlotHelper
     sh = SlotHelper(SlotHelper.PWM)
     pin = sh.argv2pin()
