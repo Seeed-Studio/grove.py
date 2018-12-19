@@ -196,6 +196,10 @@ apt update
 (( r == 0 )) && { pip_install rpi-ws281x 'pip  install rpi-ws281x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-ws281x 'pip3 install rpi-ws281x'; r=$?; }
 
+## install library smbus2
+(( r == 0 )) && { pip_install smbus2 'pip  install smbus2'; r=$?; }
+(( r == 0 )) && { pip_install smbus2 'pip3 install smbus2'; r=$?; }
+
 ## install library rpi-vl53l0x
 (( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
@@ -204,9 +208,9 @@ apt update
 (( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
 (( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
 
-## install library smbus2
-(( r == 0 )) && { pip_install smbus2 'pip  install smbus2'; r=$?; }
-(( r == 0 )) && { pip_install smbus2 'pip3 install smbus2'; r=$?; }
+## install library sgp30
+(( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
+(( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
 
 # install this python repository
 (( r == 0 )) && { pip_install grove.py "pip  install --upgrade $_repo_package_url"; r=$?; }
