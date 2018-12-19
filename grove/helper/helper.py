@@ -33,7 +33,10 @@ THE SOFTWARE.
 '''
 from __future__ import print_function
 from grove.adc import *
+import time
 import sys
+import os
+import re
 
 _SlotsGPIORpi     = { 5:"D5", 12:"PWM", 16:"D16", 18:"D18", 22:"D22", 24:"D24", 26:"D26" }
 _SlotsGPIORpiZero = { 5:"D5", 12:"PWM", 16:"D16"           }
@@ -120,9 +123,86 @@ class SlotHelper(object):
         return pin
 
 def root_check():
-    import os
     if os.geteuid() != 0:
         print("This program must be run as root.")
         print("sudo required for non-root user, Aborting.")
         sys.exit(1)
+
+def __module_installed(name):
+    for line in os.popen("lsmod"):
+        match = re.match("^" + name + " *", line)
+        if match is None: continue
+        # print("result = {}".format(match))
+        return True
+    return False
+
+def module_install(name, param):
+    if __module_installed(name):
+        return True
+    os.system("modprobe " + name + " " + param)
+    for _ in range(20):
+        if __module_installed(name):
+            return True
+        time.sleep(0.2)
+    return False
+
+
+class OverlayHelper(object):
+    def __init__(self, dev_path, overlay, param):
+        self._path = dev_path
+        self._ovlay = overlay
+        self._param = param
+
+    def __is_dt_inst(self):
+        for line in os.popen("dtoverlay -l"):
+            # lines likes
+            #2:  w1-gpio  gpiopin=5
+            match = re.match("^[0-9]+: *" + self._ovlay + " +", line)
+            if match is None: continue
+            return True
+        return False
+
+    def is_installed(self):
+        if os.path.exists(self._path):
+            return True
+        if self.__is_dt_inst():
+            return True
+        return False
+
+    def install(self):
+        if self.is_installed():
+            return True
+        os.system("dtoverlay " + self._ovlay + " " + self._param)
+        for _ in range(20):
+            if self.is_installed():
+                return True
+            time.sleep(0.2)
+        return False
+
+    def __str__(self):
+        return "Overlay {} installed = {}".format(
+               self._ovlay, self.is_installed())
+
+    # __repr__ = __str__
+
+    @property
+    def name(self):
+        return self._ovlay
+
+
+if __name__ == '__main__':
+    print("module w1_therm installed: {}"
+          .format(__module_installed("w1_therm")))
+    module_install("w1_therm", "")
+    print("module w1_therm installed: {}"
+          .format(__module_installed("w1_therm")))
+    print("module w1_gpio  installed: {}"
+          .format(__module_installed("w1_gpio")))
+    oh = OverlayHelper("/sys/devices/w1_bus_master1",
+                       "w1-gpio",
+                       "gpiopin=5")
+    print(oh)
+    print("install {} ...".format(oh.name))
+    oh.install()
+    print(oh)
 
