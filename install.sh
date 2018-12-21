@@ -192,6 +192,13 @@ apt update
 ## install library libbma456
 (( r == 0 )) && { apt_install libbma456; r=$?; }
 
+## install library libbmi088
+(( r == 0 )) && { apt_install libbmi088; r=$?; }
+
+## install library bme680
+(( r == 0 )) && { apt_install python-bme680;  r=$?; }
+(( r == 0 )) && { apt_install python3-bme680; r=$?; }
+
 ## install library rpi-ws281x
 (( r == 0 )) && { pip_install rpi-ws281x 'pip  install rpi-ws281x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-ws281x 'pip3 install rpi-ws281x'; r=$?; }
@@ -203,10 +210,6 @@ apt update
 ## install library rpi-vl53l0x
 (( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
 (( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
-
-## install library bme680
-(( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
-(( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
 
 ## install library sgp30
 (( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }

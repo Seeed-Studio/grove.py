@@ -86,8 +86,8 @@ try:
     # print("libbma = {}".format(_))
     _bma = cdll.LoadLibrary(_)
 except Exception:
-    print("Error: module lib{}.so unusable, please install libbma456".
-          format(__c_module))
+    print("Error: module lib{}.so unusable, please install lib{}".
+          format(__c_module, __c_module))
     sys.exit(1)
 
 class GroveStepCounterBMA456(object):
@@ -135,7 +135,7 @@ def main():
         steps = snr.get_counter()
         print("Steps:  {}".format(steps))
         x, y, z = snr.get_accel()
-        print(" X = %.2f Y = %.2f Z = %.2f" % (x, y, z))
+        print(" AX = %.2fmg AY = %.2fmg AZ = %.2fmg" % (x, y, z))
         time.sleep(1.0)
 
 if __name__ == '__main__':
