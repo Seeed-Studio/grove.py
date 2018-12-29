@@ -159,7 +159,7 @@ def main():
         x, y, z = snr.get_accel()
         print(" AX = %7.2f mg  AY = %7.2f mg  AZ = %7.2f mg" % (x, y, z))
         x, y, z = snr.get_gyro()
-        print("  X = %7.2f dps  Y = %7.2f dps  Z = %7.2f dps" % (x, y, z))
+        print(" GX = %7.2f dps GY = %7.2f dps GZ = %7.2f dps" % (x, y, z))
         time.sleep(1.0)
 
 if __name__ == '__main__':
