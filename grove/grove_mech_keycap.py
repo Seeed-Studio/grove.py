@@ -40,7 +40,7 @@ class GroveKeycap(object):
         # High = pressed
         self.__btn = Factory.getButton("GPIO-HIGH", pin)
         # single WS2812 LED
-        self.__led = Factory.getOneLed("WS2812-PWM", pin + 1)
+        self.led = Factory.getOneLed("WS2812-PWM", pin + 1)
         self.__on_event = None
         self.__btn.on_event(self, GroveKeycap.__handle_event)
 
@@ -60,16 +60,16 @@ class GroveKeycap(object):
             self.__on_event(evt['index'], evt['code'], evt['time'])
             return
 
-        self.__led.brightness = self.__led.MAX_BRIGHT
+        self.led.brightness = self.led.MAX_BRIGHT
         event = evt['code']
         if event & Button.EV_SINGLE_CLICK:
-            self.__led.light(True)
+            self.led.light(True)
             print("turn on  LED")
         elif event & Button.EV_DOUBLE_CLICK:
-            self.__led.blink()
+            self.led.blink()
             print("blink    LED")
         elif event & Button.EV_LONG_PRESS:
-            self.__led.light(False)
+            self.led.light(False)
             print("turn off LED")
 
 

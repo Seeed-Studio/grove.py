@@ -41,7 +41,7 @@ from grove.factory import Factory
 class GroveLedButton(object):
     def __init__(self, pin):
         # High = light on
-        self.__led = Factory.getOneLed("GPIO-HIGH", pin)
+        self.led = Factory.getOneLed("GPIO-HIGH", pin)
         # Low = pressed
         self.__btn = Factory.getButton("GPIO-LOW", pin + 1)
         self.__on_event = None
@@ -64,16 +64,16 @@ class GroveLedButton(object):
             self.__on_event(evt['index'], evt['code'], evt['time'])
             return
 
-        self.__led.brightness = self.__led.MAX_BRIGHT
+        self.led.brightness = self.led.MAX_BRIGHT
         event = evt['code']
         if event & Button.EV_SINGLE_CLICK:
-            self.__led.light(True)
+            self.led.light(True)
             print("turn on  LED")
         elif event & Button.EV_DOUBLE_CLICK:
-            self.__led.blink()
+            self.led.blink()
             print("blink    LED")
         elif event & Button.EV_LONG_PRESS:
-            self.__led.light(False)
+            self.led.light(False)
             print("turn off LED")
 
 
