@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+#
+# This is the code for Grove - Capacitive Touch Slide Sensor(CY8C4014LQI).
+# (https://www.seeedstudio.com/Grove-Capacitive-Touch-Slider-Sensor-CY8C4014LQ-p-3183.html)
+# which is a multifunctional touch sensor.
+# You can touch the two buttons or slide on the 5-segment slider,
+# each touch pad has a corresponding LED to indicate the touch status.
+#
 '''
 ## License
 Author: Downey
@@ -35,7 +43,7 @@ TOUCH_SLIDER_REG_ADDR                     = 0X01
 UNPRESSED                                 = 0
 PRESSED                                   = 1
 
-class TouchSlider():
+class GroveTouchSliderCy8c():
     
     left_button_press_flag = UNPRESSED
     right_button_press_flag = UNPRESSED
@@ -89,7 +97,7 @@ class TouchSlider():
             time.sleep(.05)
 
 
-CY8C = TouchSlider()
+CY8C = GroveTouchSliderCy8c()
 
 def main():
      CY8C.listen_sensor_status()   

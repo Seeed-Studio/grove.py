@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+#
+# This is the code for Grove - 12 Key Capacitive I2C Touch Sensor V2(MPR121).
+# (https://www.seeedstudio.com/Grove-12-Key-Capacitive-I2C-Touch-Sensor-V2-MPR12-p-3141.html)
+# which is is a multichannel proximity capacitive touch sensor.
+# It's a 3-in-1 module with the following features:
+#   Capacitance Sensing, Touch Sensing, and Proximity Sensing.
+#
 '''
 ## License
 Author: Downey
@@ -41,7 +49,7 @@ CHANNEL_NUM                               = 12
 STOP_MODE                                 = 0
 NORMAL_MODE                               = 0x3c
 
-class TouchSensorMpr121():
+class Grove12KeyCapTouchMpr121():
     def __init__(self,bus_num = 1,addr = TOUCH_SENSOR_DEFAULT_ADDR):
         self.bus = Bus(bus_num)
         self.addr = addr
@@ -108,7 +116,7 @@ class TouchSensorMpr121():
         
 
 
-mpr121 = TouchSensorMpr121() 
+mpr121 = Grove12KeyCapTouchMpr121() 
 def main():
     mpr121.sensor_init()
     mpr121.set_threshold(0x60)

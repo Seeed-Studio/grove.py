@@ -46,8 +46,10 @@ setup(
         'console_scripts': [
             'grove_3_axis_compass_bmm150=grove.grove_3_axis_compass_bmm150:main',
             'grove_4_digit_display=grove.grove_4_digit_display:main',
+            'grove_12_key_cap_i2c_touch_mpr121=grove.grove_12_key_cap_i2c_touch_mpr121:main',
             'grove_air_quality_sensor_v1_3=grove.grove_air_quality_sensor_v1_3:main',
             'grove_button=grove.grove_button:main',
+            'grove_cap_touch_slider_cy8c=grove.grove_cap_touch_slider_cy8c:main',
             'grove_ryb_led_button=grove.grove_ryb_led_button:main',
             'grove_gesture_sensor=grove.grove_gesture_sensor:main',
             'grove_i2c_color_sensor_v2=grove.grove_i2c_color_sensor_v2:main',
