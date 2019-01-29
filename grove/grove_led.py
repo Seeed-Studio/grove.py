@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
 # This library is for Grove - LED
+# (https://www.seeedstudio.com/Grove-Red-LED-p-1142.html)
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #

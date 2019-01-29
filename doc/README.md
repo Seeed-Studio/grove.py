@@ -1,20 +1,406 @@
-<br><br>
-## CLI (command line interface)
-After installing `grove.py`, A few CLI commands with prefix `grove_` is available, such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc. For I2C Grove devices, the default bus is used (I2C 1 on Pi). For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.
 
-```shell
-sudo grove_pwm_buzzer
-grove_i2c_color_sensor_v2
-grove_led 12
-grove_button 22
-grove_ultrasonic_ranger 12
-grove_temperature_sensor
-grove_thumb_joystick
-grove_high_accuracy_temperature
-grove_mech_keycap
-grove_ryb_led_button
-......
-```
+## CLI (command line interface)
+After installing `grove.py`, A few CLI commands with prefix `grove_` is available, 
+such as `grove_led`, `grove_button`, `grove_ultrasonic_ranger` and etc.  
+For I2C Grove devices, the default bus is used (I2C 1 on Pi).  
+For digital input & output Grove devices, pin numbers should be provided as the arguments of these commands.  
+For analog devices, slot number(n of PCB sink An) should be provided.  
+
+#### Command Reference Table
+Some devices need root permission signed in sudo column, the coresponding command must prefix with "sudo" if run with a none-root user.
+<div>
+  <table border="0">
+    <tr align="center">
+      <th>Grove Devices</th>
+      <th>Command</th>
+      <th>Sudo</th>
+      <th>Argument/Comment</th>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-1-Wire-Thermocouple-Amplifier-MAX31850-p-3159.html">1-Wire Thermocouple Amplifier (MAX31850K)</a></td>
+      <td>grove_1wire_thermocouple_amplifier_max31850</td>
+      <td>&bull;</td>
+      <td>1-Wire</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/s/Grove-3-Axis-Digital-Compass-V2-p-3034.html">3-Axis Digital Compass V2</a></td>
+      <td>grove_3_axis_compass_bmm150</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-400-p-1897.html">3-Axis Digital Accelerometer(+/-400g)</a></td>
+      <td>grove_3_axis_digital_accelerometer</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-Servo-p-1241.html">4 Digit Display</a></td>
+      <td>grove_4_digit_display</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-6-Axis-Accelerometer-Gyroscope-BMI08-p-3188.html">6-Axis Accelerometer&Gyroscope</a></td>
+      <td>grove_6_axis_accel_gyro_bmi088</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-12-Key-Capacitive-I2C-Touch-Sensor-V2-MPR12-p-3141.html">12 Key Capacitive I2C Touch Sensor V2(MPR121)</a></td>
+      <td>grove_12_key_cap_i2c_touch_mpr121</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-Air-quality-sensor-v1.3-p-2439.html">Air quality sensor v1.3</a></td>
+      <td>grove_air_quality_sensor_v1_3</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/s/Grove-Button-p-766.html">Button</a></td>
+      <td>grove_button</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-Capacitive-Touch-Slider-Sensor-CY8C4014LQ-p-3183.html">Capacitive Touch Slide Sensor(CY8C4014LQI)</a>
+</td>
+      <td>grove_cap_touch_slider_cy8c</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-Collision-Sensor-p-1132.html">Collision Sensor</a></td>
+      <td>grove_collision_sensor</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td><a href="http://www.seeedstudio.com/depot/Grove-Gesture-p-2463.html">Gesture Sensor v1.0</a></td>
+      <td>grove_gesture_sensor</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td><a href="https://www.seeedstudio.com/Grove-I2C-High-Accuracy-Temperature-Sensor-MCP980-p-3108.html">I2C High Accuracy Temperature Sensor(MCP9808)</a></td>
+      <td>grove_high_accuracy_temperature</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-I2C-Color-Sensor-V2-p-2890.html">I2C Color Sensor V2</a>
+      </td>
+      <td>grove_i2c_color_sensor_v2</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="http://www.seeedstudio.com/depot/Grove-I2C-Motor-Driver-p-907.html">I2C Motor Driver</a>
+      </td>
+      <td>grove_i2c_motor_driver</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-I2C-Thermocouple-Amplifier-MCP960-p-3199.html">I2C Thermocouple Amplifier (MCP9600)</a>
+      </td>
+      <td>grove_i2c_thermocouple_amplifier_mcp9600</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-IMU-9DOF-ICM20600-AK0991-p-3157.html">IMU 9DOF (ICM20600+AK09918)</a>
+      </td>
+      <td>grove_imu_9dof_icm20600_ak09918</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-OLED-Display-1-1-p-824.html">OLED Display 1.12"</a><br>
+        <a href="https://www.seeedstudio.com/Grove-OLED-Display-1-12-V2-p-3031.html">OLED Display 1.12" V2</a><br>
+      </td>
+      <td>grove_lcd_1.2inches</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Red-LED-p-1142.html">(Red) LED</a>
+      </td>
+      <td>grove_led</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Light-Sensor-v1.2-p-2727.html">Light Sensor V1.2</a>
+      </td>
+      <td>grove_light_sensor_v1_2</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Loudness-Sensor-p-1382.html">Loudness Sensor</a>
+      </td>
+      <td>grove_loudness_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Mech-Keycap-p-3138.html">Mech Keycap</a>
+      </td>
+      <td>grove_mech_keycap</td>
+      <td>&bull;</td>
+      <td>PWM</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-mini-PIR-motion-sensor-p-2930.html">mini PIR motion sensor</a><br>
+        <a href="https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html">PIR Motion Sensor</a>
+      </td>
+      <td>grove_mini_pir_motion_sensor</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Moisture-Sensor-p-955.html">Moisture Sensor</a>
+      </td>
+      <td>grove_moisture_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-OLED-Display-0.96%22-p-781.html">OLED Display 0.96"</a>
+      </td>
+      <td>grove_oled_display_128x64</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Optical-Rotary-Encoder-TCUT1600X0-p-3142.html">Optical Rotary Encoder(TCUT1600X01)</a>
+      </td>
+      <td>grove_optical_rotary_encoder</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Piezo-Vibration-Sensor-p-1411.html">Piezo Vibration Sensor</a>
+      </td>
+      <td>grove_piezo_vibration_sensor</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Buzzer-p-768.html">Buzzer</a>
+      </td>
+      <td>grove_pwm_buzzer</td>
+      <td>&bull;</td>
+      <td>PWM</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Recorder-v3.0-p-2709.html">Recorder v3.0</a>
+      </td>
+      <td>grove_recorder_v3_0</td>
+      <td></td>
+      <td>
+        arg1 - digital pin<br>
+        arg2 - record duration in seconds
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/s/Grove-Relay-p-769.html">Relay</a>
+      </td>
+      <td>grove_relay</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Rotary-Angle-Sensor(P)-p-1242.html">Rotary Angle Sensor(P)</a>
+      </td>
+      <td>grove_rotary_angle_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Round-Force-Sensor-FSR40-p-3110.html">Round Force Sensor FSR402</a>
+      </td>
+      <td>grove_round_force_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html">Red LED Button</a><br>
+        <a href="https://www.seeedstudio.com/Grove-Yellow-LED-Button-p-3101.html">Yellow LED Button</a><br>
+        <a href="https://www.seeedstudio.com/Grove-Blue-LED-Button-p-3104.html">Blue LED Button</a>
+      </td>
+      <td>grove_ryb_led_button</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Servo-p-1241.html">Servo</a>
+      </td>
+      <td>grove_servo</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Slide-Potentiometer-p-1196.html">Slide Potentiometer</a>
+      </td>
+      <td>grove_slide_potentiometer</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Sound-Sensor-p-752.html">Sound Sensor</a>
+      </td>
+      <td>grove_sound_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Step-Counter-BMA45-p-3189.html">Step Counter(BMA456)</a>
+      </td>
+      <td>grove_step_counter_bma456</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Switch%28P%29-p-1252.html">Switch(P)</a>
+      </td>
+      <td>grove_switch</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Temperature-Humidity-Pressure-and-Gas-Sensor-BME68-p-3109.html">Temperature, Humidity, Pressure and Gas Sensor (BME680)</a>
+      </td>
+      <td>grove_temperature_humidity_bme680</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-DHT1-p-745.html">Temperature & Humidity Sensor (DHT11)</a><br>
+        <a href="https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-Pro-AM230-p-838.html">Temperature & Humidity Sensor Pro (AM2302)</a>
+      </td>
+      <td>grove_temperature_humidity_sensor</td>
+      <td></td>
+      <td>
+        arg1 - digital pin<br>
+        arg2 - dht_type, 
+               could be 11 or 22,
+               represent DHT11, DHT22/AM2302
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-SHT3-p-2655.html">Temperature & Humidity Sensor (SHT31)</a>
+      </td>
+      <td>grove_temperature_humidity_sht31</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Temperature-Sensor-p-774.html">Temperature Sensor</a>
+      </td>
+      <td>grove_temperature_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Thumb-Joystick-p-935.html">Thumb Joystick</a>
+      </td>
+      <td>grove_thumb_joystick</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Tilt-Switch-p-771.html">Tilt Switch</a>
+      </td>
+      <td>grove_tilt_switch</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Time-of-Flight-Distance-Sensor-VL53L0-p-3086.html">Time of Flight Distance Sensor VL53L0X</a>
+      </td>
+      <td>grove_time_of_flight_distance</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Touch-Sensor-p-747.html">Touch Sensor</a>
+      </td>
+      <td>grove_touch_sensor</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Ultrasonic-Ranger-p-960.html">Ultrasonic Ranger</a>
+      </td>
+      <td>grove_ultrasonic_ranger</td>
+      <td></td>
+      <td>arg1 - digital pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-UV-Sensor-p-1540.html">UV Sensor</a>
+      </td>
+      <td>grove_uv_sensor</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-VOC-and-eCO2-Gas-Sensor-SGP3-p-3071.html">VOC and eCO2 Gas Sensor (SGP30)</a>
+      </td>
+      <td>grove_voc_eco2_gas_sgp30</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Water-Sensor-p-748.html">Water Sensor</a>
+      </td>
+      <td>grove_water_sensor</td>
+      <td></td>
+      <td>arg1 - analog pin</td>
+    </tr>
+  </table>
+</div>
+
 
 <br><br>
 ## GUI (graphical user interface)

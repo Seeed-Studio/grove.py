@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - mini PIR motion sensor(https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html)
+# This library is for
+#   Grove - mini PIR motion sensor(https://www.seeedstudio.com/Grove-mini-PIR-motion-sensor-p-2930.html)
+#   Grove - PIR Mtion Sensor(https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html)
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #

@@ -1,7 +1,9 @@
-#This is the library for Grove Base Hat.
+#!/usr/bin/env python
 #
-# OneLed Classes
+# This is the code for Grove - UV Sensor
+# (https://www.seeedstudio.com/Grove-UV-Sensor-p-1540.html)
 #
+# This is the library used with Grove Base Hat for RPi.
 
 '''
 ## License

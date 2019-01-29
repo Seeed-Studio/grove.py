@@ -1,8 +1,16 @@
 #!/usr/bin/env python
-
+#
+# This code is for
+#   Grove - Temperature & Humidity Sensor (DHT11)
+#     (https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-DHT1-p-745.html)
+#   Grove - Temperature & Humidity Sensor Pro (AM2302)
+#     (https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-Pro-AM230-p-838.html)
+#
+# which is consists of a capacitive sensor element used for measuring relative humidity
+# and a negative temperature coefficient(NTC) thermistor used for measuring temperature.
+#
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
-
 '''
 ## License
 

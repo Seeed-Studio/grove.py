@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #
 # This code is for
-#   Grove - Mech Keycap (TODO:)
+#   Grove - Mech Keycap (https://www.seeedstudio.com/Grove-Mech-Keycap-p-3138.html)
+# which is a mechanical switch with a build-in LED.
+# The 255 full color RGB LED makes it simple and easy to show the statues of your switch. 
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# Library for Grove - Temperature & Humidity Sensor (https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-SHT3-p-2655.html)
+# Library for Grove - Temperature & Humidity Sensor (SHT31)
+# (https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-SHT3-p-2655.html)
 #
 
 '''
