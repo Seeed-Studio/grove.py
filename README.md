@@ -96,4 +96,4 @@ sudo pip3 install .
 
 <br><br>
 ## Usage
-See the link [demos and how to run them](doc/README.md)
+See [demos and how to run](doc/README.md)
