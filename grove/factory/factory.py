@@ -38,7 +38,7 @@ from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
 from grove.gpio        import *
-from grove.lcd         import *
+from grove.display     import *
 from grove.motor       import *
 
 # GPIOWrapper settings
@@ -176,7 +176,7 @@ class __factory(object):
             self._avail_list(typ, self.StepperMotorEnum)
             sys.exit(1)
 
-    def getLcd(self, typ):
+    def getDisplay(self, typ):
         if typ == "JHD1802":
             return JHD1802()
         elif typ == "SH1107G":
@@ -184,6 +184,9 @@ class __factory(object):
         else:
             self._avail_list(typ, self.LcdEnum)
             sys.exit(1)
+
+    # Compability
+    getLcd = getDisplay
 
 
 

@@ -2,7 +2,7 @@
 #
 # This is the library for Grove Base Hat.
 #
-# JHD1802M0/SH1107G/SSD1327 Classes
+# SH1107G/SSD1327 Classes
 #
 
 '''
@@ -12,30 +12,11 @@ The MIT License (MIT)
 
 Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
 Copyright (C) 2018  Seeed Technology Co.,Ltd. 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 '''
+from grove.display.base import Display
 from upm.pyupm_lcd import *
-import upm.pyupm_jhd1313m1 as upmjhd
 from grove.i2c import Bus
 import mraa
-import time
 import sys
 
 TYPE_CHAR  = 0
@@ -143,78 +124,8 @@ BasicFont = [
         [0x00,0x02,0x05,0x05,0x02,0x00,0x00,0x00],
 ]
 
-class LCDBase(LCD):
-    def __init__(self):
-        self._cursor = False
-        self._backlight = False
 
-    # To be derived
-    def _cursor_on(self, en):
-        pass
-
-    def cursor(self, enable = None):
-        if type(enable) == bool:
-            self._cursor = enable
-            self._cursor_on(enable)
-        return self._cursor
-
-    # To be derived
-    def _backlight_on(self, en):
-        pass
-
-    def backlight(self, enable = None):
-        if type(enable) == bool:
-            self._backlight = enable
-            self._backlight_on(enable)
-        return self._backlight
-
-
-class JHD1802(LCDBase):
-    def __init__(self, address = 0x3E):
-        self._bus = mraa.I2c(0)
-        self._addr = address
-        self._bus.address(self._addr)
-        if self._bus.writeByte(0):
-            print("Check if the LCD {} inserted, then try again"
-                    .format(self.name))
-            sys.exit(1)
-        self.jhd = upmjhd.Jhd1313m1(0, address, address)
-
-    @property
-    def name(self):
-        return "JHD1802"
-
-    def type(self):
-        return TYPE_CHAR
-
-    def size(self):
-        # Charactor 16x2
-        # return (Rows, Columns)
-        return 2, 16
-
-    def clear(self):
-        self.jhd.clear()
-
-    def draw(self, data, bytes):
-        return False
-
-    def home(self):
-        self.jhd.home()
-
-    def setCursor(self, row, column):
-        self.jhd.setCursor(row, column)
-
-    def write(self, msg):
-        self.jhd.write(msg)
-
-    def _cursor_on(self, enable):
-        if enable:
-            self.jhd.cursorOn()
-        else:
-            self.jhd.cursorOff()
-
-
-class SH1107G_SSD1327(LCDBase):
+class SH1107G_SSD1327(Display):
     MAX_GRAY    = 100
     _REG_CMD    = 0x00
     _REG_DATA   = 0x40
@@ -366,8 +277,9 @@ class SH1107G_SSD1327(LCDBase):
 
 
 def main():
+    import time
+
     lcd = SH1107G_SSD1327()
-    # lcd = JHD1802()
     rows, cols = lcd.size()
     print("LCD model: {}".format(lcd.name))
     print("LCD type : {} x {}".format(cols, rows))
