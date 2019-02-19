@@ -97,3 +97,10 @@ sudo pip3 install .
 <br><br>
 ## Usage
 See [demos and how to run](doc/README.md)
+
+<br><br>
+## API Documentation
+click [here](https://seeed-studio.github.io/grove.py)
+
+[how to update me](sphinx/README.md)
+

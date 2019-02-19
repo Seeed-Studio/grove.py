@@ -1,44 +1,59 @@
-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This code is for
-#   Grove - Red LED Button   (https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html)
-#   Grove - Yellow LED Button(https://www.seeedstudio.com/Grove-Yellow-LED-Button-p-3101.html)
-#   Grove - Blue LED Button  (https://www.seeedstudio.com/Grove-Blue-LED-Button-p-3104.html)
-#
+# The MIT License (MIT)
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-#
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
 '''
-## License
+This is the code for
+    - `Grove - Red    LED Button <https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html>`_
+    - `Grove - Yellow LED Button <https://www.seeedstudio.com/Grove-Yellow-LED-Button-p-3101.html>`_
+    - `Grove - Blue   LED Button <https://www.seeedstudio.com/Grove-Blue-LED-Button-p-3104.html>`_
 
-The MIT License (MIT)
+Examples:
+    .. code-block:: python
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+        from grove.button import Button
+        import grove.grove_ryb_led_button.GroveLedButton
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        # slot/gpio number your device plugin
+        pin = 12
+        obj = GroveLedButton(pin)
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # the default behavior of led is
+        #   single click - on
+        #   double click - blink
+        #   long press   - off
+        # remove \'\'\' pairs below to begin your experiment
+        \'\'\'
+        # define a customized event handle your self
+        def cust_on_event(index, event, tm):
+            # obj.led could be used to operate led
+            print("event with code {}, time {}".format(event, tm))
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        obj.on_event = cust_on_event
+        \'\'\'
+        while True:
+            time.sleep(1)
 '''
+
 import time
 from grove.button import Button
 from grove.factory import Factory
 
+__all__ = ["GroveLedButton"]
+
 class GroveLedButton(object):
+    '''
+    Grove Red/Yellow/Blue Led Button class
+
+    all of them has a gpio button with low valid level of pressing,
+    and a gpio led with high valid level for lighting.
+
+    Args:
+        pin(int): the gpio number your grove device plugin
+    '''
     def __init__(self, pin):
         # High = light on
         self.led = Factory.getOneLed("GPIO-HIGH", pin)
@@ -49,6 +64,37 @@ class GroveLedButton(object):
 
     @property
     def on_event(self):
+        '''
+        Argument
+            callback -- a callable function/object,
+                        will be called when there is button event
+            callback prototype:
+                callback(index, code, time)
+            callback argument:
+                Args:
+                    index(int): button index, be in 0 to [button count - 1]
+
+                    code (int): bits combination of
+                              -  Button.EV_SINGLE_CLICK
+                              -  Button.EV_DOUBLE_CLICK
+                              -  Button.EV_LONG_PRESS
+
+                    time(time): event generation time
+                Returns: none
+
+        Examples:
+            set
+
+            .. code-block:: python
+
+                obj.on_event = callback
+
+            get
+
+            .. code-block:: python
+
+                callobj = obj.on_event
+        '''
         return self.__on_event
 
     @on_event.setter
@@ -61,9 +107,11 @@ class GroveLedButton(object):
         # print("event index:{} event:{} pressed:{}"
         #       .format(evt['index'], evt['code'], evt['presesed']))
         if callable(self.__on_event):
+            # the customized behavior
             self.__on_event(evt['index'], evt['code'], evt['time'])
             return
 
+        # the default behavior
         self.led.brightness = self.led.MAX_BRIGHT
         event = evt['code']
         if event & Button.EV_SINGLE_CLICK:
@@ -77,7 +125,7 @@ class GroveLedButton(object):
             print("turn off LED")
 
 
-Grove = GroveLedButton
+
 
 def main():
     from grove.helper import SlotHelper
