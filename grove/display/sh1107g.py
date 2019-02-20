@@ -1,29 +1,46 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the library for Grove Base Hat.
+# The MIT License (MIT)
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 #
-# SH1107G/SSD1327 Classes
-#
-
+# This is the library for Grove Base Hat
+# which used to connect grove sensors for Raspberry Pi.
 '''
-## License
+This is the code for
+    - `OLED Display 1.12"    <https://www.seeedstudio.com/Grove-OLED-Display-1-1-p-824.html>`_
+    - `OLED Display 1.12" V2 <https://www.seeedstudio.com/Grove-OLED-Display-1-12-V2-p-3031.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
+
+        import time
+        from grove.factory import Factory
+
+        oled = Factory.getDisplay("SH1107G")
+        rows, cols = oled.size()
+        print("OLED model: {}".format(oled.name))
+        print("OLED type : {} x {}".format(cols, rows))
+
+        oled.setCursor(0, 0)
+        oled.write("hello world!")
+        oled.setCursor(0, cols - 1)
+        oled.write('X')
+        oled.setCursor(rows - 1, 0)
+        for i in range(cols):
+            oled.write(chr(ord('A') + i))
+
+        time.sleep(3)
+        oled.clear()
 '''
-from grove.display.base import Display
+from grove.display.base import *
 from upm.pyupm_lcd import *
 from grove.i2c import Bus
-import mraa
-import sys
+import sys, mraa
 
-TYPE_CHAR  = 0
-TYPE_GRAY  = 1
-TYPE_COLOR = 2
-
-MAX_GRAY = 100
+# sphinx autoapi required
+__all__ = ["SH1107G_SSD1327"]
 
 BasicFont = [
         [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00],
@@ -124,8 +141,13 @@ BasicFont = [
         [0x00,0x02,0x05,0x05,0x02,0x00,0x00,0x00],
 ]
 
-
 class SH1107G_SSD1327(Display):
+    '''
+    OLED Display 1.12"(v2) use chip SSD1327 or SH1107G.
+
+    Args:
+        address(int): I2C device address, default to 0x3E.
+    '''
     MAX_GRAY    = 100
     _REG_CMD    = 0x00
     _REG_DATA   = 0x40
@@ -141,7 +163,7 @@ class SH1107G_SSD1327(Display):
         self._bus.address(self._addr)
 
         if self._bus.writeByte(0):
-            print("Check if the LCD SH1107G/SSD1307 inserted, then try again")
+            print("Check if the OLED SH1107G/SSD1307 inserted, then try again")
             sys.exit(1)
  
         # id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)
@@ -181,7 +203,7 @@ class SH1107G_SSD1327(Display):
             self._bus.writeReg(
                                     SH1107G_SSD1327._REG_CMD, cmd)
         except IOError:
-            print("*** Check if LCD module inserted ***")
+            print("*** Check if OLED module inserted ***")
             sys.exit(1)
 
     def _cmds(self, cmds):
@@ -199,24 +221,39 @@ class SH1107G_SSD1327(Display):
             # self._bus.write_i2c_block_data(self._addr,
             #                       SH1107G_SSD1327._REG_DATA, datas)
         except IOError:
-            print("*** Check if LCD module inserted ***")
+            print("*** Check if OLED module inserted ***")
             sys.exit(1)
 
     @property
     def name(self):
+        '''
+        Get device name
+
+        Returns:
+            string: SH1107G/SSD1307 depends your device plugin.
+        '''
         return "SH1107G" if self._sh1107 else "SSD1327"
 
     def type(self):
+        '''
+        Get device type
+
+        Returns:
+            int: ``TYPE_GRAY``
+        '''
         return TYPE_GRAY
 
     def size(self):
         if not self._sh1107:
-            # Gray LCD 96x96
+            # Gray OLED 96x96
             return 12, 12
-        # Gray LCD 128x128
+        # Gray OLED 128x128
         return 16, 16
 
     def clear(self):
+        '''
+        Clears the screen and positions the cursor in the upper-left corner.
+        '''
         if not self._sh1107:
             self._ssd1327.clear()
             return
@@ -224,6 +261,14 @@ class SH1107G_SSD1327(Display):
         self.draw(zeros, SH1107G_SSD1327._TOTAL_BYTES)
 
     def draw(self, data, bytes):
+        '''
+        Quickly transfer/draw bulk data (specified by data) to OLED,
+        transfer size specified by bytes.
+
+        Args:
+            data (list of int): the data to transfer/draw
+            bytes (int)       : data size
+        '''
         if not self._sh1107:
             self._ssd1327.draw(data, bytes)
             return
@@ -235,20 +280,35 @@ class SH1107G_SSD1327(Display):
             self._cmd(BASE_PAGE_START_ADDR + i)
             self._cmd(BASE_LOW_COLUMN_ADDR)
             self._cmd(BASE_HIGH_COLUMN_ADDR)
-            # every PAGE fill it's bytes
-            # I2C limit to 32 bytes each time
+            # fill one PAGE bytes
             for k in range(0, SH1107G_SSD1327._PAGE_BYTES, 32):
+                # I2C limit to 32 bytes each transfer
                 begin = i * SH1107G_SSD1327._PAGE_BYTES + k
                 end   = begin + 32
                 self._datas(data[begin:end])
 
     def home(self):
+        '''
+        Positions the cursor in the upper-left of the OLED.
+        That is, use that location in outputting subsequent text to the display.
+        '''
         if not self._sh1107:
             self._ssd1327.home()
             return
         self.setCusor(0, 0)
 
     def setCursor(self, row, column):
+        '''
+        Position the OLED cursor; that is, set the location
+        at which subsequent text written to the OLED will be displayed.
+
+        Args:
+            row   (int): the row at which to position cursor, with 0 being the first row
+            column(int): the column at which to position cursor, with 0 being the first column
+
+	Returns:
+	    None
+        '''
         if not self._sh1107:
             self._ssd1327.setCursor(row, column)
             return
@@ -266,6 +326,15 @@ class SH1107G_SSD1327(Display):
             self._datas(fontmap)
 
     def write(self, msg):
+        '''
+        Write character(s) to the OLED.
+
+        Args:
+            msg (string): the character(s) to write to the display
+
+        Returns:
+            None
+        '''
         if not self._sh1107:
             self._ssd1327.write(msg)
             return
@@ -279,25 +348,25 @@ class SH1107G_SSD1327(Display):
 def main():
     import time
 
-    lcd = SH1107G_SSD1327()
-    rows, cols = lcd.size()
-    print("LCD model: {}".format(lcd.name))
-    print("LCD type : {} x {}".format(cols, rows))
+    oled = SH1107G_SSD1327()
+    rows, cols = oled.size()
+    print("OLED model: {}".format(oled.name))
+    print("OLED type : {} x {}".format(cols, rows))
 
-    lcd.backlight(False)
+    oled.backlight(False)
     time.sleep(1)
 
-    lcd.backlight(True)
-    lcd.setCursor(0, 0)
-    lcd.write("hello world!")
-    lcd.setCursor(0, cols - 1)
-    lcd.write('X')
-    lcd.setCursor(rows - 1, 0)
+    oled.backlight(True)
+    oled.setCursor(0, 0)
+    oled.write("hello world!")
+    oled.setCursor(0, cols - 1)
+    oled.write('X')
+    oled.setCursor(rows - 1, 0)
     for i in range(cols):
-        lcd.write(chr(ord('A') + i))
+        oled.write(chr(ord('A') + i))
 
     time.sleep(3)
-    lcd.clear()
+    oled.clear()
 
 if __name__ == '__main__':
     main()

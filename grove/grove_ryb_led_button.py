@@ -3,8 +3,9 @@
 #
 # The MIT License (MIT)
 # Copyright (C) 2018  Seeed Technology Co.,Ltd.
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+#
+# This is the library for Grove Base Hat
+# which used to connect grove sensors for Raspberry Pi.
 '''
 This is the code for
     - `Grove - Red    LED Button <https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html>`_
@@ -42,6 +43,7 @@ import time
 from grove.button import Button
 from grove.factory import Factory
 
+# sphinx autoapi required
 __all__ = ["GroveLedButton"]
 
 class GroveLedButton(object):

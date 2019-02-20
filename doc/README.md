@@ -53,6 +53,16 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>I2C</td>
     </tr>
     <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Re-p-3197.html">16 x 2 LCD (Black on Red)</a><br>
+        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Yello-p-3198.html">16 x 2 LCD (Black on Yellow)</a><br>
+        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-White-on-Blu-p-3196.html">16 x 2 LCD (White on Blue)</a>
+      </td>
+      <td>grove_16x2_lcd</td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
       <td><a href="https://www.seeedstudio.com/Grove-Air-quality-sensor-v1.3-p-2439.html">Air quality sensor v1.3</a></td>
       <td>grove_air_quality_sensor_v1_3</td>
       <td></td>
@@ -132,7 +142,10 @@ Some devices need root permission signed in sudo column, the coresponding comman
     </tr>
     <tr align="center">
       <td>
-        <a href="https://www.seeedstudio.com/Grove-Red-LED-p-1142.html">(Red) LED</a>
+        <a href="https://www.seeedstudio.com/Grove-Red-LED-p-1142.html">Red LED</a><br>
+        <a href="https://www.seeedstudio.com/Grove-Green-LED-p-1144.html">Green LED</a><br>
+        <a href="https://www.seeedstudio.com/Grove-Purple-LED-3m-p-1143.html">Purple LED</a><br>
+        <a href="https://www.seeedstudio.com/Grove-White-LED-p-1140.html">White LED</a>
       </td>
       <td>grove_led</td>
       <td></td>
@@ -660,23 +673,23 @@ import time
 from grove.factory import Factory
 
 # LCD 16x2 Characters
-lcd = Factory.getLcd("JHD1802")
+dobj = Factory.getDisplay("JHD1802")
 # If it's OLED Display 1.12"
-# lcd = Factory.getLcd("SH1107G")
-rows, cols = lcd.size()
-print("LCD model: {}".format(lcd.name))
+# dobj = Factory.getDisplay("SH1107G")
+rows, cols = dobj.size()
+print("LCD model: {}".format(dobj.name))
 print("LCD type : {} x {}".format(cols, rows))
 
-lcd.setCursor(0, 0)
-lcd.write("hello world!")
-lcd.setCursor(0, cols - 1)
-lcd.write('X')
-lcd.setCursor(rows - 1, 0)
+dobj.setCursor(0, 0)
+dobj.write("hello world!")
+dobj.setCursor(0, cols - 1)
+dobj.write('X')
+dobj.setCursor(rows - 1, 0)
 for i in range(cols):
-    lcd.write(chr(ord('A') + i))
+    dobj.write(chr(ord('A') + i))
 
 time.sleep(3)
-lcd.clear()
+dobj.clear()
 ```
 
 ### Ultrasonic Ranger
