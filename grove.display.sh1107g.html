@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.display.sh1107g &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
+    <link rel="up" title="grove.display" href="grove.display.html" />
+    <link rel="next" title="grove.factory" href="grove.factory.html" />
+    <link rel="prev" title="grove.display.jhd1802" href="grove.display.jhd1802.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.factory.html" title="grove.factory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grove.display.jhd1802.html" title="grove.display.jhd1802"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="grove.display.html" accesskey="U"><code class="docutils literal"><span class="pre">grove.display</span></code></a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-grove.display.sh1107g">
+<span id="grove-display-sh1107g"></span><h1><code class="docutils literal"><span class="pre">grove.display.sh1107g</span></code><a class="headerlink" href="#module-grove.display.sh1107g" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>This is the code for</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-OLED-Display-1-1-p-824.html">OLED Display 1.12&#8221;</a></li>
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-OLED-Display-1-12-V2-p-3031.html">OLED Display 1.12&#8221; V2</a></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.factory</span> <span class="kn">import</span> <span class="n">Factory</span>
+
+<span class="n">oled</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">getDisplay</span><span class="p">(</span><span class="s2">&quot;SH1107G&quot;</span><span class="p">)</span>
+<span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">oled</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;OLED model: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oled</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;OLED type : {} x {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+
+<span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;hello world!&quot;</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">))</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#classes" id="id1">Classes</a></li>
+</ul>
+</div>
+<div class="section" id="classes">
+<h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#grove.display.sh1107g.SH1107G_SSD1327" title="grove.display.sh1107g.SH1107G_SSD1327"><code class="xref py py-class docutils literal"><span class="pre">SH1107G_SSD1327</span></code></a>:
+OLED Display 1.12&#8221;(v2) use chip SSD1327 or SH1107G.</li>
+</ul>
+<dl class="class">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327">
+<em class="property">class </em><code class="descclassname">grove.display.sh1107g.</code><code class="descname">SH1107G_SSD1327</code><span class="sig-paren">(</span><em>address=60</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327" title="Permalink to this definition">¶</a></dt>
+<dd><p>OLED Display 1.12&#8221;(v2) use chip SSD1327 or SH1107G.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<em>int</em>) &#8211; I2C device address, default to 0x3E.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inheritance</p>
+<img src="_images/inheritance-fbeec13eeadf4aa1eee725bbc5a0eca7610e0967.png" alt="Inheritance diagram of SH1107G_SSD1327" usemap="#inheritance2d5329f1f0" class="inheritance"/>
+<map id="inheritance2d5329f1f0" name="inheritance2d5329f1f0">
+<area shape="rect" id="node1" href="grove.display.base.html#grove.display.base.Display" target="_top" title="All display devices should inherit this virtual class," alt="" coords="5,5,77,31"/>
+<area shape="rect" id="node2" href="#grove.display.sh1107g.SH1107G_SSD1327" target="_top" title="OLED Display 1.12&quot;(v2) use chip SSD1327 or SH1107G." alt="" coords="125,5,276,31"/>
+</map>
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the screen and positions the cursor in the upper-left corner.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>data</em>, <em>bytes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quickly transfer/draw bulk data (specified by data) to OLED,
+transfer size specified by bytes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>list of int</em>) &#8211; the data to transfer/draw</li>
+<li><strong>bytes</strong> (<em>int</em>) &#8211; data size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.home">
+<code class="descname">home</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positions the cursor in the upper-left of the OLED.
+That is, use that location in outputting subsequent text to the display.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.name">
+<code class="descname">name</code><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get device name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">SH1107G/SSD1307 depends your device plugin.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.setCursor">
+<code class="descname">setCursor</code><span class="sig-paren">(</span><em>row</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.setCursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position the OLED cursor; that is, set the location
+at which subsequent text written to the OLED will be displayed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> (<em>int</em>) &#8211; the row at which to position cursor, with 0 being the first row</li>
+<li><strong>column</strong> (<em>int</em>) &#8211; the column at which to position cursor, with 0 being the first column</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.type">
+<code class="descname">type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get device type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">TYPE_GRAY</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.sh1107g.SH1107G_SSD1327.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/sh1107g.html#SH1107G_SSD1327.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.sh1107g.SH1107G_SSD1327.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write character(s) to the OLED.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msg</strong> (<em>string</em>) &#8211; the character(s) to write to the display</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">grove.display.sh1107g</span></code></a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grove.display.jhd1802.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">grove.display.jhd1802</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grove.factory.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">grove.factory</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/grove.display.sh1107g.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.factory.html" title="grove.factory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grove.display.jhd1802.html" title="grove.display.jhd1802"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="grove.display.html" ><code class="docutils literal"><span class="pre">grove.display</span></code></a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

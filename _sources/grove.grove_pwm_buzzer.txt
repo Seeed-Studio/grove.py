@@ -1,0 +1,10 @@
+==========================
+``grove.grove_pwm_buzzer``
+==========================
+
+.. automodule:: grove.grove_pwm_buzzer
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_pwm_buzzer

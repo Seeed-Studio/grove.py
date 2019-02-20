@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_ryb_led_button &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_ryb_led_button</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># The MIT License (MIT)</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat</span>
+<span class="c1"># which used to connect grove sensors for Raspberry Pi.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `Grove - Red    LED Button &lt;https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html&gt;`_</span>
+<span class="sd">    - `Grove - Yellow LED Button &lt;https://www.seeedstudio.com/Grove-Yellow-LED-Button-p-3101.html&gt;`_</span>
+<span class="sd">    - `Grove - Blue   LED Button &lt;https://www.seeedstudio.com/Grove-Blue-LED-Button-p-3104.html&gt;`_</span>
+
+<span class="sd">Examples:</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from grove.button import Button</span>
+<span class="sd">        import grove.grove_ryb_led_button.GroveLedButton</span>
+
+<span class="sd">        # slot/gpio number your device plugin</span>
+<span class="sd">        pin = 12</span>
+<span class="sd">        obj = GroveLedButton(pin)</span>
+
+<span class="sd">        # the default behavior of led is</span>
+<span class="sd">        #   single click - on</span>
+<span class="sd">        #   double click - blink</span>
+<span class="sd">        #   long press   - off</span>
+<span class="sd">        # remove \&#39;\&#39;\&#39; pairs below to begin your experiment</span>
+<span class="sd">        \&#39;\&#39;\&#39;</span>
+<span class="sd">        # define a customized event handle your self</span>
+<span class="sd">        def cust_on_event(index, event, tm):</span>
+<span class="sd">            # obj.led could be used to operate led</span>
+<span class="sd">            print(&quot;event with code {}, time {}&quot;.format(event, tm))</span>
+
+<span class="sd">        obj.on_event = cust_on_event</span>
+<span class="sd">        \&#39;\&#39;\&#39;</span>
+<span class="sd">        while True:</span>
+<span class="sd">            time.sleep(1)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.button</span> <span class="k">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">grove.factory</span> <span class="k">import</span> <span class="n">Factory</span>
+
+<span class="c1"># sphinx autoapi required</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GroveLedButton&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="GroveLedButton"><a class="viewcode-back" href="../../grove.grove_ryb_led_button.html#grove.grove_ryb_led_button.GroveLedButton">[docs]</a><span class="k">class</span> <span class="nc">GroveLedButton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Grove Red/Yellow/Blue Led Button class</span>
+
+<span class="sd">    all of them has a gpio button with low valid level of pressing,</span>
+<span class="sd">    and a gpio led with high valid level for lighting.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pin(int): the gpio number your grove device plugin</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="c1"># High = light on</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">getOneLed</span><span class="p">(</span><span class="s2">&quot;GPIO-HIGH&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+        <span class="c1"># Low = pressed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btn</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">getButton</span><span class="p">(</span><span class="s2">&quot;GPIO-LOW&quot;</span><span class="p">,</span> <span class="n">pin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__on_event</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btn</span><span class="o">.</span><span class="n">on_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">GroveLedButton</span><span class="o">.</span><span class="n">__handle_event</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">on_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Argument</span>
+<span class="sd">            callback -- a callable function/object,</span>
+<span class="sd">                        will be called when there is button event</span>
+<span class="sd">            callback prototype:</span>
+<span class="sd">                callback(index, code, time)</span>
+<span class="sd">            callback argument:</span>
+<span class="sd">                Args:</span>
+<span class="sd">                    index(int): button index, be in 0 to [button count - 1]</span>
+
+<span class="sd">                    code (int): bits combination of</span>
+<span class="sd">                              -  Button.EV_SINGLE_CLICK</span>
+<span class="sd">                              -  Button.EV_DOUBLE_CLICK</span>
+<span class="sd">                              -  Button.EV_LONG_PRESS</span>
+
+<span class="sd">                    time(time): event generation time</span>
+<span class="sd">                Returns: none</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            set</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                obj.on_event = callback</span>
+
+<span class="sd">            get</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                callobj = obj.on_event</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__on_event</span>
+
+    <span class="nd">@on_event</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">on_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__on_event</span> <span class="o">=</span> <span class="n">callback</span>
+
+    <span class="k">def</span> <span class="nf">__handle_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="c1"># print(&quot;event index:{} event:{} pressed:{}&quot;</span>
+        <span class="c1">#       .format(evt[&#39;index&#39;], evt[&#39;code&#39;], evt[&#39;presesed&#39;]))</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__on_event</span><span class="p">):</span>
+            <span class="c1"># the customized behavior</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__on_event</span><span class="p">(</span><span class="n">evt</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">evt</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">],</span> <span class="n">evt</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+            <span class="k">return</span>
+
+        <span class="c1"># the default behavior</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">brightness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">MAX_BRIGHT</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">evt</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">Button</span><span class="o">.</span><span class="n">EV_SINGLE_CLICK</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">light</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;turn on  LED&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">Button</span><span class="o">.</span><span class="n">EV_DOUBLE_CLICK</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">blink</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;blink    LED&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">Button</span><span class="o">.</span><span class="n">EV_LONG_PRESS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">light</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;turn off LED&quot;</span><span class="p">)</span></div>
+
+
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">grove.helper</span> <span class="k">import</span> <span class="n">SlotHelper</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">SlotHelper</span><span class="p">(</span><span class="n">SlotHelper</span><span class="o">.</span><span class="n">GPIO</span><span class="p">)</span>
+    <span class="n">pin</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">argv2pin</span><span class="p">()</span>
+
+    <span class="n">ledbtn</span> <span class="o">=</span> <span class="n">GroveLedButton</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+
+    <span class="c1"># remove &#39;&#39;&#39; pairs below to begin your experiment</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    # define a customized event handle your self</span>
+<span class="sd">    def cust_on_event(index, event, tm):</span>
+<span class="sd">        print(&quot;event with code {}, time {}&quot;.format(event, tm))</span>
+
+<span class="sd">    ledbtn.on_event = cust_on_event</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

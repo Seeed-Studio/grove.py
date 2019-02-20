@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_i2c_motor_driver &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_i2c_motor_driver</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># GrovePi Library for using the Grove - I2C Motor Driver(http://www.seeedstudio.com/depot/Grove-I2C-Motor-Driver-p-907.html)</span>
+<span class="c1">#</span>
+<span class="c1"># The GrovePi connects the Raspberry Pi and Grove sensors.  You can learn more about GrovePi here:  http://www.dexterindustries.com/GrovePi</span>
+<span class="c1">#</span>
+<span class="c1"># Have a question about this library?  Ask on the forums here:  http://forum.dexterindustries.com/c/grovepi</span>
+<span class="c1">#</span>
+<span class="c1"># 2018-07-04 </span>
+<span class="c1"># Modified by Seeed Studio, changed smbus module to smbus2</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">GrovePi for the Raspberry Pi: an open source platform for connecting Grove Sensors to the Raspberry Pi.</span>
+<span class="sd">Copyright (C) 2017  Dexter Industries</span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="MotorDriver"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_motor_driver.MotorDriver">[docs]</a><span class="k">class</span> <span class="nc">MotorDriver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="n">__MotorSpeedSet</span>             <span class="o">=</span> <span class="mh">0x82</span>
+	<span class="n">__PWMFrequenceSet</span>           <span class="o">=</span> <span class="mh">0x84</span>
+	<span class="n">__DirectionSet</span>              <span class="o">=</span> <span class="mh">0xaa</span>
+	<span class="n">__MotorSetA</span>                 <span class="o">=</span> <span class="mh">0xa1</span>
+	<span class="n">__MotorSetB</span>                 <span class="o">=</span> <span class="mh">0xa5</span>
+	<span class="n">__Nothing</span>                   <span class="o">=</span> <span class="mh">0x01</span>
+	<span class="n">__EnableStepper</span>             <span class="o">=</span> <span class="mh">0x1a</span>
+	<span class="n">__UnenableStepper</span>           <span class="o">=</span> <span class="mh">0x1b</span>
+	<span class="n">__Stepernu</span>                  <span class="o">=</span> <span class="mh">0x1c</span>
+	<span class="n">I2CAddr</span>                     <span class="o">=</span> <span class="mh">0x0f</span>  <span class="c1">#Set the address of the I2CMotorDriver</span>
+	<span class="n">SPEED_MAX</span>                   <span class="o">=</span> <span class="mi">100</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span><span class="o">=</span><span class="mh">0x0f</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">I2CAddr</span> <span class="o">=</span> <span class="n">address</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">Bus</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+	<span class="c1">#Maps speed from 0-100 to 0-255</span>
+	<span class="k">def</span> <span class="nf">_map_vals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span> <span class="n">leftMin</span><span class="p">,</span> <span class="n">leftMax</span><span class="p">,</span> <span class="n">rightMin</span><span class="p">,</span> <span class="n">rightMax</span><span class="p">):</span>
+		<span class="c1">#http://stackoverflow.com/questions/1969240/mapping-a-range-of-values-to-another</span>
+		<span class="c1"># Figure out how &#39;wide&#39; each range is</span>
+		<span class="n">leftSpan</span> <span class="o">=</span> <span class="n">leftMax</span> <span class="o">-</span> <span class="n">leftMin</span>
+		<span class="n">rightSpan</span> <span class="o">=</span> <span class="n">rightMax</span> <span class="o">-</span> <span class="n">rightMin</span>
+
+		<span class="c1"># Convert the left range into a 0-1 range (float)</span>
+		<span class="n">valueScaled</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">leftMin</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">leftSpan</span><span class="p">)</span>
+
+		<span class="c1"># Convert the 0-1 range into a value in the right range.</span>
+		<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rightMin</span> <span class="o">+</span> <span class="p">(</span><span class="n">valueScaled</span> <span class="o">*</span> <span class="n">rightSpan</span><span class="p">))</span>
+		
+	<span class="c1">#Set motor speed</span>
+<div class="viewcode-block" id="MotorDriver.set_speed"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_motor_driver.MotorDriver.set_speed">[docs]</a>	<span class="k">def</span> <span class="nf">set_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">speed2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_vals</span><span class="p">(</span><span class="n">speed1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+		<span class="n">s2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_vals</span><span class="p">(</span><span class="n">speed2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I2CAddr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MotorSpeedSet</span><span class="p">,</span> <span class="p">[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">])</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">02</span><span class="p">)</span></div>
+	
+	<span class="c1">#Set motor direction</span>
+<div class="viewcode-block" id="MotorDriver.set_dir"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_motor_driver.MotorDriver.set_dir">[docs]</a>	<span class="k">def</span> <span class="nf">set_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clock_wise1</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clock_wise2</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+		<span class="n">dir1</span> <span class="o">=</span> <span class="mb">0b10</span> <span class="k">if</span> <span class="n">clock_wise1</span> <span class="k">else</span> <span class="mb">0b01</span>
+		<span class="n">dir2</span> <span class="o">=</span> <span class="mb">0b10</span> <span class="k">if</span> <span class="n">clock_wise2</span> <span class="k">else</span> <span class="mb">0b01</span>
+		<span class="nb">dir</span> <span class="o">=</span> <span class="p">(</span><span class="n">dir2</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">dir1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I2CAddr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DirectionSet</span><span class="p">,</span> <span class="p">[</span><span class="nb">dir</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">02</span><span class="p">)</span></div></div>
+
+<span class="n">Grove</span> <span class="o">=</span> <span class="n">MotorDriver</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_motor_driver.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Make sure I2C-Motor-Driver inserted&quot;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  in one I2C slot of Grove-Base-Hat&quot;</span><span class="p">)</span>
+	<span class="n">motor</span> <span class="o">=</span> <span class="n">MotorDriver</span><span class="p">()</span>
+	<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+		<span class="n">motor</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">MotorDriver</span><span class="o">.</span><span class="n">SPEED_MAX</span><span class="p">,</span> <span class="n">MotorDriver</span><span class="o">.</span><span class="n">SPEED_MAX</span><span class="p">)</span>
+		<span class="n">motor</span><span class="o">.</span><span class="n">set_dir</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">motor</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">MotorDriver</span><span class="o">.</span><span class="n">SPEED_MAX</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">MotorDriver</span><span class="o">.</span><span class="n">SPEED_MAX</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">)</span>
+		<span class="n">motor</span><span class="o">.</span><span class="n">set_dir</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+	<span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+======================
+``grove.grove_switch``
+======================
+
+.. automodule:: grove.grove_switch
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_switch

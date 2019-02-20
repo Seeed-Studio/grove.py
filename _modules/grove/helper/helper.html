@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.helper.helper &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.helper.helper</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat.</span>
+<span class="c1">#</span>
+<span class="c1"># Helper Classes</span>
+<span class="c1">#</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">grove.adc</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">_SlotsGPIORpi</span>     <span class="o">=</span> <span class="p">{</span> <span class="mi">5</span><span class="p">:</span><span class="s2">&quot;D5&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span><span class="s2">&quot;PWM&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span><span class="s2">&quot;D16&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span><span class="s2">&quot;D18&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span><span class="s2">&quot;D22&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">:</span><span class="s2">&quot;D24&quot;</span><span class="p">,</span> <span class="mi">26</span><span class="p">:</span><span class="s2">&quot;D26&quot;</span> <span class="p">}</span>
+<span class="n">_SlotsGPIORpiZero</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">5</span><span class="p">:</span><span class="s2">&quot;D5&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span><span class="s2">&quot;PWM&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span><span class="s2">&quot;D16&quot;</span>           <span class="p">}</span>
+<span class="n">_SlotsADCRpi</span>      <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span><span class="s2">&quot;A0&quot;</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span>   <span class="mi">4</span><span class="p">:</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span>   <span class="mi">6</span><span class="p">:</span><span class="s2">&quot;A6&quot;</span>  <span class="p">}</span>
+<span class="n">_SlotsADCRpiZero</span>  <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span><span class="s2">&quot;A0&quot;</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span>   <span class="mi">4</span><span class="p">:</span><span class="s2">&quot;A4&quot;</span>            <span class="p">}</span>
+<span class="n">_SlotsPWMRpi</span>      <span class="o">=</span> <span class="p">{</span>         <span class="mi">12</span><span class="p">:</span><span class="s2">&quot;PWM&quot;</span><span class="p">,</span>           <span class="mi">18</span><span class="p">:</span><span class="s2">&quot;D18&quot;</span> <span class="p">}</span>
+<span class="n">_SlotsPWMRpiZero</span>  <span class="o">=</span> <span class="p">{</span>         <span class="mi">12</span><span class="p">:</span><span class="s2">&quot;PWM&quot;</span>                     <span class="p">}</span>
+<span class="n">_SlotsNull</span>        <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+
+<div class="viewcode-block" id="SlotHelper"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.SlotHelper">[docs]</a><span class="k">class</span> <span class="nc">SlotHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c1"># Slot types</span>
+    <span class="n">GPIO</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ADC</span>  <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">PWM</span>  <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">I2C</span>  <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">UART</span> <span class="o">=</span> <span class="mi">4</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
+        <span class="n">adc</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">adc</span><span class="o">.</span><span class="n">name</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hat Name = &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">RPI_ZERO_HAT_NAME</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hat_type</span> <span class="o">=</span> <span class="n">RPI_ZERO_HAT_PID</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_gpio</span> <span class="o">=</span> <span class="n">_SlotsGPIORpiZero</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_adc</span>  <span class="o">=</span> <span class="n">_SlotsADCRpiZero</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_pwm</span>  <span class="o">=</span> <span class="n">_SlotsPWMRpiZero</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">RPI_HAT_NAME</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unknown hat, assume </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">RPI_HAT_NAME</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">RPI_ZERO_HAT_NAME</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hat_type</span> <span class="o">=</span> <span class="n">RPI_HAT_PID</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_gpio</span> <span class="o">=</span> <span class="n">_SlotsGPIORpi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_adc</span>  <span class="o">=</span> <span class="n">_SlotsADCRpi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__slots_pwm</span>  <span class="o">=</span> <span class="n">_SlotsPWMRpi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__slots_i2c</span> <span class="o">=</span> <span class="n">_SlotsNull</span>
+        <span class="n">maps</span> <span class="o">=</span> <span class="p">{</span>                       \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">GPIO</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__slots_gpio</span><span class="p">,</span> \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">ADC</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__slots_adc</span><span class="p">,</span>  \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">PWM</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__slots_pwm</span><span class="p">,</span>  \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">I2C</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__slots_i2c</span><span class="p">,</span>  \
+                <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">=</span> <span class="n">maps</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slot</span>  <span class="o">=</span> <span class="n">slot</span>
+
+<div class="viewcode-block" id="SlotHelper.is_adapted"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.SlotHelper.is_adapted">[docs]</a>    <span class="k">def</span> <span class="nf">is_adapted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="SlotHelper.list_avail"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.SlotHelper.list_avail">[docs]</a>    <span class="k">def</span> <span class="nf">list_avail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">maps</span> <span class="o">=</span> <span class="p">{</span>                          \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">GPIO</span><span class="p">:</span> <span class="s2">&quot;GPIO&quot;</span><span class="p">,</span>  \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">ADC</span> <span class="p">:</span> <span class="s2">&quot;ADC&quot;</span><span class="p">,</span>   \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">PWM</span> <span class="p">:</span> <span class="s2">&quot;PWM&quot;</span><span class="p">,</span>   \
+                <span class="n">SlotHelper</span><span class="o">.</span><span class="n">I2C</span> <span class="p">:</span> <span class="s2">&quot;I2C&quot;</span><span class="p">,</span>   \
+                <span class="p">}</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &lt;pin&gt; could be one of below values&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;       in the pin column for </span><span class="si">{}</span><span class="s2"> function&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maps</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   And connect the device to corresponding slot&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; pin | slot&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pin</span><span class="p">,</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:^5}</span><span class="s1">|</span><span class="si">{:^5}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">slot</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SlotHelper.argv2pin"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.SlotHelper.argv2pin">[docs]</a>    <span class="k">def</span> <span class="nf">argv2pin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39;Usage: </span><span class="si">{}</span><span class="s1"> &lt;pin&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">usage</span> <span class="o">+=</span> <span class="n">extra</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">usage</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_avail</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">pin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_adapted</span><span class="p">(</span><span class="n">pin</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_avail</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pin</span></div></div>
+
+<div class="viewcode-block" id="root_check"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.root_check">[docs]</a><span class="k">def</span> <span class="nf">root_check</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">geteuid</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This program must be run as root.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sudo required for non-root user, Aborting.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">__module_installed</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;lsmod&quot;</span><span class="p">):</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; *&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="c1"># print(&quot;result = {}&quot;.format(match))</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="module_install"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.module_install">[docs]</a><span class="k">def</span> <span class="nf">module_install</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">__module_installed</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;modprobe &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">param</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">__module_installed</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="OverlayHelper"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.OverlayHelper">[docs]</a><span class="k">class</span> <span class="nc">OverlayHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev_path</span><span class="p">,</span> <span class="n">overlay</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">dev_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ovlay</span> <span class="o">=</span> <span class="n">overlay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span> <span class="o">=</span> <span class="n">param</span>
+
+    <span class="k">def</span> <span class="nf">__is_dt_inst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;dtoverlay -l&quot;</span><span class="p">):</span>
+            <span class="c1"># lines likes</span>
+            <span class="c1">#2:  w1-gpio  gpiopin=5</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^[0-9]+: *&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ovlay</span> <span class="o">+</span> <span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="OverlayHelper.is_installed"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.OverlayHelper.is_installed">[docs]</a>    <span class="k">def</span> <span class="nf">is_installed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_dt_inst</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="OverlayHelper.install"><a class="viewcode-back" href="../../../grove.helper.html#grove.helper.helper.OverlayHelper.install">[docs]</a>    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_installed</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;dtoverlay &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ovlay</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_installed</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Overlay </span><span class="si">{}</span><span class="s2"> installed = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">_ovlay</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_installed</span><span class="p">())</span>
+
+    <span class="c1"># __repr__ = __str__</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ovlay</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;module w1_therm installed: </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__module_installed</span><span class="p">(</span><span class="s2">&quot;w1_therm&quot;</span><span class="p">)))</span>
+    <span class="n">module_install</span><span class="p">(</span><span class="s2">&quot;w1_therm&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;module w1_therm installed: </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__module_installed</span><span class="p">(</span><span class="s2">&quot;w1_therm&quot;</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;module w1_gpio  installed: </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__module_installed</span><span class="p">(</span><span class="s2">&quot;w1_gpio&quot;</span><span class="p">)))</span>
+    <span class="n">oh</span> <span class="o">=</span> <span class="n">OverlayHelper</span><span class="p">(</span><span class="s2">&quot;/sys/devices/w1_bus_master1&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;w1-gpio&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;gpiopin=5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">oh</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;install </span><span class="si">{}</span><span class="s2"> ...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">oh</span><span class="p">)</span>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_ryb_led_button &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
+    <link rel="next" title="grove.grove_servo" href="grove.grove_servo.html" />
+    <link rel="prev" title="grove.grove_round_force_sensor" href="grove.grove_round_force_sensor.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.grove_servo.html" title="grove.grove_servo"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grove.grove_round_force_sensor.html" title="grove.grove_round_force_sensor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-grove.grove_ryb_led_button">
+<span id="grove-grove-ryb-led-button"></span><h1><code class="docutils literal"><span class="pre">grove.grove_ryb_led_button</span></code><a class="headerlink" href="#module-grove.grove_ryb_led_button" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>This is the code for</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-Red-LED-Button-p-3096.html">Grove - Red    LED Button</a></li>
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-Yellow-LED-Button-p-3101.html">Grove - Yellow LED Button</a></li>
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-Blue-LED-Button-p-3104.html">Grove - Blue   LED Button</a></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">grove.button</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="kn">import</span> <span class="nn">grove.grove_ryb_led_button.GroveLedButton</span>
+
+<span class="c1"># slot/gpio number your device plugin</span>
+<span class="n">pin</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">GroveLedButton</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+
+<span class="c1"># the default behavior of led is</span>
+<span class="c1">#   single click - on</span>
+<span class="c1">#   double click - blink</span>
+<span class="c1">#   long press   - off</span>
+<span class="c1"># remove &#39;&#39;&#39; pairs below to begin your experiment</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># define a customized event handle your self</span>
+<span class="sd">def cust_on_event(index, event, tm):</span>
+<span class="sd">    # obj.led could be used to operate led</span>
+<span class="sd">    print(&quot;event with code {}, time {}&quot;.format(event, tm))</span>
+
+<span class="sd">obj.on_event = cust_on_event</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#classes" id="id1">Classes</a></li>
+</ul>
+</div>
+<div class="section" id="classes">
+<h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#grove.grove_ryb_led_button.GroveLedButton" title="grove.grove_ryb_led_button.GroveLedButton"><code class="xref py py-class docutils literal"><span class="pre">GroveLedButton</span></code></a>:
+Grove Red/Yellow/Blue Led Button class</li>
+</ul>
+<dl class="class">
+<dt id="grove.grove_ryb_led_button.GroveLedButton">
+<em class="property">class </em><code class="descclassname">grove.grove_ryb_led_button.</code><code class="descname">GroveLedButton</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/grove_ryb_led_button.html#GroveLedButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.grove_ryb_led_button.GroveLedButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grove Red/Yellow/Blue Led Button class</p>
+<p>all of them has a gpio button with low valid level of pressing,
+and a gpio led with high valid level for lighting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pin</strong> (<em>int</em>) &#8211; the gpio number your grove device plugin</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inheritance</p>
+<img src="_images/inheritance-88f484eb488707cf2c11036b3f59d04f6e94d6f8.png" alt="Inheritance diagram of GroveLedButton" usemap="#inheritance902116b6e1" class="inheritance"/>
+<map id="inheritance902116b6e1" name="inheritance902116b6e1">
+<area shape="rect" id="node1" href="#grove.grove_ryb_led_button.GroveLedButton" target="_top" title="Grove Red/Yellow/Blue Led Button class" alt="" coords="5,5,132,31"/>
+</map>
+<dl class="attribute">
+<dt id="grove.grove_ryb_led_button.GroveLedButton.on_event">
+<code class="descname">on_event</code><a class="headerlink" href="#grove.grove_ryb_led_button.GroveLedButton.on_event" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Argument</dt>
+<dd><dl class="first last docutils">
+<dt>callback &#8211; a callable function/object,</dt>
+<dd>will be called when there is button event</dd>
+<dt>callback prototype:</dt>
+<dd>callback(index, code, time)</dd>
+<dt>callback argument:</dt>
+<dd><dl class="first docutils">
+<dt>Args:</dt>
+<dd><p class="first">index(int): button index, be in 0 to [button count - 1]</p>
+<dl class="docutils">
+<dt>code (int): bits combination of</dt>
+<dd><ul class="first last simple">
+<li>Button.EV_SINGLE_CLICK</li>
+<li>Button.EV_DOUBLE_CLICK</li>
+<li>Button.EV_LONG_PRESS</li>
+</ul>
+</dd>
+</dl>
+<p class="last">time(time): event generation time</p>
+</dd>
+</dl>
+<p class="last">Returns: none</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>set</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="o">.</span><span class="n">on_event</span> <span class="o">=</span> <span class="n">callback</span>
+</pre></div>
+</div>
+<p>get</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">callobj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">on_event</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">grove.grove_ryb_led_button</span></code></a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grove.grove_round_force_sensor.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">grove.grove_round_force_sensor</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grove.grove_servo.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">grove.grove_servo</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/grove.grove_ryb_led_button.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.grove_servo.html" title="grove.grove_servo"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grove.grove_round_force_sensor.html" title="grove.grove_round_force_sensor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

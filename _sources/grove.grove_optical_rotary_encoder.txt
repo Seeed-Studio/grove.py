@@ -1,0 +1,10 @@
+======================================
+``grove.grove_optical_rotary_encoder``
+======================================
+
+.. automodule:: grove.grove_optical_rotary_encoder
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_optical_rotary_encoder

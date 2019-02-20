@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_i2c_color_sensor_v2 &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_i2c_color_sensor_v2</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># Library for Grove - I2C Color Sensor V2(https://www.seeedstudio.com/Grove-I2C-Color-Sensor-V2-p-2890.html)</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.</span>
+<span class="c1">#</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span>
+
+
+<span class="n">_CMD</span>      <span class="o">=</span> <span class="mh">0x80</span>
+<span class="n">_AUTO</span>     <span class="o">=</span> <span class="mh">0x20</span>
+
+<span class="n">_ENABLE</span>   <span class="o">=</span> <span class="mh">0x00</span>
+<span class="n">_ATIME</span>    <span class="o">=</span> <span class="mh">0x01</span>
+<span class="n">_WTIME</span>    <span class="o">=</span> <span class="mh">0x03</span>
+<span class="n">_AILT</span>     <span class="o">=</span> <span class="mh">0x04</span>
+<span class="n">_AIHT</span>     <span class="o">=</span> <span class="mh">0x06</span>
+<span class="n">_PERS</span>     <span class="o">=</span> <span class="mh">0x0C</span>
+<span class="n">_CONFIG</span>   <span class="o">=</span> <span class="mh">0x0D</span>
+<span class="n">_CONTROL</span>  <span class="o">=</span> <span class="mh">0x0F</span>
+<span class="n">_ID</span>       <span class="o">=</span> <span class="mh">0x12</span>
+<span class="n">_STATUS</span>   <span class="o">=</span> <span class="mh">0x13</span>
+<span class="n">_CDATA</span>    <span class="o">=</span> <span class="mh">0x14</span>
+<span class="n">_RDATA</span>    <span class="o">=</span> <span class="mh">0x16</span>
+<span class="n">_GDATA</span>    <span class="o">=</span> <span class="mh">0x18</span>
+<span class="n">_BDATA</span>    <span class="o">=</span> <span class="mh">0x1A</span>
+
+<span class="n">_AIEN</span>       <span class="o">=</span> <span class="mh">0x10</span>
+<span class="n">_WEN</span>        <span class="o">=</span> <span class="mh">0x08</span>
+<span class="n">_AEN</span>        <span class="o">=</span> <span class="mh">0x02</span>
+<span class="n">_PON</span>        <span class="o">=</span> <span class="mh">0x01</span>
+
+<span class="n">_GAINS</span>  <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2">[docs]</a><span class="k">class</span> <span class="nc">GroveI2cColorSensorV2</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver for Grove I2C Color Sensor (TCS34725)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="mh">0x29</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">Bus</span><span class="p">(</span><span class="n">bus</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">awake</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x4D</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not find a Grove I2C Color Sensor V2&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_integration_time</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_gain</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.wakeup"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.wakeup">[docs]</a>    <span class="k">def</span> <span class="nf">wakeup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">enable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_ENABLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_byte</span><span class="p">(</span><span class="n">_ENABLE</span><span class="p">,</span> <span class="n">enable</span> <span class="o">|</span> <span class="n">_PON</span> <span class="o">|</span> <span class="n">_AEN</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0024</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">awake</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.sleep"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.sleep">[docs]</a>    <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">enable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_ENABLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_byte</span><span class="p">(</span><span class="n">_ENABLE</span><span class="p">,</span> <span class="n">enable</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">_PON</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">awake</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.is_awake"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.is_awake">[docs]</a>    <span class="k">def</span> <span class="nf">is_awake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_ENABLE</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">_PON</span></div>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.set_wait_time"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.set_wait_time">[docs]</a>    <span class="k">def</span> <span class="nf">set_wait_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_ID</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">integration_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_ATIME</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">steps</span> <span class="o">*</span> <span class="mf">2.4</span>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.set_integration_time"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.set_integration_time">[docs]</a>    <span class="k">def</span> <span class="nf">set_integration_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the integration time of the sensor&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">2.4</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="mf">2.4</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mf">614.4</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="mf">614.4</span>
+        
+        <span class="n">steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="mf">2.4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_integration_time</span> <span class="o">=</span> <span class="n">steps</span> <span class="o">*</span> <span class="mf">2.4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_byte</span><span class="p">(</span><span class="n">_ATIME</span><span class="p">,</span> <span class="mi">256</span> <span class="o">-</span> <span class="n">steps</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The gain control. Should be 1, 4, 16, or 60.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_GAINS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_CONTROL</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="GroveI2cColorSensorV2.set_gain"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.GroveI2cColorSensorV2.set_gain">[docs]</a>    <span class="k">def</span> <span class="nf">set_gain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gain</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">gain</span> <span class="ow">in</span> <span class="n">_GAINS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_byte</span><span class="p">(</span><span class="n">_CONTROL</span><span class="p">,</span> <span class="n">_GAINS</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">gain</span><span class="p">))</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">raw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read RGBC registers</span>
+<span class="sd">        return 16 bits red, green, blue and clear data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">awake</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wakeup</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid</span><span class="p">():</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0024</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_word</span><span class="p">(</span><span class="n">reg</span><span class="p">)</span> <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_RDATA</span><span class="p">,</span> <span class="n">_GDATA</span><span class="p">,</span> <span class="n">_BDATA</span><span class="p">,</span> <span class="n">_CDATA</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read the RGB color detected by the sensor.  Returns a 3-tuple of</span>
+<span class="sd">        red, green, blue component values as bytes (0-255).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">clear</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span>
+        <span class="k">if</span> <span class="n">clear</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">r</span> <span class="o">/</span> <span class="n">clear</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">g</span> <span class="o">/</span> <span class="n">clear</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">b</span> <span class="o">/</span> <span class="n">clear</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if RGBC is valid&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_byte</span><span class="p">(</span><span class="n">_STATUS</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x01</span>
+
+    <span class="k">def</span> <span class="nf">_read_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">_CMD</span> <span class="o">|</span> <span class="n">address</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_read_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">_CMD</span> <span class="o">|</span> <span class="n">_AUTO</span> <span class="o">|</span> <span class="n">address</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_word_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_write_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">_CMD</span> <span class="o">|</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_write_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">_CMD</span> <span class="o">|</span> <span class="n">_AUTO</span> <span class="o">|</span> <span class="n">address</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">,</span> <span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+
+<span class="n">Grove</span> <span class="o">=</span> <span class="n">GroveI2cColorSensorV2</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#grove.grove_i2c_color_sensor_v2.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="n">GroveI2cColorSensorV2</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Raw data of red-filtered, green-filtered, blue-filtered and unfiltered photodiodes&#39;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># r, g, b = sensor.rgb</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">clear</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">raw</span>
+        <span class="nb">print</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">clear</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+===========================
+``grove.button.button_i2c``
+===========================
+
+.. automodule:: grove.button.button_i2c
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.button.button_i2c

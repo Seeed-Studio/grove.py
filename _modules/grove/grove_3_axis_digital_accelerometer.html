@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_3_axis_digital_accelerometer &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_3_axis_digital_accelerometer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This code is for Grove - 3-Axis Digital Accelerometer(+/-400g)</span>
+<span class="c1"># (https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-400-p-1897.html)</span>
+<span class="c1">#</span>
+<span class="c1"># which is a low power high performance 3-axis linear accelerometer belonging</span>
+<span class="c1"># to the &quot;nano&quot; family, with digital I2C serial interface standard output.</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.</span>
+<span class="c1">#</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">upm</span> <span class="k">import</span> <span class="n">pyupm_h3lis331dl</span> <span class="k">as</span> <span class="n">usnr</span>
+
+<div class="viewcode-block" id="Grove3AxisDigAccelerometer"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.Grove3AxisDigAccelerometer">[docs]</a><span class="k">class</span> <span class="nc">Grove3AxisDigAccelerometer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Instantiate an H3LIS331DL on I2C bus 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">H3LIS331DL</span><span class="p">(</span>
+            <span class="n">usnr</span><span class="o">.</span><span class="n">H3LIS331DL_I2C_BUS</span><span class="p">,</span>
+            <span class="n">usnr</span><span class="o">.</span><span class="n">H3LIS331DL_DEFAULT_I2C_ADDR</span><span class="p">);</span>
+        
+        <span class="c1"># Initialize the device with default values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">new_intp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">new_intp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">new_intp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adjx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">usnr</span><span class="o">.</span><span class="n">delete_intp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+        <span class="n">usnr</span><span class="o">.</span><span class="n">delete_intp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="n">usnr</span><span class="o">.</span><span class="n">delete_intp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Grove3AxisDigAccelerometer.read_raw"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.Grove3AxisDigAccelerometer.read_raw">[docs]</a>    <span class="k">def</span> <span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="o">.</span><span class="n">getRawXYZ</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">intp_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">intp_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">usnr</span><span class="o">.</span><span class="n">intp_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
+
+<div class="viewcode-block" id="Grove3AxisDigAccelerometer.set_adjust"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.Grove3AxisDigAccelerometer.set_adjust">[docs]</a>    <span class="k">def</span> <span class="nf">set_adjust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adjx</span><span class="p">,</span> <span class="n">adjy</span><span class="p">,</span> <span class="n">adjz</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adjx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjz</span> <span class="o">=</span> <span class="n">adjx</span><span class="p">,</span> <span class="n">adjy</span><span class="p">,</span> <span class="n">adjz</span></div>
+
+<div class="viewcode-block" id="Grove3AxisDigAccelerometer.read_adjust"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.Grove3AxisDigAccelerometer.read_adjust">[docs]</a>    <span class="k">def</span> <span class="nf">read_adjust</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_raw</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjx</span>
+        <span class="n">y</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjy</span>
+        <span class="n">z</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjz</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
+
+<div class="viewcode-block" id="Grove3AxisDigAccelerometer.read"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.Grove3AxisDigAccelerometer.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">scale_fs_100</span> <span class="o">=</span> <span class="mf">0.049</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_adjust</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">*=</span> <span class="n">scale_fs_100</span>
+        <span class="n">y</span> <span class="o">*=</span> <span class="n">scale_fs_100</span>
+        <span class="n">z</span> <span class="o">*=</span> <span class="n">scale_fs_100</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div></div>
+
+<span class="n">Grove</span> <span class="o">=</span> <span class="n">Grove3AxisDigAccelerometer</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#grove.grove_3_axis_digital_accelerometer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">atexit</span>
+
+    <span class="c1">## Exit handlers ##</span>
+    <span class="c1"># This function stops python from printing a stacktrace when you hit control-C</span>
+    <span class="k">def</span> <span class="nf">SIGINTHandler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span>
+
+    <span class="c1"># This function lets you run code on exit, including functions from sensor</span>
+    <span class="k">def</span> <span class="nf">exitHandler</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exiting&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Register exit handlers</span>
+    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">exitHandler</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">SIGINTHandler</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot; Make sure Grove-3-Axis-Digital-Acceleratometer(+/-400g)</span>
+<span class="sd">   inserted in one I2C slot of Grove-Base-Hat</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">snr</span> <span class="o">=</span> <span class="n">Grove3AxisDigAccelerometer</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">STEPS to get more accurate accelerometer data</span>
+<span class="s2">1. run this code with static(non-moving) sensor to get Raw data</span>
+<span class="s2">2. uncomment the call to set_adjust() in the source code</span>
+<span class="s2">   and fill parameters with Raw data got in step 1</span>
+<span class="s2">3. the next run will get more accurate Accel data</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="p">)</span>
+    <span class="n">snr</span><span class="o">.</span><span class="n">set_adjust</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># uncomment below line to set static(non-moving) Raw data</span>
+    <span class="c1"># snr.set_adjust(160, -48, 496)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">snr</span><span class="o">.</span><span class="n">read_raw</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw:    X = </span><span class="si">{0:6}</span><span class="s2">   Y = </span><span class="si">{1:6}</span><span class="s2">   Z = </span><span class="si">{2:6}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">snr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accel: AX = </span><span class="si">{0:6.3}</span><span class="s2">g AY = </span><span class="si">{1:6.3}</span><span class="s2">g AZ = </span><span class="si">{2:6.3}</span><span class="s2">g&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

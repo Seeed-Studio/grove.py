@@ -1,0 +1,33 @@
+===============
+``grove.motor``
+===============
+
+.. automodule:: grove.motor
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.motor.i2c_motor_driver
+
+.. currentmodule:: grove.motor
+
+
+Classes
+=======
+
+- :py:class:`I2CStepperMotor`:
+  Undocumented.
+
+
+.. autoclass:: I2CStepperMotor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: I2CStepperMotor
+      :parts: 1

@@ -1,0 +1,10 @@
+==================================================
+``grove.grove_i2c_thermocouple_amplifier_mcp9600``
+==================================================
+
+.. automodule:: grove.grove_i2c_thermocouple_amplifier_mcp9600
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_i2c_thermocouple_amplifier_mcp9600

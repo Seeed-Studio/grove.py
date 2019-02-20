@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.button.button_i2c &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.button.button_i2c</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat which used to connect i2c-type button.</span>
+<span class="c1">#</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span>
+<span class="kn">from</span> <span class="nn">grove.button</span> <span class="k">import</span> <span class="n">Button</span>
+
+<span class="n">grove_5way_tactile_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;KEY A&quot;</span><span class="p">,</span><span class="s2">&quot;KEY B&quot;</span><span class="p">,</span><span class="s2">&quot;KEY C&quot;</span><span class="p">,</span><span class="s2">&quot;KEY D&quot;</span><span class="p">,</span><span class="s2">&quot;KEY E&quot;</span><span class="p">)</span>
+<span class="n">grove_6pos_dip_switch_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;POS 1&quot;</span><span class="p">,</span><span class="s2">&quot;POS 2&quot;</span><span class="p">,</span><span class="s2">&quot;POS 3&quot;</span><span class="p">,</span><span class="s2">&quot;POS 4&quot;</span><span class="p">,</span><span class="s2">&quot;POS 5&quot;</span><span class="p">,</span><span class="s2">&quot;POS 6&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ButtonTypedI2c"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c">[docs]</a><span class="k">class</span> <span class="nc">ButtonTypedI2c</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x03</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">Bus</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addr</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probeDevID</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_Byte</span><span class="p">(</span><span class="mh">0x02</span><span class="p">)</span>
+        <span class="n">app1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_read</span><span class="p">()</span>
+     	<span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status_read</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">continue</span>
+<div class="viewcode-block" id="ButtonTypedI2c.set_devID"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.set_devID">[docs]</a>    <span class="k">def</span> <span class="nf">set_devID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">reg</span><span class="p">,</span><span class="n">size</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ButtonTypedI2c.send_Byte"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.send_Byte">[docs]</a>    <span class="k">def</span> <span class="nf">send_Byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ButtonTypedI2c.get_devID"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.get_devID">[docs]</a>    <span class="k">def</span> <span class="nf">get_devID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ButtonTypedI2c.get_data"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="nb">len</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="nb">len</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="ButtonTypedI2c.probeDevID"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.probeDevID">[docs]</a>    <span class="k">def</span> <span class="nf">probeDevID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">did</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="n">did</span> <span class="o">=</span> <span class="p">(</span><span class="n">did</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">)</span>
+            <span class="c1">#print(&quot;DEV_ID = {:8X}&quot;.format(did))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">did</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x2886</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">=</span> <span class="n">did</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_devID</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ButtonTypedI2c.get_val"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.get_val">[docs]</a>    <span class="k">def</span> <span class="nf">get_val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0002</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grove 5_way tactile Switch Insert&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key_names</span> <span class="o">=</span> <span class="n">grove_5way_tactile_keys</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0003</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">6</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grove 6_pos dip Switch Insert&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key_names</span> <span class="o">=</span> <span class="n">grove_6pos_dip_switch_keys</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span></div>
+
+<div class="viewcode-block" id="ButtonTypedI2c.status_read"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.ButtonTypedI2c.status_read">[docs]</a>    <span class="k">def</span> <span class="nf">status_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="mh">0x01</span><span class="p">,</span> <span class="mi">4</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="c1">#print(&quot;get event ={}&quot;.format(app))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> : RAW- &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key_names</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;HIGH&quot;</span> <span class="ow">or</span> <span class="s2">&quot;LOW&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0002</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;RELEASEND&quot;</span> <span class="ow">or</span> <span class="s2">&quot;PRESSED&quot;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_id</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0003</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;OFF&quot;</span> <span class="ow">or</span> <span class="s2">&quot;ON&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="o">~</span><span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key_names</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;: EVENT - &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SINGLE-CLICK&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOUBLE-CLICL&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LONG-PRESS&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">app</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LEVEL-CHANGED&quot;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">app</span></div></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../grove.button.html#grove.button.button_i2c.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+	<span class="n">switch</span> <span class="o">=</span> <span class="n">ButtonTypedI2c</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

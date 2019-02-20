@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.display.jhd1802 &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
+    <link rel="up" title="grove.display" href="grove.display.html" />
+    <link rel="next" title="grove.display.sh1107g" href="grove.display.sh1107g.html" />
+    <link rel="prev" title="grove.display.base" href="grove.display.base.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.display.sh1107g.html" title="grove.display.sh1107g"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grove.display.base.html" title="grove.display.base"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="grove.display.html" accesskey="U"><code class="docutils literal"><span class="pre">grove.display</span></code></a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-grove.display.jhd1802">
+<span id="grove-display-jhd1802"></span><h1><code class="docutils literal"><span class="pre">grove.display.jhd1802</span></code><a class="headerlink" href="#module-grove.display.jhd1802" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>This is the code for</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Re-p-3197.html">Grove - 16 x 2 LCD (Black on Red)</a></li>
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Yello-p-3198.html">Grove - 16 x 2 LCD (Black on Yellow)</a></li>
+<li><a class="reference external" href="https://www.seeedstudio.com/Grove-16-x-2-LCD-White-on-Blu-p-3196.html">Grove - 16 x 2 LCD (White on Blue)</a></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.factory</span> <span class="kn">import</span> <span class="n">Factory</span>
+
+<span class="c1"># LCD 16x2 Characters</span>
+<span class="n">lcd</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">getDisplay</span><span class="p">(</span><span class="s2">&quot;JHD1802&quot;</span><span class="p">)</span>
+<span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">lcd</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;LCD model: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lcd</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;LCD type : {} x {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+
+<span class="n">lcd</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">lcd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;hello world!&quot;</span><span class="p">)</span>
+<span class="n">lcd</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">lcd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">lcd</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+    <span class="n">lcd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">))</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">lcd</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#classes" id="id1">Classes</a></li>
+</ul>
+</div>
+<div class="section" id="classes">
+<h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#grove.display.jhd1802.JHD1802" title="grove.display.jhd1802.JHD1802"><code class="xref py py-class docutils literal"><span class="pre">JHD1802</span></code></a>:
+Grove - 16 x 2 LCD, using chip JHD1802.</li>
+</ul>
+<dl class="class">
+<dt id="grove.display.jhd1802.JHD1802">
+<em class="property">class </em><code class="descclassname">grove.display.jhd1802.</code><code class="descname">JHD1802</code><span class="sig-paren">(</span><em>address=62</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Grove - 16 x 2 LCD, using chip JHD1802.</dt>
+<dd><ul class="first last simple">
+<li>Grove - 16 x 2 LCD (Black on Yellow)</li>
+<li>Grove - 16 x 2 LCD (Black on Red)</li>
+<li>Grove - 16 x 2 LCD (White on Blue)</li>
+</ul>
+</dd>
+</dl>
+<p>Also, it&#8217;s our class name,
+which could drive the above three LCDs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<em>int</em>) &#8211; I2C device address, default to 0x3E.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inheritance</p>
+<img src="_images/inheritance-e1ec7d40b8f66e5358b7bb6e966c23189ba75f77.png" alt="Inheritance diagram of JHD1802" usemap="#inheritance0cd27edabe" class="inheritance"/>
+<map id="inheritance0cd27edabe" name="inheritance0cd27edabe">
+<area shape="rect" id="node1" href="grove.display.base.html#grove.display.base.Display" target="_top" title="All display devices should inherit this virtual class," alt="" coords="5,5,77,31"/>
+<area shape="rect" id="node2" href="#grove.display.jhd1802.JHD1802" target="_top" title="Grove &#45; 16 x 2 LCD, using chip JHD1802." alt="" coords="125,5,203,31"/>
+</map>
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the screen and positions the cursor in the upper-left corner.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>data</em>, <em>bytes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implement for char type display device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.home">
+<code class="descname">home</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positions the cursor in the upper-left of the LCD.
+That is, use that location in outputting subsequent text to the display.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="grove.display.jhd1802.JHD1802.name">
+<code class="descname">name</code><a class="headerlink" href="#grove.display.jhd1802.JHD1802.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get device name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JHD1802</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.setCursor">
+<code class="descname">setCursor</code><span class="sig-paren">(</span><em>row</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.setCursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position the LCD cursor; that is, set the location
+at which subsequent text written to the LCD will be displayed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> (<em>int</em>) &#8211; the row at which to position cursor, with 0 being the first row</li>
+<li><strong>column</strong> (<em>int</em>) &#8211; the column at which to position cursor, with 0 being the first column</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.size">
+<code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get display size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the display size, in characters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(Rows, Columns)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.type">
+<code class="descname">type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get device type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">TYPE_CHAR</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grove.display.jhd1802.JHD1802.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/display/jhd1802.html#JHD1802.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.display.jhd1802.JHD1802.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write character(s) to the LCD.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msg</strong> (<em>string</em>) &#8211; the character(s) to write to the display</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">grove.display.jhd1802</span></code></a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grove.display.base.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">grove.display.base</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grove.display.sh1107g.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">grove.display.sh1107g</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/grove.display.jhd1802.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grove.display.sh1107g.html" title="grove.display.sh1107g"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grove.display.base.html" title="grove.display.base"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="grove.display.html" ><code class="docutils literal"><span class="pre">grove.display</span></code></a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

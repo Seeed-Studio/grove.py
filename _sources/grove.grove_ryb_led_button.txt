@@ -1,0 +1,25 @@
+==============================
+``grove.grove_ryb_led_button``
+==============================
+
+.. automodule:: grove.grove_ryb_led_button
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_ryb_led_button
+
+
+Classes
+=======
+
+- :py:class:`GroveLedButton`:
+  Grove Red/Yellow/Blue Led Button class
+
+
+.. autoclass:: GroveLedButton
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveLedButton
+      :parts: 1

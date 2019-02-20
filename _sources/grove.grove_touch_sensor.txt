@@ -1,0 +1,10 @@
+============================
+``grove.grove_touch_sensor``
+============================
+
+.. automodule:: grove.grove_touch_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_touch_sensor

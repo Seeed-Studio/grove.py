@@ -1,0 +1,10 @@
+=============================
+``grove.temperature.mcp9808``
+=============================
+
+.. automodule:: grove.temperature.mcp9808
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.temperature.mcp9808

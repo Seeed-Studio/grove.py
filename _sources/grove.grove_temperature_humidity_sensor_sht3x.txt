@@ -1,0 +1,10 @@
+=================================================
+``grove.grove_temperature_humidity_sensor_sht3x``
+=================================================
+
+.. automodule:: grove.grove_temperature_humidity_sensor_sht3x
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_temperature_humidity_sensor_sht3x

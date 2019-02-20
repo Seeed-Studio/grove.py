@@ -1,0 +1,10 @@
+=========================================
+``grove.grove_high_accuracy_temperature``
+=========================================
+
+.. automodule:: grove.grove_high_accuracy_temperature
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_high_accuracy_temperature

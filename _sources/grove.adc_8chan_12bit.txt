@@ -1,0 +1,10 @@
+=========================
+``grove.adc_8chan_12bit``
+=========================
+
+.. automodule:: grove.adc_8chan_12bit
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.adc_8chan_12bit

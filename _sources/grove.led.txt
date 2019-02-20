@@ -1,0 +1,44 @@
+=============
+``grove.led``
+=============
+
+.. automodule:: grove.led
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.led.one_led
+   grove.led.one_led_ws2812
+
+.. currentmodule:: grove.led
+
+
+Classes
+=======
+
+- :py:class:`OneLed`:
+  Undocumented.
+
+- :py:class:`OneLedTypedGpio`:
+  Undocumented.
+
+
+.. autoclass:: OneLed
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OneLed
+      :parts: 1
+
+.. autoclass:: OneLedTypedGpio
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OneLedTypedGpio
+      :parts: 1

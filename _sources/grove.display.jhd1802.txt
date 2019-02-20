@@ -1,0 +1,25 @@
+=========================
+``grove.display.jhd1802``
+=========================
+
+.. automodule:: grove.display.jhd1802
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.display.jhd1802
+
+
+Classes
+=======
+
+- :py:class:`JHD1802`:
+  Grove - 16 x 2 LCD, using chip JHD1802.
+
+
+.. autoclass:: JHD1802
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: JHD1802
+      :parts: 1

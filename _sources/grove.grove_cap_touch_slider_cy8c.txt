@@ -1,0 +1,10 @@
+=====================================
+``grove.grove_cap_touch_slider_cy8c``
+=====================================
+
+.. automodule:: grove.grove_cap_touch_slider_cy8c
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_cap_touch_slider_cy8c

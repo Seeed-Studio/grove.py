@@ -1,0 +1,10 @@
+===================================
+``grove.grove_i2c_color_sensor_v2``
+===================================
+
+.. automodule:: grove.grove_i2c_color_sensor_v2
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_i2c_color_sensor_v2

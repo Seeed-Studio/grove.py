@@ -1,0 +1,10 @@
+============================
+``grove.led.one_led_ws2812``
+============================
+
+.. automodule:: grove.led.one_led_ws2812
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.led.one_led_ws2812

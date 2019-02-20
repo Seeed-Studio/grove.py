@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.display.sh1107g &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.display.sh1107g</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># The MIT License (MIT)</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat</span>
+<span class="c1"># which used to connect grove sensors for Raspberry Pi.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `OLED Display 1.12&quot;    &lt;https://www.seeedstudio.com/Grove-OLED-Display-1-1-p-824.html&gt;`_</span>
+<span class="sd">    - `OLED Display 1.12&quot; V2 &lt;https://www.seeedstudio.com/Grove-OLED-Display-1-12-V2-p-3031.html&gt;`_</span>
+
+<span class="sd">Examples:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import time</span>
+<span class="sd">        from grove.factory import Factory</span>
+
+<span class="sd">        oled = Factory.getDisplay(&quot;SH1107G&quot;)</span>
+<span class="sd">        rows, cols = oled.size()</span>
+<span class="sd">        print(&quot;OLED model: {}&quot;.format(oled.name))</span>
+<span class="sd">        print(&quot;OLED type : {} x {}&quot;.format(cols, rows))</span>
+
+<span class="sd">        oled.setCursor(0, 0)</span>
+<span class="sd">        oled.write(&quot;hello world!&quot;)</span>
+<span class="sd">        oled.setCursor(0, cols - 1)</span>
+<span class="sd">        oled.write(&#39;X&#39;)</span>
+<span class="sd">        oled.setCursor(rows - 1, 0)</span>
+<span class="sd">        for i in range(cols):</span>
+<span class="sd">            oled.write(chr(ord(&#39;A&#39;) + i))</span>
+
+<span class="sd">        time.sleep(3)</span>
+<span class="sd">        oled.clear()</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">grove.display.base</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">upm.pyupm_lcd</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">mraa</span>
+
+<span class="c1"># sphinx autoapi required</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SH1107G_SSD1327&quot;</span><span class="p">]</span>
+
+<span class="n">BasicFont</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x5F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0x2A</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x2A</span><span class="p">,</span><span class="mh">0x12</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x23</span><span class="p">,</span><span class="mh">0x13</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x64</span><span class="p">,</span><span class="mh">0x62</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x55</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x50</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x2A</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x2A</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0xA0</span><span class="p">,</span><span class="mh">0x60</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x60</span><span class="p">,</span><span class="mh">0x60</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x42</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x62</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x46</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x12</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x27</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x39</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3C</span><span class="p">,</span><span class="mh">0x4A</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x30</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x71</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x06</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x29</span><span class="p">,</span><span class="mh">0x1E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0xAC</span><span class="p">,</span><span class="mh">0x6C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x06</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x32</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x79</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7E</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x7E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x72</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x0C</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x06</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3E</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x21</span><span class="p">,</span><span class="mh">0x5E</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x19</span><span class="p">,</span><span class="mh">0x29</span><span class="p">,</span><span class="mh">0x46</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x26</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x32</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x1F</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x1F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x63</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x63</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x78</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x61</span><span class="p">,</span><span class="mh">0x51</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x78</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x48</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x28</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x48</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x7E</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0xA4</span><span class="p">,</span><span class="mh">0xA4</span><span class="p">,</span><span class="mh">0xA4</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x78</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7D</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x84</span><span class="p">,</span><span class="mh">0x7D</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x28</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x78</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0xFC</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0xFC</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x48</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3C</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x3C</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x30</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0x3C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x28</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x28</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0xA0</span><span class="p">,</span><span class="mh">0xA0</span><span class="p">,</span><span class="mh">0x7C</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x64</span><span class="p">,</span><span class="mh">0x54</span><span class="p">,</span><span class="mh">0x4C</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x41</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+        <span class="p">[</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">],</span>
+<span class="p">]</span>
+
+<div class="viewcode-block" id="SH1107G_SSD1327"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327">[docs]</a><span class="k">class</span> <span class="nc">SH1107G_SSD1327</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    OLED Display 1.12&quot;(v2) use chip SSD1327 or SH1107G.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        address(int): I2C device address, default to 0x3E.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">MAX_GRAY</span>    <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">_REG_CMD</span>    <span class="o">=</span> <span class="mh">0x00</span>
+    <span class="n">_REG_DATA</span>   <span class="o">=</span> <span class="mh">0x40</span>
+    <span class="n">_PAGE_CNT</span>   <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">_PAGE_BYTES</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">_TOTAL_BYTES</span><span class="o">=</span> <span class="n">_PAGE_CNT</span> <span class="o">*</span> <span class="n">_PAGE_BYTES</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0x3C</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SH1107G_SSD1327</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># self._bus = Bus()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span> <span class="o">=</span> <span class="n">mraa</span><span class="o">.</span><span class="n">I2c</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addr</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_addr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">writeByte</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check if the OLED SH1107G/SSD1307 inserted, then try again&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ 
+        <span class="c1"># id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">readReg</span><span class="p">(</span><span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_REG_CMD</span><span class="p">)</span>
+        <span class="c1"># print(&quot; id = 0x{:2x}&quot;.format(id))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x07</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span> <span class="o">=</span> <span class="n">SSD1327</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">blk</span> <span class="o">=</span>     <span class="p">[</span><span class="mh">0xAE</span><span class="p">]</span>   <span class="c1"># Display OFF</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xD5</span><span class="p">)</span>   <span class="c1"># Set Dclk</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span>   <span class="c1"># 100Hz</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x20</span><span class="p">)</span>   <span class="c1"># Set row address</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x81</span><span class="p">)</span>   <span class="c1"># Set contrast control</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x80</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xA0</span><span class="p">)</span>   <span class="c1"># Segment remap</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xA4</span><span class="p">)</span>   <span class="c1"># Set Entire Display ON </span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xA6</span><span class="p">)</span>   <span class="c1"># Normal display</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xAD</span><span class="p">)</span>   <span class="c1"># Set external VCC</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x80</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xC0</span><span class="p">)</span>   <span class="c1"># Set Common scan direction</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xD9</span><span class="p">)</span>   <span class="c1"># Set phase leghth</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x1F</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xDB</span><span class="p">)</span>   <span class="c1"># Set Vcomh voltage</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x27</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xAF</span><span class="p">)</span>   <span class="c1"># Display ON</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0xB0</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x00</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cmds</span><span class="p">(</span><span class="n">blk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># self._bus.write_byte_data(self._addr,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">writeReg</span><span class="p">(</span>
+                                    <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_REG_CMD</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*** Check if OLED module inserted ***&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_cmds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmds</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_datas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datas</span><span class="p">):</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datas</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_REG_DATA</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># self._bus.write_i2c_block_data(self._addr,</span>
+            <span class="c1">#                       SH1107G_SSD1327._REG_DATA, datas)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*** Check if OLED module inserted ***&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get device name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string: SH1107G/SSD1307 depends your device plugin.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="s2">&quot;SH1107G&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span> <span class="k">else</span> <span class="s2">&quot;SSD1327&quot;</span>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.type"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get device type</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: ``TYPE_GRAY``</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">TYPE_GRAY</span></div>
+
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="c1"># Gray OLED 96x96</span>
+            <span class="k">return</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span>
+        <span class="c1"># Gray OLED 128x128</span>
+        <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.clear"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Clears the screen and positions the cursor in the upper-left corner.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="n">zeros</span> <span class="o">=</span> <span class="p">[</span> <span class="mh">0x0</span> <span class="k">for</span> <span class="n">dummy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_TOTAL_BYTES</span><span class="p">)</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">zeros</span><span class="p">,</span> <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_TOTAL_BYTES</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.draw"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Quickly transfer/draw bulk data (specified by data) to OLED,</span>
+<span class="sd">        transfer size specified by bytes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (list of int): the data to transfer/draw</span>
+<span class="sd">            bytes (int)       : data size</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># all pages fill with data</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_PAGE_CNT</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="nb">bytes</span> <span class="o">/</span> <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_PAGE_BYTES</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">BASE_PAGE_START_ADDR</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">BASE_LOW_COLUMN_ADDR</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">BASE_HIGH_COLUMN_ADDR</span><span class="p">)</span>
+            <span class="c1"># fill one PAGE bytes</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_PAGE_BYTES</span><span class="p">,</span> <span class="mi">32</span><span class="p">):</span>
+                <span class="c1"># I2C limit to 32 bytes each transfer</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">SH1107G_SSD1327</span><span class="o">.</span><span class="n">_PAGE_BYTES</span> <span class="o">+</span> <span class="n">k</span>
+                <span class="n">end</span>   <span class="o">=</span> <span class="n">begin</span> <span class="o">+</span> <span class="mi">32</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_datas</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">begin</span><span class="p">:</span><span class="n">end</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.home"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.home">[docs]</a>    <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Positions the cursor in the upper-left of the OLED.</span>
+<span class="sd">        That is, use that location in outputting subsequent text to the display.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCusor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.setCursor"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.setCursor">[docs]</a>    <span class="k">def</span> <span class="nf">setCursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Position the OLED cursor; that is, set the location</span>
+<span class="sd">        at which subsequent text written to the OLED will be displayed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            row   (int): the row at which to position cursor, with 0 being the first row</span>
+<span class="sd">            column(int): the column at which to position cursor, with 0 being the first column</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">	    None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">BASE_PAGE_START_ADDR</span> <span class="o">+</span> <span class="n">row</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="mh">0x08</span> <span class="k">if</span> <span class="n">column</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">BASE_LOW_COLUMN_ADDR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">BASE_HIGH_COLUMN_ADDR</span> <span class="o">+</span> <span class="p">(</span><span class="n">column</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_putchar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">asc</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">asc</span> <span class="o">&lt;</span> <span class="mi">32</span> <span class="ow">or</span> <span class="n">asc</span> <span class="o">&gt;</span> <span class="mi">127</span><span class="p">:</span>
+                <span class="n">asc</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+            <span class="n">fontmap</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">fontmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BasicFont</span><span class="p">[</span><span class="n">asc</span> <span class="o">-</span> <span class="mi">32</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datas</span><span class="p">(</span><span class="n">fontmap</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SH1107G_SSD1327.write"><a class="viewcode-back" href="../../../grove.display.sh1107g.html#grove.display.SH1107G_SSD1327.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Write character(s) to the OLED.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (string): the character(s) to write to the display</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sh1107</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ssd1327</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_putchar</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="nf">_backlight_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">en</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cmd</span><span class="p">(</span><span class="n">DISPLAY_CMD_ON</span> <span class="k">if</span> <span class="n">en</span> <span class="k">else</span> <span class="n">DISPLAY_CMD_OFF</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+
+    <span class="n">oled</span> <span class="o">=</span> <span class="n">SH1107G_SSD1327</span><span class="p">()</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">oled</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OLED model: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oled</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OLED type : </span><span class="si">{}</span><span class="s2"> x </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+
+    <span class="n">oled</span><span class="o">.</span><span class="n">backlight</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">oled</span><span class="o">.</span><span class="n">backlight</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;hello world!&quot;</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+        <span class="n">oled</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">))</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">oled</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

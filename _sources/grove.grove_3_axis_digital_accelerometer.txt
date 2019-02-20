@@ -1,0 +1,10 @@
+============================================
+``grove.grove_3_axis_digital_accelerometer``
+============================================
+
+.. automodule:: grove.grove_3_axis_digital_accelerometer
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_3_axis_digital_accelerometer

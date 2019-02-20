@@ -1,0 +1,10 @@
+=======================
+``grove.gpio.gpio_rpi``
+=======================
+
+.. automodule:: grove.gpio.gpio_rpi
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.gpio.gpio_rpi

@@ -1,0 +1,10 @@
+=====================================================
+``grove.grove_1wire_thermocouple_amplifier_max31850``
+=====================================================
+
+.. automodule:: grove.grove_1wire_thermocouple_amplifier_max31850
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_1wire_thermocouple_amplifier_max31850

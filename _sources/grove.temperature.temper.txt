@@ -1,0 +1,10 @@
+============================
+``grove.temperature.temper``
+============================
+
+.. automodule:: grove.temperature.temper
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.temperature.temper

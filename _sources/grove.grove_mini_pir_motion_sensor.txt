@@ -1,0 +1,10 @@
+======================================
+``grove.grove_mini_pir_motion_sensor``
+======================================
+
+.. automodule:: grove.grove_mini_pir_motion_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_mini_pir_motion_sensor

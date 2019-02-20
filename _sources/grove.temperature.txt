@@ -1,0 +1,54 @@
+=====================
+``grove.temperature``
+=====================
+
+.. automodule:: grove.temperature
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.temperature.mcp9808
+   grove.temperature.temper
+
+.. currentmodule:: grove.temperature
+
+
+Classes
+=======
+
+- :py:class:`Temper`:
+  Undocumented.
+
+- :py:class:`TemperTypedNTC`:
+  Undocumented.
+
+- :py:class:`TemperMCP9808`:
+  Undocumented.
+
+
+.. autoclass:: Temper
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Temper
+      :parts: 1
+
+.. autoclass:: TemperTypedNTC
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TemperTypedNTC
+      :parts: 1
+
+.. autoclass:: TemperMCP9808
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TemperMCP9808
+      :parts: 1

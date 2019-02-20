@@ -1,0 +1,18 @@
+=================
+``grove.factory``
+=================
+
+.. automodule:: grove.factory
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.factory.factory
+
+.. currentmodule:: grove.factory

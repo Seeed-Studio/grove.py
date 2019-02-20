@@ -1,0 +1,10 @@
+========================================
+``grove.grove_6_axis_accel_gyro_bmi088``
+========================================
+
+.. automodule:: grove.grove_6_axis_accel_gyro_bmi088
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_6_axis_accel_gyro_bmi088

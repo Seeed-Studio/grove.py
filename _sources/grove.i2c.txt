@@ -1,0 +1,10 @@
+=============
+``grove.i2c``
+=============
+
+.. automodule:: grove.i2c
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.i2c

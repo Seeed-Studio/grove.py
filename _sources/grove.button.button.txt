@@ -1,0 +1,10 @@
+=======================
+``grove.button.button``
+=======================
+
+.. automodule:: grove.button.button
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.button.button

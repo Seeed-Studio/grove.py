@@ -1,0 +1,10 @@
+===============================
+``grove.grove_loudness_sensor``
+===============================
+
+.. automodule:: grove.grove_loudness_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_loudness_sensor

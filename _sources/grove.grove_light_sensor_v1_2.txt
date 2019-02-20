@@ -1,0 +1,10 @@
+=================================
+``grove.grove_light_sensor_v1_2``
+=================================
+
+.. automodule:: grove.grove_light_sensor_v1_2
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_light_sensor_v1_2

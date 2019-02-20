@@ -1,0 +1,10 @@
+===================================
+``grove.grove_step_counter_bma456``
+===================================
+
+.. automodule:: grove.grove_step_counter_bma456
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_step_counter_bma456

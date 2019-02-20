@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grove.grove_6_axis_accel_gyro_bmi088 &#8212; grove.py 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_6_axis_accel_gyro_bmi088</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This is the code for Grove - 6-Axis Accelerometer&amp;Gyroscope (BMI088).</span>
+<span class="c1"># (https://www.seeedstudio.com/Grove-6-Axis-Accelerometer-Gyroscope-BMI08-p-3188.html)</span>
+<span class="c1"># which is a 6 DoF(degrees of freedom) High-performance Inertial Measurement Unit(IMU),</span>
+<span class="c1"># based on BOSCH BMI088.</span>
+<span class="c1">#</span>
+<span class="c1"># @author Peter Yang &lt;turmary@126.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Grove.py is the library for Grove Base Hat which used to</span>
+<span class="c1"># connect grove sensors for raspberry pi.</span>
+<span class="c1">#</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">## License</span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in</span>
+<span class="sd">all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="sd">THE SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="n">util</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span>
+
+<span class="n">BMI088_ACCEL_I2C_ADDR</span> <span class="o">=</span> <span class="mh">0x19</span>
+<span class="n">BMI088_GYRO_I2C_ADDR</span>  <span class="o">=</span> <span class="mh">0x69</span>
+
+<span class="n">BMI08X_ACCEL_PM_ACTIVE</span><span class="p">,</span> \
+<span class="n">BMI08X_ACCEL_PM_SUSPEND</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">3</span>
+
+<span class="n">BMI088_ACCEL_RANGE_3G</span><span class="p">,</span>  \
+<span class="n">BMI088_ACCEL_RANGE_6G</span><span class="p">,</span>  \
+<span class="n">BMI088_ACCEL_RANGE_12G</span><span class="p">,</span> \
+<span class="n">BMI088_ACCEL_RANGE_24G</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span>
+
+<span class="n">BMI08X_ACCEL_BW_OSR4</span><span class="p">,</span> \
+<span class="n">BMI08X_ACCEL_BW_OSR2</span><span class="p">,</span> \
+<span class="n">BMI08X_ACCEL_BW_NORMAL</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
+
+<span class="n">BMI08X_ACCEL_ODR_12_5_HZ</span><span class="p">,</span> \
+<span class="n">BMI08X_ACCEL_ODR_25_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_ACCEL_ODR_50_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_ACCEL_ODR_100_HZ</span><span class="p">,</span>  \
+<span class="n">BMI08X_ACCEL_ODR_200_HZ</span><span class="p">,</span>  \
+<span class="n">BMI08X_ACCEL_ODR_400_HZ</span><span class="p">,</span>  \
+<span class="n">BMI08X_ACCEL_ODR_800_HZ</span><span class="p">,</span>  \
+<span class="n">BMI08X_ACCEL_ODR_1600_HZ</span>  <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span>
+
+<span class="n">BMI08X_GYRO_PM_NORMAL</span><span class="p">,</span>      \
+<span class="n">BMI08X_GYRO_PM_DEEP_SUSPEND</span><span class="p">,</span>\
+<span class="n">BMI08X_GYRO_PM_SUSPEND</span>    <span class="o">=</span> <span class="mh">0x0</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x80</span>
+
+<span class="n">BMI08X_GYRO_RANGE_2000_DPS</span><span class="p">,</span> \
+<span class="n">BMI08X_GYRO_RANGE_1000_DPS</span><span class="p">,</span> \
+<span class="n">BMI08X_GYRO_RANGE_500_DPS</span><span class="p">,</span>  \
+<span class="n">BMI08X_GYRO_RANGE_250_DPS</span><span class="p">,</span>  \
+<span class="n">BMI08X_GYRO_RANGE_125_DPS</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+
+<span class="n">BMI08X_GYRO_BW_532_ODR_2000_HZ</span><span class="p">,</span> \
+<span class="n">BMI08X_GYRO_BW_230_ODR_2000_HZ</span><span class="p">,</span> \
+<span class="n">BMI08X_GYRO_BW_116_ODR_1000_HZ</span><span class="p">,</span> \
+<span class="n">BMI08X_GYRO_BW_47_ODR_400_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_GYRO_BW_23_ODR_200_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_GYRO_BW_12_ODR_100_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_GYRO_BW_64_ODR_200_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_GYRO_BW_32_ODR_100_HZ</span><span class="p">,</span>   \
+<span class="n">BMI08X_GYRO_ODR_RESET_VAL</span>   <span class="o">=</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mh">0x80</span>
+
+
+<span class="n">__c_module</span> <span class="o">=</span> <span class="s2">&quot;bmi088&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">find_library</span><span class="p">(</span><span class="n">__c_module</span><span class="p">)</span>
+    <span class="n">_bmi</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: module lib</span><span class="si">{}</span><span class="s2">.so unusable, please install lib</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span>
+          <span class="nb">format</span><span class="p">(</span><span class="n">__c_module</span><span class="p">,</span> <span class="n">__c_module</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BMI08xCfg"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.BMI08xCfg">[docs]</a><span class="k">class</span> <span class="nc">BMI08xCfg</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;power&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span> \
+                <span class="p">(</span><span class="s2">&quot;range&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span> \
+                <span class="p">(</span><span class="s2">&quot;bw&quot;</span><span class="p">,</span>    <span class="n">c_uint8</span><span class="p">),</span> \
+                <span class="p">(</span><span class="s2">&quot;odr&quot;</span><span class="p">,</span>   <span class="n">c_uint8</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="GroveAccelGyroBMI088"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.GroveAccelGyroBMI088">[docs]</a><span class="k">class</span> <span class="nc">GroveAccelGyroBMI088</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc_addr</span> <span class="o">=</span> <span class="n">BMI088_ACCEL_I2C_ADDR</span><span class="p">,</span> <span class="n">gyro_addr</span> <span class="o">=</span> <span class="n">BMI088_GYRO_I2C_ADDR</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dev</span> <span class="o">=</span> <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_alloc</span><span class="p">()</span>
+        <span class="n">dev_path</span> <span class="o">=</span> <span class="s2">&quot;/dev/i2c-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Bus</span><span class="p">()</span><span class="o">.</span><span class="n">bus</span><span class="p">)</span>
+        <span class="n">accel_cfg</span> <span class="o">=</span> <span class="n">BMI08xCfg</span><span class="p">(</span><span class="n">BMI08X_ACCEL_PM_ACTIVE</span><span class="p">,</span>
+                              <span class="n">BMI088_ACCEL_RANGE_6G</span><span class="p">,</span>
+                              <span class="n">BMI08X_ACCEL_BW_NORMAL</span><span class="p">,</span>
+                              <span class="n">BMI08X_ACCEL_ODR_100_HZ</span><span class="p">)</span>
+        <span class="n">gyro_cfg</span> <span class="o">=</span> <span class="n">BMI08xCfg</span><span class="p">(</span><span class="n">BMI08X_GYRO_PM_NORMAL</span><span class="p">,</span>
+                              <span class="n">BMI08X_GYRO_RANGE_1000_DPS</span><span class="p">,</span>
+                              <span class="n">BMI08X_GYRO_BW_23_ODR_200_HZ</span><span class="p">,</span>
+                              <span class="n">BMI08X_GYRO_BW_23_ODR_200_HZ</span><span class="p">)</span>
+
+        <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_init</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dev</span><span class="p">,</span>
+                             <span class="n">dev_path</span><span class="p">,</span>
+                             <span class="n">acc_addr</span><span class="p">,</span>
+                             <span class="n">gyro_addr</span><span class="p">,</span>
+                             <span class="n">byref</span><span class="p">(</span><span class="n">accel_cfg</span><span class="p">),</span>
+                             <span class="n">byref</span><span class="p">(</span><span class="n">gyro_cfg</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_free</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dev</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GroveAccelGyroBMI088.get_sensor_time"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.GroveAccelGyroBMI088.get_sensor_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_sensor_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_get_sensor_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dev</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroveAccelGyroBMI088.get_accel"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.GroveAccelGyroBMI088.get_accel">[docs]</a>    <span class="k">def</span> <span class="nf">get_accel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">c_double</span><span class="p">(),</span> <span class="n">c_double</span><span class="p">(),</span> <span class="n">c_double</span><span class="p">()</span>
+        <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_get_accel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dev</span><span class="p">,</span>
+                                  <span class="n">byref</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">byref</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">byref</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="GroveAccelGyroBMI088.get_gyro"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.GroveAccelGyroBMI088.get_gyro">[docs]</a>    <span class="k">def</span> <span class="nf">get_gyro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">c_double</span><span class="p">(),</span> <span class="n">c_double</span><span class="p">(),</span> <span class="n">c_double</span><span class="p">()</span>
+        <span class="n">_bmi</span><span class="o">.</span><span class="n">rpi_bmi088_get_gyro</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dev</span><span class="p">,</span>
+                                  <span class="n">byref</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">byref</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">byref</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span></div></div>
+
+<span class="n">Grove</span> <span class="o">=</span> <span class="n">GroveAccelGyroBMI088</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#grove.grove_6_axis_accel_gyro_bmi088.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="nb">print</span><span class="p">(</span>\
+<span class="sd">&quot;&quot;&quot; Make sure 6-Axis-Accelerometer-Gyroscope(BMI088)</span>
+<span class="sd">   inserted in one I2C slot of Grove-Base-Hat</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">snr</span> <span class="o">=</span> <span class="n">GroveAccelGyroBMI088</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="n">snr</span><span class="o">.</span><span class="n">get_sensor_time</span><span class="p">()</span>
+        <span class="c1"># don&#39;t ask me why 26000, it&#39;s magic.</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sensor time: </span><span class="si">{:.2f}</span><span class="s2"> S&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tm</span> <span class="o">/</span> <span class="mf">26000.0</span><span class="p">))</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">snr</span><span class="o">.</span><span class="n">get_accel</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; AX = </span><span class="si">%7.2f</span><span class="s2"> mg  AY = </span><span class="si">%7.2f</span><span class="s2"> mg  AZ = </span><span class="si">%7.2f</span><span class="s2"> mg&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">snr</span><span class="o">.</span><span class="n">get_gyro</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; GX = </span><span class="si">%7.2f</span><span class="s2"> dps GY = </span><span class="si">%7.2f</span><span class="s2"> dps GZ = </span><span class="si">%7.2f</span><span class="s2"> dps&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Peter Yang.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

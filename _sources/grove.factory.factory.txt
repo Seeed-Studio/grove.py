@@ -1,0 +1,10 @@
+=========================
+``grove.factory.factory``
+=========================
+
+.. automodule:: grove.factory.factory
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.factory.factory
