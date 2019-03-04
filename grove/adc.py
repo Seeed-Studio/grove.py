@@ -1,72 +1,111 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the ADC library for Grove Base Hat which used to connect grove sensors for raspberry pi.
+# The MIT License (MIT)
+# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+#
+# This is the ADC library for Grove Base Hat
+# which used to connect grove sensors for raspberry pi.
 # 
-# Grove Base Hat incorparates a micro controller STM32F030F4, raspberry pi does not have ADC unit,
-# we use an external chip to transmit analog data to raspberry pi.
-#
-
 '''
-## License
+This is the code for
+    - `Grove Base Hat for RPi      <https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m-p-3126.html>`_
+    - `Grove Base Hat for RPi Zero <https://www.seeedstudio.com/Grove-Base-Hat-for-Raspberry-Pi-Zero-p-3187.html>`_
 
-The MIT License (MIT)
+Grove Base Hat incorparates a micro controller STM32F030F4.
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+Raspberry Pi does not have ADC unit, so we use an external chip
+to transmit analog data to raspberry pi.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Examples:
+    .. code-block:: python
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        import time
+        from grove.adc import ADC
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        adc = ADC()
+        while True:
+            # Read channel 0(Slot A0) voltage
+            print(adc.read_voltage(0))
+            time.sleep(1)
+
 '''
 import sys
 import grove.i2c
 
+__all__ = [
+    "ADC",
+    "RPI_HAT_NAME", "RPI_ZERO_HAT_NAME"
+]
+
 RPI_HAT_PID      = 0x0004
 RPI_ZERO_HAT_PID = 0x0005
 RPI_HAT_NAME     = 'Grove Base Hat RPi'
+""" The HAT name to compare with return value of :class:`ADC.name` """
 RPI_ZERO_HAT_NAME= 'Grove Base Hat RPi Zero'
+""" The HAT name to compare with return value of :class:`ADC.name` """
 
-# Grove Base Hat for RPI I2C Registers
-# 0x10 ~ 0x17: ADC raw data
-# 0x20 ~ 0x27: input voltage
-# 0x29: output voltage (Grove power supply voltage)
-# 0x30 ~ 0x37: input voltage / output voltage
+
 class ADC(object):
+    '''
+    Class ADC for the ADC unit on Grove Base Hat for RPi.
 
-    def __init__(self, address=0x04):
+    Args:
+        address(int): optional, i2c address of the ADC unit, default 0x04
+    '''
+    def __init__(self, address = 0x04):
         self.address = address
         self.bus = grove.i2c.Bus()
 
     def read_raw(self, channel):
+        '''
+        Read the raw data of ADC unit, with 12 bits resolution.
+
+        Args:
+            channel (int): 0 - 7, specify the channel to read
+
+        Returns:
+            (int): the adc result, in [0 - 4095]
+        '''
         addr = 0x10 + channel
         return self.read_register(addr)
 
     # read input voltage (mV)
     def read_voltage(self, channel):
+        '''
+        Read the voltage data of ADC unit.
+
+        Args:
+            channel (int): 0 - 7, specify the channel to read
+
+        Returns:
+            (int): the voltage result, in mV
+        '''
         addr = 0x20 + channel
         return self.read_register(addr)
 
     # input voltage / output voltage (%)
     def read(self, channel):
+        '''
+        Read the ratio between channel input voltage and power voltage (most time it's 3.3V).
+
+        Args:
+            channel (int): 0 - 7, specify the channel to read
+
+        Returns:
+            (int): the ratio, in 0.1%
+        '''
         addr = 0x30 + channel
         return self.read_register(addr)
 
     @property
     def name(self):
+        '''
+        Get the Hat name.
+
+        Returns:
+            (string): could be :class:`RPI_HAT_NAME` or :class:`RPI_ZERO_HAT_NAME`
+        '''
         id = self.read_register(0x0)
         if id == RPI_HAT_PID:
             return RPI_HAT_NAME
@@ -75,10 +114,33 @@ class ADC(object):
 
     @property
     def version(self):
+        '''
+        Get the Hat firmware version.
+
+        Returns:
+            (int): firmware version
+        '''
         return self.read_register(0x3)
 
     # read 16 bits register
     def read_register(self, n):
+        '''
+        Read the ADC Core (through I2C) registers
+
+        Grove Base Hat for RPI I2C Registers
+
+            - 0x00 ~ 0x01: 
+            - 0x10 ~ 0x17: ADC raw data
+            - 0x20 ~ 0x27: input voltage
+            - 0x29: output voltage (Grove power supply voltage)
+            - 0x30 ~ 0x37: input voltage / output voltage
+
+        Args:
+            n(int): register address.
+
+        Returns:
+            (int) : 16-bit register value.
+        '''
         try:
             self.bus.write_byte(self.address, n)
             return self.bus.read_word_data(self.address, n)
