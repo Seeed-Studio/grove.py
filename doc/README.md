@@ -8,6 +8,9 @@ For analog devices, slot number(n of PCB sink An) should be provided.
 
 #### Command Reference Table
 Some devices need root permission signed in sudo column, the coresponding command must prefix with "sudo" if run with a none-root user.
+
+**Most of the commands will list the available argument/pin when it need argument but not specifying.**
+
 <div>
   <table border="0">
     <tr align="center">
@@ -172,7 +175,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       </td>
       <td>grove_mech_keycap</td>
       <td>&bull;</td>
-      <td>arg1 - PWM pin, don't specify any argument to get available pin list</td>
+      <td>arg1 - PWM pin</td>
     </tr>
     <tr align="center">
       <td>
@@ -419,7 +422,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>grove_ws2813_rgb_led_strip</td>
       <td>&bull;</td>
       <td>
-        arg1 - PWM pin, don't specify any argument to get available pin list<br>
+        arg1 - PWM pin<br>
         arg2 - led count,
                could be 30, 60, 144
                for the three models listed left.

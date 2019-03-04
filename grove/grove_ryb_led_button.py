@@ -82,6 +82,7 @@ class GroveLedButton(object):
                               -  Button.EV_LONG_PRESS
 
                     time(time): event generation time
+
                 Returns: none
 
         Examples:
