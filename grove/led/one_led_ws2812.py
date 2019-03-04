@@ -53,7 +53,7 @@ class OneLedTypedWs2812(OneLed):
         LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
         LED_CHANNEL    = ws2812_pins.get(pin) # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
-        # Create NeoPixel object with appropriate configuration.
+        # Create PixelStrip object with appropriate configuration.
         self.strip = PixelStrip(LED_COUNT, pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         # Intialize the library (must be called once before other functions).
         self.strip.begin()

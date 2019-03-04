@@ -75,8 +75,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>arg1 - digital pin</td>
     </tr>
     <tr align="center">
-      <td><a href="https://www.seeedstudio.com/Grove-Capacitive-Touch-Slider-Sensor-CY8C4014LQ-p-3183.html">Capacitive Touch Slide Sensor(CY8C4014LQI)</a>
-</td>
+      <td><a href="https://www.seeedstudio.com/Grove-Capacitive-Touch-Slider-Sensor-CY8C4014LQ-p-3183.html">Capacitive Touch Slide Sensor(CY8C4014LQI)</a></td>
       <td>grove_cap_touch_slider_cy8c</td>
       <td></td>
       <td>I2C</td>
@@ -173,7 +172,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       </td>
       <td>grove_mech_keycap</td>
       <td>&bull;</td>
-      <td>PWM</td>
+      <td>arg1 - PWM pin, don't specify any argument to get available pin list</td>
     </tr>
     <tr align="center">
       <td>
@@ -410,6 +409,21 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>grove_water_sensor</td>
       <td></td>
       <td>arg1 - analog pin</td>
+    </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-30-LED-m-1m-p-3124.html">WS2813 RGB LED Strip Waterproof - 30 LED/m - 1m</a><br>
+        <a href="https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m-p-3126.html">WS2813 RGB LED Strip Waterproof - 60 LED/m - 1m</a><br>
+        <a href="https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-144-LED-m-1m-p-3127.html">WS2813 RGB LED Strip Waterproof - 144 LED/m - 1m</a>
+      </td>
+      <td>grove_ws2813_rgb_led_strip</td>
+      <td>&bull;</td>
+      <td>
+        arg1 - PWM pin, don't specify any argument to get available pin list<br>
+        arg2 - led count,
+               could be 30, 60, 144
+               for the three models listed left.
+      </td>
     </tr>
   </table>
 </div>

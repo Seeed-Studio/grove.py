@@ -1,3 +1,11 @@
+'''
+## License
+
+The MIT License (MIT)
+
+Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+Copyright (C) 2018  Seeed Technology Co.,Ltd.
+'''
 
 import io
 from setuptools import setup, find_packages
@@ -95,7 +103,8 @@ setup(
             'grove_ultrasonic_ranger=grove.grove_ultrasonic_ranger:main',
             'grove_uv_sensor=grove.grove_uv_sensor:main',
             'grove_voc_eco2_gas_sgp30=grove.grove_voc_eco2_gas_sgp30:main',
-            'grove_water_sensor=grove.grove_water_sensor:main'
+            'grove_water_sensor=grove.grove_water_sensor:main',
+            'grove_ws2813_rgb_led_strip=grove.grove_ws2813_rgb_led_strip:main'
         ],
     },
     zip_safe=False,
