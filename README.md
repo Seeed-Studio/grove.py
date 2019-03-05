@@ -4,7 +4,7 @@ grove.py
 [![Build Status](https://travis-ci.org/Seeed-Studio/grove.py.svg?branch=master)](https://travis-ci.org/Seeed-Studio/grove.py)
 [![](https://img.shields.io/pypi/v/grove.py.svg)](https://pypi.python.org/pypi/grove.py)
 
-Python library for Seeedstudio Grove Devices on Raspberry Pi.
+Python library for Seeedstudio Grove Devices on SBC-linux platform.
 
 <br><br>
 # Archtecture
