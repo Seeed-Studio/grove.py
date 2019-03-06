@@ -53,6 +53,9 @@ class ButtonTypedI2c(Button):
 
 	self.set_mode(True)
 
+        self.__last_evt = None
+        self.__last_evt = self.read()
+
         self.key_names = _grove_5way_tactile_keys
         if self._size == 6:
             self.key_names = _grove_6pos_dip_switch_keys
@@ -156,6 +159,17 @@ class ButtonTypedI2c(Button):
             return None
         size = EVT_LEN + self._size
         v = self.bus.read_i2c_block_data(self._addr, _CMD_GET_DEV_EVENT, size)
+
+        if self._version > 1 or self.__last_evt is None:
+            return v[EVT_LEN - 1:]
+
+        # Fix: v0.1 will miss event BTN_EV_LEVEL_CHANGED
+        #      if this API called frequently.
+        for i in range(self._size):
+            if (v[EVT_LEN + i] ^ self.__last_evt[1 + i]) & self.EV_RAW_STATUS:
+                v[EVT_LEN + i] |= Button.EV_LEVEL_CHANGED
+                v[EVT_LEN - 1] |= 0x80
+        self.__last_evt = v[EVT_LEN - 1:]
         return v[EVT_LEN - 1:]
 
 
