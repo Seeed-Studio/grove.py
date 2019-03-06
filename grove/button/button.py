@@ -1,38 +1,25 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the library for Grove Base Hat.
+# The MIT License (MIT)
 #
-# Button Base Class
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
 #
-
 '''
-## License
-
-The MIT License (MIT)
-
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 '''
+
+__all__ = ["Button"]
 
 class Button(object):
+    '''
+    Button Base Class
+
+    provide event callback ability to derived class
+
+    Args:
+        pin(int): optional, for GPIO type button, it's the GPIO pin number.
+    '''
     # event bits
     EV_RAW_STATUS    = 1 << 0
     EV_SINGLE_CLICK  = 1 << 1
@@ -43,25 +30,66 @@ class Button(object):
 
     pins = []
 
-    def __init__(self, pin):
+    def __init__(self, pin = 0):
         self.__on_obj = None
         self.__on_event = None
         self.__event = 0
         self.pins.append(pin)
         # To use with button array
-        self.__index = self.pins.index(pin)
+        self._index = self.pins.index(pin)
 
     def get_on_event(self):
+        '''
+        Get the event receiving object and callback member function
+        
+        Returns:
+            (obj, event_callback): a pair consist of event receiving object
+                                   and callback member function
+        '''
         return self.__on_obj, self.__on_event
 
     def on_event(self, obj, callback):
+        '''
+        Set the event receiving object and it'callback member function
+
+        Args:
+            obj(object)       : the object to receiving event
+            callback(callable): a member function of `obj`,
+                will be called when there is button event
+
+                callback prototype:
+                    callback(obj, evt_dict)
+
+                callback argument:
+                    Args:
+                        obj(object)   : the object that is `obj` argument of :class:`on_event`
+
+                        evt_dict(dict): the event dictionary include items:
+                                        - index
+                                        - code
+                                        - pressed
+                                        - time
+
+                    Returns: none
+        '''
         if not obj:
             return
         if not callable(callback):
             return
         self.__on_obj, self.__on_event = obj, callback
 
-    def is_pressed(self):
+    def is_pressed(self, index = 0):
+        '''
+        Get the button status if it's being pressed ?
+
+        Args:
+            index(int): optional, the index number of which button to be checked.
+                        must be specified only if it's a multiple button device.
+
+        Returns:
+            (bool): True  if the button is being pressed.
+                    False if not.
+        '''
         return False
 
     # call by derivate class
@@ -70,7 +98,7 @@ class Button(object):
             return
 
         evt = {
-                'index': self.__index,
+                'index': self._index,
                 'code' : event,
                 'pressed': pressed,
                 'time' : tm,

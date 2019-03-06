@@ -77,6 +77,7 @@ class GroveLedButton(object):
                     index(int): button index, be in 0 to [button count - 1]
 
                     code (int): bits combination of
+                              -  Button.EV_LEVEL_CHANGED
                               -  Button.EV_SINGLE_CLICK
                               -  Button.EV_DOUBLE_CLICK
                               -  Button.EV_LONG_PRESS
