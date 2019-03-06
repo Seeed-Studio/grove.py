@@ -5,6 +5,8 @@
 from __future__ import division
 from grove.i2c import Bus
 
+__all__ = ["StepperMotor", "I2CStepperMotor"]
+
 class StepperMotor(object):
     DC_SPEED_MAX         = 100
     _DIR_ANTI_CLKWISE    = 0

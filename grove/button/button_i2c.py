@@ -1,118 +1,188 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the library for Grove Base Hat which used to connect i2c-type button.
+# The MIT License (MIT)
 #
-
-'''
-## License
-
-The MIT License (MIT)
-
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-'''
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+#
 from __future__ import print_function
-import time
 from grove.i2c import Bus
 from grove.button import Button
+import threading
+import time
 
-grove_5way_tactile_keys = ("KEY A","KEY B","KEY C","KEY D","KEY E")
-grove_6pos_dip_switch_keys = ("POS 1","POS 2","POS 3","POS 4","POS 5","POS 6")
+__all__ = ["ButtonTypedI2c", "NAME_5_WAY_SWITCH", "NAME_6_POS_DIP_SWITCH"]
+
+NAME_5_WAY_SWITCH     = "Grove-5-Way-Switch"
+
+""" The Button name to compare with return value of :class:`ButtonTypedI2c.name` """
+
+NAME_6_POS_DIP_SWITCH = "Grove-6-Pos-DIP-Switch"
+
+""" The Button name to compare with return value of :class:`ButtonTypedI2c.name` """
+
+_grove_5way_tactile_keys    = ("KEY A","KEY B","KEY C","KEY D","KEY E")
+_grove_6pos_dip_switch_keys = ("POS 1","POS 2","POS 3","POS 4","POS 5","POS 6")
+
+_CMD_GET_DEV_ID     = 0x00
+_CMD_GET_DEV_EVENT  = 0x01
+_CMD_EVENT_DET_MODE = 0x02
+_CMD_BLOCK_DET_MODE = 0x03
+_CMD_TEST_GET_VER   = 0xE2
+
+VID_MULTI_SWITCH         = 0x2886
+PID_5_WAY_TACTILE_SWITCH = 0x0002
+PID_6_POS_DIP_SWITCH     = 0x0003
+
+_CYCLE_PERIOD    = 0.08   # 80 ms
 
 class ButtonTypedI2c(Button):
-    def __init__(self,address = 0x03):
+    def __init__(self, address = 0x03):
+        super(ButtonTypedI2c, self).__init__(0)
+
         self.bus = Bus()
-        self.addr = address
+        self._addr = address
+
+        # Initialise the I2C button device
         self.dev_id = 0
-        self.val = 0
-        self.probeDevID()
-        self.get_val()
-        self.send_Byte(0x02)
-        app1 = self.status_read()
-     	while 1:
-            self.status_read()
-            time.sleep(1.0)
-            continue
-    def set_devID(self,reg,size):
-		self.bus.write_byte_data(self.addr, reg, size)
-    def send_Byte(self, reg):
-        self.bus.write_byte(self.addr, reg)
-    def get_devID(self, data):
-       return self.bus.read_byte(self.addr, data)
-    def get_data(self, reg, len):
-        return self.bus.read_i2c_block_data(self.addr, reg, len)
-	
-    def probeDevID(self):
-        for i in range (4):
-            id = self.get_data(0x00, 4)
+        self._probe_uid()
+        self._version = 0
+        self.version()
+        self._size = self.size()
+
+	self.set_mode(True)
+
+        self.key_names = _grove_5way_tactile_keys
+        if self._size == 6:
+            self.key_names = _grove_6pos_dip_switch_keys
+
+        self.__thrd_exit = False
+        self.__thrd = None
+        if self.__thrd is None or not self.__thrd.is_alive():
+            self.__thrd = threading.Thread( \
+                    target = ButtonTypedI2c.__thrd_chk_evt, \
+                    args = (self,))
+            self.__thrd.setDaemon(True)
+            self.__thrd.start()
+
+    def __del__(self):
+        self.__thrd_exit = True
+        while self.__thrd.isAlive():
+            time.sleep(_CYCLE_PERIOD / _CYCLE_UNIT)
+        self.__thrd.join()
+
+    # Thread to check events
+    def __thrd_chk_evt(self):
+        self.__last_time = time.time();
+        while not self.__thrd_exit:
+        # or self.__state != self.KEY_STATE_IDLE:
+            t = time.time()
+            dt, self.__last_time = t - self.__last_time, t
+
+            evt = self.read()
+            if not evt[0]:
+                time.sleep(_CYCLE_PERIOD)
+                continue
+
+            for i in range(0, self.size()):
+                if evt[i + 1] & ~self.EV_RAW_STATUS:
+                    pressed = bool(evt[i + 1] & self.EV_RAW_STATUS)
+                    self._index = i
+                    self._send_event(evt[i + 1], pressed, t)
+            time.sleep(_CYCLE_PERIOD)
+
+    def _probe_uid(self):
+        ID_LEN = 4
+        for tr in range(4):
+            v = self.bus.read_i2c_block_data(self._addr, _CMD_GET_DEV_ID, ID_LEN)
+            # print("GET_DEV_ID = {}".format(v))
             did = 0
-            for j in range(4):
-                did = (did >> 8) | (int(id[j]) << 24)
-            #print("DEV_ID = {:8X}".format(did))
-            if (did >> 16) == 0x2886:
+            for i in range(ID_LEN):
+                did = (did >> 8) | (int(v[i]) << 24)
+            # print("DEV_ID = {:8X}".format(did))
+            if (did >> 16) == VID_MULTI_SWITCH:
                 self.dev_id = did
                 return self.dev_id
-            self.get_devID(True)
+            self.bus.read_byte(self._addr, True)
 
-    def get_val(self):
-        if (self.dev_id & 0xFFFF) == 0x0002:
-            self.val = 5
-            print("Grove 5_way tactile Switch Insert")
-            self.key_names = grove_5way_tactile_keys
-            return self.val
-        elif (self.dev_id & 0xFFFF) == 0x0003:
-            self.val = 6
-            print("Grove 6_pos dip Switch Insert")
-            self.key_names = grove_6pos_dip_switch_keys
-            return self.val
+    def version(self):
+        VER_LEN = 10
+        if not self.dev_id:
+            return 0
+        v = self.bus.read_i2c_block_data(self._addr, _CMD_TEST_GET_VER, VER_LEN)
+        # print("GET_VER = {}".format(str(v)))
+        version = v[6] - ord('0')
+        version = version * 10 + (v[8] - ord('0'))
+        # print("version = {}".format(version))
+        self._version = version
+        return self._version
 
-    def status_read(self):
-        app = self.get_data(0x01, 4 + self.val)
-        #print("get event ={}".format(app))
-        for i in range(0, self.val):
-            print("{} : RAW- ".format(self.key_names[i]), end='')
-            print ("{} ".format(app[i+4] & 1 and "HIGH" or "LOW"))
-            if (self.dev_id & 0xFFFF) == 0x0002:
-                print ("{} ".format(app[i+4] & 1 and "RELEASEND" or "PRESSED"))
-            elif (self.dev_id & 0xFFFF) == 0x0003:
-                print ("{} ".format(app[i+4] & 1 and "OFF" or "ON"))
-        for i in range(0, self.val):
-            if app[i+4] & ~1:
-                print("{} ".format(self.key_names[i]))
-                print(": EVENT - ")
-            if app[i+4] & (1 << 1):
-                print("SINGLE-CLICK")
-            if app[i+4] & (1 << 2):
-                print("DOUBLE-CLICL")
-            if app[i+4] & (1 << 3):
-                print("LONG-PRESS")
-            if app[i+4] & (1 << 4):
-                print("LEVEL-CHANGED")
+    def size(self):
+        if (self.dev_id >> 16) != VID_MULTI_SWITCH:
+            return 0
+        if (self.dev_id & 0xFFFF) == PID_5_WAY_TACTILE_SWITCH:
+            return 5
+        if (self.dev_id & 0xFFFF) == PID_6_POS_DIP_SWITCH:
+            return 6
+        return 0
 
-            print("")
-        return app
+    def name(self, index = None):
+        if (self.dev_id >> 16) != VID_MULTI_SWITCH:
+            return "Invalid dev"
+        if not index is None:
+            if index < 0 or index >= self._size:
+                return "Invalid index"
+            return self.key_names[index]
+
+        if (self.dev_id & 0xFFFF) == PID_5_WAY_TACTILE_SWITCH:
+            return NAME_5_WAY_SWITCH
+        if (self.dev_id & 0xFFFF) == PID_6_POS_DIP_SWITCH:
+            return NAME_6_POS_DIP_SWITCH
+        return "Invalid dev"
+
+    def set_mode(self, enable):
+        if not self.dev_id:
+            return None
+        v = _CMD_BLOCK_DET_MODE
+        if enable:
+            v = _CMD_EVENT_DET_MODE
+        self.bus.write_byte(self._addr, v)
+        return True
+
+    def read(self):
+        EVT_LEN = 4
+        if not self.dev_id:
+            return None
+        size = EVT_LEN + self._size
+        v = self.bus.read_i2c_block_data(self._addr, _CMD_GET_DEV_EVENT, size)
+        return v[EVT_LEN - 1:]
 
 
 def main():
-	switch = ButtonTypedI2c()
+    switch = ButtonTypedI2c()
+
+    print("{} Inserted".format(switch.name()))
+    print("A {} Button/Switch Device Ready".format(switch.size()))
+
+    while True:
+        evt = switch.read()
+        print("EVENT = {}".format(evt))
+        for i in range(0, switch.size()):
+            print("{}: ".format(switch.name(i)), end='')
+            print("{} ".format(evt[i + 1] & 0x1 and "HIGH" or "LOW "), end='')
+            if switch.name == NAME_5_WAY_SWITCH:
+                print("{} ".format(evt[i + 1] & 0x1 and "RELEASED" or "PRESSED "), end='')
+            elif switch.name == NAME_6_POS_DIP_SWITCH:
+                print("{} ".format(evt[i + 1] & 0x1 and "OFF" or "ON "), end='')
+            print(" ", end='')
+            print("S" if evt[i + 1] & Button.EV_SINGLE_CLICK  else " ", end='')
+            print("D" if evt[i + 1] & Button.EV_DOUBLE_CLICK  else " ", end='')
+            print("L" if evt[i + 1] & Button.EV_LONG_PRESS    else " ", end='')
+            print("C" if evt[i + 1] & Button.EV_LEVEL_CHANGED else " ", end='')
+            print(" ", end='')
+        print()
+        time.sleep(1.0)
 
 if __name__ == "__main__":
-	main()
+    main()

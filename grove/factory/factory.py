@@ -125,8 +125,7 @@ class __factory(object):
         elif typ == "GPIO-HIGH":
             return ButtonTypedGpio(pin, False)
         elif typ == "I2C":
-            # TODO
-            return None
+            return ButtonTypedI2c()
         else:
             self.__avail_list(typ, self.ButtonEnum)
             sys.exit(1)

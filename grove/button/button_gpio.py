@@ -74,7 +74,7 @@ class ButtonTypedGpio(Button):
             time.sleep(_CYCLE_PERIOD / _CYCLE_UNIT)
         self.__thrd.join()
 
-    def is_pressed(self):
+    def is_pressed(self, index = 0):
         v = self.__gpio.read()
         return self.__low_press != bool(v)
 

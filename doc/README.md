@@ -196,6 +196,18 @@ Some devices need root permission signed in sudo column, the coresponding comman
     </tr>
     <tr align="center">
       <td>
+        <a href="https://www.seeedstudio.com/Grove-5-Way-Switch-p-3136.html">5-Way Switch</a><br>
+        <a href="https://www.seeedstudio.com/Grove-6-Position-DIP-Switch-p-3137.html">6-Position DIP Switch</a>
+      </td>
+      <td>grove_multi_switch<br>
+          <b>or</b><br>
+          grove_multi_switch_poll
+      </td>
+      <td></td>
+      <td>I2C</td>
+    </tr>
+    <tr align="center">
+      <td>
         <a href="https://www.seeedstudio.com/Grove-OLED-Display-0.96%22-p-781.html">OLED Display 0.96"</a>
       </td>
       <td>grove_oled_display_128x64</td>
