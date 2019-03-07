@@ -51,7 +51,7 @@ class ButtonTypedI2c(Button):
         self.version()
         self._size = self.size()
 
-	self.set_mode(True)
+        self.set_mode(True)
 
         self.__last_evt = None
         self.__last_evt = self.read()

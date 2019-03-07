@@ -35,7 +35,8 @@ import grove.i2c
 
 __all__ = [
     "ADC",
-    "RPI_HAT_NAME", "RPI_ZERO_HAT_NAME"
+    "RPI_HAT_NAME", "RPI_ZERO_HAT_NAME",
+    "RPI_HAT_PID", "RPI_ZERO_HAT_PID"
 ]
 
 RPI_HAT_PID      = 0x0004
