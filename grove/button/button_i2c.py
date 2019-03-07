@@ -38,7 +38,7 @@ PID_6_POS_DIP_SWITCH     = 0x0003
 _CYCLE_PERIOD    = 0.08   # 80 ms
 
 class ButtonTypedI2c(Button):
-    def __init__(self, address = 0x03):
+    def __init__(self, address = 0x03, evt_en = True):
         super(ButtonTypedI2c, self).__init__(0)
 
         self.bus = Bus()
@@ -62,6 +62,9 @@ class ButtonTypedI2c(Button):
 
         self.__thrd_exit = False
         self.__thrd = None
+        if not evt_en:
+            return
+
         if self.__thrd is None or not self.__thrd.is_alive():
             self.__thrd = threading.Thread( \
                     target = ButtonTypedI2c.__thrd_chk_evt, \
@@ -70,6 +73,9 @@ class ButtonTypedI2c(Button):
             self.__thrd.start()
 
     def __del__(self):
+        if not self.__thrd:
+            return
+
         self.__thrd_exit = True
         while self.__thrd.isAlive():
             time.sleep(_CYCLE_PERIOD / _CYCLE_UNIT)
@@ -174,9 +180,9 @@ class ButtonTypedI2c(Button):
 
 
 def main():
-    switch = ButtonTypedI2c()
+    switch = ButtonTypedI2c(evt_en = False)
 
-    print("{} Inserted".format(switch.name()))
+    print("{} v{} Inserted".format(switch.name(), switch.version()))
     print("A {} Button/Switch Device Ready".format(switch.size()))
 
     while True:
@@ -185,9 +191,9 @@ def main():
         for i in range(0, switch.size()):
             print("{}: ".format(switch.name(i)), end='')
             print("{} ".format(evt[i + 1] & 0x1 and "HIGH" or "LOW "), end='')
-            if switch.name == NAME_5_WAY_SWITCH:
+            if switch.name() == NAME_5_WAY_SWITCH:
                 print("{} ".format(evt[i + 1] & 0x1 and "RELEASED" or "PRESSED "), end='')
-            elif switch.name == NAME_6_POS_DIP_SWITCH:
+            elif switch.name() == NAME_6_POS_DIP_SWITCH:
                 print("{} ".format(evt[i + 1] & 0x1 and "OFF" or "ON "), end='')
             print(" ", end='')
             print("S" if evt[i + 1] & Button.EV_SINGLE_CLICK  else " ", end='')

@@ -102,7 +102,7 @@ _stepper_motor_YH42BYGH40 = {
 }
 
 class __factory(object):
-    ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C"))
+    ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C", "I2C-POLL"))
     OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
     GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
@@ -126,6 +126,8 @@ class __factory(object):
             return ButtonTypedGpio(pin, False)
         elif typ == "I2C":
             return ButtonTypedI2c()
+        elif typ == "I2C-POLL":
+            return ButtonTypedI2c(evt_en = False)
         else:
             self.__avail_list(typ, self.ButtonEnum)
             sys.exit(1)
