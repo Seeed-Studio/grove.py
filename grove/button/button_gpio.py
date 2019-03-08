@@ -1,33 +1,13 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the library for Grove Base Hat which used to connect gpio-type button.
+# The MIT License (MIT)
 #
-
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+#
 '''
-## License
-
-The MIT License (MIT)
-
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+ This is the code for GPIO Button event detection.
 '''
 from __future__ import division
 import time
@@ -35,12 +15,34 @@ import threading
 from grove.button import Button
 from grove.gpio import GPIO
 
+__all__ = ["ButtonTypedGpio"]
+
 _CYCLE_PERIOD    = 0.02   # 20 ms
 _SINGLE_KEY_TM   = 0.03   # 30 ms
 _KEY_INTERVAL    = 0.3    # 300 ms
 _LONG_KEY_TM     = 2.0    # 2s
 
 class ButtonTypedGpio(Button):
+    '''
+    GPIO Button Class
+
+    provide event checking ability to derived class,
+    should not use directly by end-user.
+    The checking events include:
+
+      - Button.EV_SINGLE_CLICK
+      - Button.EV_DOUBLE_CLICK
+      - Button.EV_LONG_PRESS
+      - Button.EV_LEVEL_CHANGED
+
+    Args:
+        pin(int)         : GPIO pin number the button connected.
+        low_pressed(bool): optional, default True
+
+            True if the the button gpio level is low when pressed.
+
+            False if level high when pressed
+    '''
     # all key states in FSM
     KEY_STATE_IDLE    = 0
     KEY_STATE_DOWN    = 1
@@ -75,6 +77,16 @@ class ButtonTypedGpio(Button):
         self.__thrd.join()
 
     def is_pressed(self, index = 0):
+        '''
+        Get the button status if it's being pressed ?
+
+        Args:
+            index(int): optional, the arg `index` not be used.
+
+        Returns:
+            (bool): True  if the button is being pressed.
+                    False if not.
+        '''
         v = self.__gpio.read()
         return self.__low_press != bool(v)
 

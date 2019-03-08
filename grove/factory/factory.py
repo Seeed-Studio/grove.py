@@ -107,7 +107,7 @@ class __factory(object):
     TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
     GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
     StepperMotorEnum = Enum('StepperMotor', ("28BYJ48", "24BYJ48", "YH42BYGH40"))
-    LcdEnum = Enum('Lcd', ("JHD1802", "SH1107G"))
+    DisplayEnum = Enum('Display', ("JHD1802", "SH1107G"))
 
     def __init__(self):
         pass
@@ -183,7 +183,7 @@ class __factory(object):
         elif typ == "SH1107G":
             return SH1107G_SSD1327()
         else:
-            self._avail_list(typ, self.LcdEnum)
+            self._avail_list(typ, self.DisplayEnum)
             sys.exit(1)
 
     # Compability

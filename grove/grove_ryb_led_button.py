@@ -17,6 +17,7 @@ Examples:
 
         from grove.button import Button
         import grove.grove_ryb_led_button.GroveLedButton
+        import time
 
         # slot/gpio number your device plugin
         pin = 12
