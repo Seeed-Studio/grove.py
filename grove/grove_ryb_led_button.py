@@ -55,7 +55,7 @@ class GroveLedButton(object):
     and a gpio led with high valid level for lighting.
 
     Args:
-        pin(int): the gpio number your grove device plugin
+        pin(int): the number of gpio/slot your grove device connected.
     '''
     def __init__(self, pin):
         # High = light on
@@ -68,7 +68,7 @@ class GroveLedButton(object):
     @property
     def on_event(self):
         '''
-        Argument
+        Property access with
             callback -- a callable function/object,
                         will be called when there is button event
             callback prototype:

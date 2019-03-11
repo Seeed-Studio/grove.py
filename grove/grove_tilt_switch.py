@@ -1,41 +1,50 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This library is for Grove - Tilt Switch(https://www.seeedstudio.com/Grove-Tilt-Switch-p-771.html)
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 #
-
 '''
-## License
+This is the code for
+    - `Grove - Tilt Switch <https://www.seeedstudio.com/Grove-Tilt-Switch-p-771.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        from grove.grove_tilt_switch import GroveTiltSwitch
+        import time
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # connect to pin 5 (slot D5)
+        PIN = 5
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        swicth = GroveTiltSwitch(pin)
+
+        def on_trigger():
+            print('Triggered')
+        def on_release():
+            print("Released.")
+
+        swicth.on_trigger = on_trigger
+        swicth.on_release = on_release
+
+        while True:
+            time.sleep(1)
 '''
 import time
 from grove.gpio import GPIO
 
+__all__ = ["GroveTiltSwitch"]
 
 class GroveTiltSwitch(GPIO):
+    '''
+    Grove Tilt Switch class
+
+    Args:
+        pin(int): the number of gpio/slot your grove device connected.
+    '''
     def __init__(self, pin):
         super(GroveTiltSwitch, self).__init__(pin, GPIO.IN)
         self._on_trigger = None
@@ -43,6 +52,27 @@ class GroveTiltSwitch(GPIO):
 
     @property
     def on_trigger(self):
+        '''
+        Property access with
+            callback -- a callable function/object,
+                        will be called when there is a switch shorting/on.
+            callback prototype:
+                callback()
+                Returns: none
+
+        Examples:
+            set
+
+            .. code-block:: python
+
+                obj.on_trigger = callback
+
+            get
+
+            .. code-block:: python
+
+                callobj = obj.on_trigger
+        '''
         return self._on_trigger
 
     @on_trigger.setter
@@ -57,6 +87,27 @@ class GroveTiltSwitch(GPIO):
 
     @property
     def on_release(self):
+        '''
+        Property access with
+            callback -- a callable function/object,
+                        will be called when there is a switch releasing.
+            callback prototype:
+                callback()
+                Returns: none
+
+        Examples:
+            set
+
+            .. code-block:: python
+
+                obj.on_release = callback
+
+            get
+
+            .. code-block:: python
+
+                callobj = obj.on_release
+        '''
         return self._on_release
 
     @on_release.setter

@@ -1,43 +1,59 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This code is for
-#   Grove - Mech Keycap (https://www.seeedstudio.com/Grove-Mech-Keycap-p-3138.html)
-# which is a mechanical switch with a build-in LED.
-# The 255 full color RGB LED makes it simple and easy to show the statues of your switch. 
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-#
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
 '''
-## License
+This code is for
+    - `Grove - Mech Keycap <https://www.seeedstudio.com/Grove-Mech-Keycap-p-3138.html>`_
 
-The MIT License (MIT)
+which is a mechanical switch with a build-in LED.
+The 255 full color RGB LED makes it simple and easy to show the statues of your switch. 
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+Examples:
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        from grove.button import Button
+        import grove.grove_mech_keycap.GroveKeycap
+        import time
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # slot/gpio number your device plugin
+        pin = 12
+        obj = GroveKeycap(pin)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        # the default behavior of led is
+        #   single click - on
+        #   double click - blink
+        #   long press   - off
+        # remove \'\'\' pairs below to begin your experiment
+        \'\'\'
+        # define a customized event handle your self
+        def cust_on_event(index, event, tm):
+            # obj.led could be used to operate led
+            print("event with code {}, time {}".format(event, tm))
+
+        obj.on_event = cust_on_event
+        \'\'\'
+        while True:
+            time.sleep(1)
 '''
 import time
 from grove.button import Button
 from grove.factory import Factory
 
+# sphinx autoapi required
+__all__ = ["GroveKeycap"]
+
 class GroveKeycap(object):
+    '''
+    Grove Mech Keycap class
+
+    Args:
+        pin(int): the number of gpio/slot your grove device connected.
+                  for RPi, only 12 or 18 are acceptable.
+    '''
     def __init__(self, pin):
         # High = pressed
         self.__btn = Factory.getButton("GPIO-HIGH", pin)
@@ -48,6 +64,39 @@ class GroveKeycap(object):
 
     @property
     def on_event(self):
+        '''
+        Property access with
+            callback -- a callable function/object,
+                        will be called when there is button event
+            callback prototype:
+                callback(index, code, time)
+            callback argument:
+                Args:
+                    index(int): button index, be in 0 to [button count - 1]
+
+                    code (int): bits combination of
+                              -  Button.EV_LEVEL_CHANGED
+                              -  Button.EV_SINGLE_CLICK
+                              -  Button.EV_DOUBLE_CLICK
+                              -  Button.EV_LONG_PRESS
+
+                    time(time): event generation time
+
+                Returns: none
+
+        Examples:
+            set
+
+            .. code-block:: python
+
+                obj.on_event = callback
+
+            get
+
+            .. code-block:: python
+
+                callobj = obj.on_event
+        '''
         return self.__on_event
 
     @on_event.setter
@@ -88,10 +137,15 @@ def main():
 
     ledbtn = GroveKeycap(pin)
 
+    # the default behavior of led is
+    #   single click - on
+    #   double click - blink
+    #   long press   - off
     # remove ''' pairs below to begin your experiment
     '''
     # define a customized event handle your self
     def cust_on_event(index, event, tm):
+        # obj.led could be used to operate led
         print("event with code {}, time {}".format(event, tm))
 
     ledbtn.on_event = cust_on_event

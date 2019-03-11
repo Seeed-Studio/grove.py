@@ -1,51 +1,65 @@
-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This library is for Grove - Switch(P)(https://www.seeedstudio.com/Grove-Switch%28P%29-p-1252.html)
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 #
-
 '''
-## License
+This is the code for
+    - `Grove - Switch(P) <https://www.seeedstudio.com/Grove-Switch-p-1252.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        from grove.grove_switch import GroveSwitch
+        import time
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # connect to pin 5 (slot D5)
+        PIN = 5
+        swicth = GroveSwitch(PIN)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        while True:
+            if swicth.state:
+                print("high")
+            else:
+                print("low")
+            time.sleep(1)
+
 '''
 import time
 from grove.gpio import GPIO
 
+__all__ = ['GroveSwitch']
 
-class GroveTiltSwitch(GPIO):
+class GroveSwitch(GPIO):
+    '''
+    Grove Switch class
+
+    Args:
+        pin(int): the number of gpio/slot your grove device connected.
+    '''
     def __init__(self, pin):
-        super(GroveTiltSwitch, self).__init__(pin, GPIO.IN)
+        super(GroveSwitch, self).__init__(pin, GPIO.IN)
 
     @property
     def state(self):
-        return super(GroveTiltSwitch, self).read()
+        '''
+        Read only property to get switch status.
+
+        Returns:
+            (bool):
+
+                - True:  switch high
+                - False: switch low
+
+        '''
+        return bool(super(GroveSwitch, self).read())
 
 
-Grove = GroveTiltSwitch
+Grove = GroveSwitch
 
 
 def main():
@@ -53,13 +67,13 @@ def main():
     sh = SlotHelper(SlotHelper.GPIO)
     pin = sh.argv2pin()
 
-    swicth = GroveTiltSwitch(pin)
+    swicth = GroveSwitch(pin)
 
     while True:
-        if swicth.state is 1:
-            print("on")
+        if swicth.state:
+            print("HIGH")
         else:
-            print("off")
+            print("LOW")
         time.sleep(1)
 
 
