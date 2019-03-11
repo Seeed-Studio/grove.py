@@ -14,7 +14,7 @@ Examples:
     .. code-block:: python
 
         import time
-        from grove.grove_led import GroveLed
+        from grove.grove_sound_sensor import GroveSoundSensor
 
         # connect to alalog pin 2(slot A2)
         PIN = 2
@@ -34,7 +34,7 @@ __all__ = ['GroveSoundSensor']
 
 class GroveSoundSensor(object):
     '''
-    Class for Grove - Sound Sensor
+    Grove Sound Sensor class
 
     Args:
         pin(int): number of analog pin/channel the sensor connected.

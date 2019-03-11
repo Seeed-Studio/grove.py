@@ -1,51 +1,60 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This library is for Grove - Thumb Joystick(https://www.seeedstudio.com/Grove-Thumb-Joystick-p-935.html)
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-#
-
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 '''
-## License
+This is the code for
+    - `Grove - Thumb Joystick <https://www.seeedstudio.com/Grove-Thumb-Joystick-p-935.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        import time
+        from grove.grove_thumb_joystick import GroveThumbJoystick
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # connect to alalog pin 2(slot A2)
+        PIN = 2
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        sensor = GroveThumbJoystick(PIN)
+
+        while True:
+            x, y = sensor.value
+            if x > 900:
+                print('Joystick Pressed')
+            print("X, Y = {0} {1}".format(x, y))
+            time.sleep(.2)
 '''
 import math
 import sys
 import time
 from grove.adc import ADC
 
+__all__ = ['GroveThumbJoystick']
 
-class GroveThumbJoystick:
+class GroveThumbJoystick(object):
+    '''
+    Grove Thumb Joystick class
 
-    def __init__(self, channelX, channelY):
-        self.channelX = channelX
-        self.channelY = channelY
+    Args:
+        channel(int): number of analog pin/channel the sensor connected.
+    '''
+    def __init__(self, channel):
+        self.channelX = channel
+        self.channelY = channel + 1
         self.adc = ADC()
 
     @property
     def value(self):
+        '''
+        Get the water strength value
+
+        Returns:
+            (pair): x-ratio, y-ratio, all are 0(0.0%) - 1000(100.0%)
+        '''
         return self.adc.read(self.channelX), self.adc.read(self.channelY)
 
 Grove = GroveThumbJoystick
@@ -56,7 +65,7 @@ def main():
     sh = SlotHelper(SlotHelper.ADC)
     pin = sh.argv2pin()
 
-    sensor = GroveThumbJoystick(pin, pin + 1)
+    sensor = GroveThumbJoystick(pin)
 
     while True:
         x, y = sensor.value

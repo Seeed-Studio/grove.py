@@ -1,49 +1,50 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This code is for Grove - Optical Rotary Encoder(TCUT1600X01)
-# (https://www.seeedstudio.com/Grove-Optical-Rotary-Encoder-TCUT1600X0-p-3142.html)
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-#
-# Author: Peter Yang <linsheng.yang@seeed.cc>
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
 # Copyright (C) 2018  Seeed Technology Co.,Ltd.
 #
 # Author: Zion Orent <zorent@ics.com>
 # Copyright (c) 2015 Intel Corporation.
 #
 '''
-## License
+This is the code for
+    - Grove - Optical Rotary Encoder(TCUT1600X01) <https://www.seeedstudio.com/Grove-Optical-Rotary-Encoder-TCUT1600X0-p-3142.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        from grove.grove_button import GroveButton
+        import time, sys
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # connect to pin 5 (slot D5)
+        PIN = 5
+        encoder = GroveOpticalRotaryEncoder(PIN)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        # Read the value every second and detect motion
+        while True:
+            print("\rPosition: {0}  ".format(encoder.position()), file=sys.stderr, end='')
+            time.sleep(0.001)
+
 '''
 from __future__ import print_function
 import time, sys, signal, atexit
 from grove.gpio import GPIO
 
+__all__ = ["GroveOpticalRotaryEncoder"]
+
 # The UPM version rotaryencoder has bug result in segment fault.
 # This pure python version could work well.
 class GroveOpticalRotaryEncoder(object):
+    '''
+    Grove optical Rotary Encoder(TCUT1600X01) class
+
+    Args:
+        pin(int): the number of gpio/slot your grove device connected.
+    '''
     def __init__(self, pin1, pin2 = None):
         pin2 = pin1 + 1 if pin2 is None else pin2
         self.__gpio  = GPIO(pin1, GPIO.IN)
@@ -59,9 +60,18 @@ class GroveOpticalRotaryEncoder(object):
         self._pos += 1 if v2 else -1
 
     def position(self, pos = None):
-        "set or get the position counter"
-        "    pos    --- the position counter to be set"
-        "    return current position counter"
+        '''
+        set or get the position counter
+
+        Args:
+            pos(int):
+                optinal, the position counter to be set.
+
+                if not specified, only get the current counter
+
+        Returns:
+            (int): current position counter
+        '''
         if not pos is None:
             self._pos = pos
         return self._pos
@@ -99,7 +109,7 @@ def main():
 
     # Read the value every second and detect motion
     counter = 0
-    while(1):
+    while True:
         print("\rPosition: {0}  ".format(myRotaryEncoder.position()), file=sys.stderr, end='')
         counter += 1
         if counter >= 5000:

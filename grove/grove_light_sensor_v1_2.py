@@ -1,50 +1,55 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This library is for Grove - Light Sensor V1.2(https://www.seeedstudio.com/Grove-Light-Sensor-v1.2-p-2727.html)
+# The MIT License (MIT)
 #
-# This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-#
-
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 '''
-## License
+This is the code for
+    - `Grove - Light Sensor <https://www.seeedstudio.com/Grove-Light-Sensor-v1.2-p-2727.html>`_
 
-The MIT License (MIT)
+Examples:
 
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+    .. code-block:: python
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+        import time
+        from grove.grove_light_sensor import GroveLightSensor
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+        # connect to alalog pin 2(slot A2)
+        PIN = 2
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+        sensor = GroveLightSensor(pin)
+
+        print('Detecting light...')
+        while True:
+            print('Light value: {0}'.format(sensor.light))
+            time.sleep(1)
 '''
-import math
-import sys
-import time
+import time, sys, math
 from grove.adc import ADC
 
+__all__ = ["GroveLightSensor"]
 
-class GroveLightSensor:
+class GroveLightSensor(object):
+    '''
+    Grove Light Sensor class
 
+    Args:
+        pin(int): number of analog pin/channel the sensor connected.
+    '''
     def __init__(self, channel):
         self.channel = channel
         self.adc = ADC()
 
     @property
     def light(self):
+        '''
+        Get the light strength value, maximum value is 100.0%
+
+        Returns:
+            (int): ratio, 0(0.0%) - 1000(100.0%)
+        '''
         value = self.adc.read(self.channel)
         return value
 
