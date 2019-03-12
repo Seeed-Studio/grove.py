@@ -54,12 +54,12 @@ class GroveMoistureSensor:
     @property
     def moisture(self):
         '''
-        Get the moisture strength value
+        Get the moisture strength value/voltage
 
         Returns:
-            (int): ratio, 0(0.0%) - 1000(100.0%)
+            (int): voltage, in mV
         '''
-        value = self.adc.read(self.channel)
+        value = self.adc.read_voltage(self.channel)
         return value
 
 Grove = GroveMoistureSensor
