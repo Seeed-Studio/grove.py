@@ -1,5 +1,17 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# The MIT License (MIT)
+#
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
+#
+'''
+This is the grove.gpio.GPIO implemented by RPi.GPIO.
+'''
 import RPi.GPIO
+
+__all__ = ['GPIO']
 
 RPi.GPIO.setwarnings(False)
 RPi.GPIO.setmode(RPi.GPIO.BCM)

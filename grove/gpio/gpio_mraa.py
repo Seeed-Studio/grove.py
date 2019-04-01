@@ -1,16 +1,30 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# The MIT License (MIT)
+#
+# Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
+#
+'''
+This is the grove.gpio.GPIO implemented by mraa.Gpio.
+'''
 import mraa
 
+__all__ = ['GPIO']
 
 class GPIO(mraa.Gpio):
     OUT = mraa.DIR_OUT
     IN = mraa.DIR_IN
     
-    def __init__(self, pin, direction=None):
-        super(GPIO, self).__init__(pin, raw = True)
+    def __init__(self, pin, direction = None):
+        mraa_pin = mraa.getGpioLookup("GPIO%02d" % pin)
+        super(GPIO, self).__init__(mraa_pin, raw = False)
         self.pin = pin
 
         if direction is not None:
+            if direction == self.OUT:
+                self.edge(mraa.EDGE_NONE)
             self.dir(direction)
 
         self._event_handle = None
