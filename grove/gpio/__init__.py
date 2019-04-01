@@ -7,4 +7,4 @@ except ImportError:
 
 from grove.gpio.wrapper import GPIOWrapper
 
-
+__all__ = ['GPIO', 'GPIOWrapper']
