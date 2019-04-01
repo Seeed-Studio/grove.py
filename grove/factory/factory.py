@@ -33,7 +33,6 @@ THE SOFTWARE.
 '''
 from __future__ import print_function
 import sys
-from enum import Enum
 from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
@@ -102,20 +101,20 @@ _stepper_motor_YH42BYGH40 = {
 }
 
 class __factory(object):
-    ButtonEnum = Enum('Button', ("GPIO-LOW", "GPIO-HIGH", "I2C", "I2C-POLL"))
-    OneLedEnum = Enum('OneLed', ("GPIO-LOW", "GPIO-HIGH", "WS2812-PWM"))
-    TemperEnum = Enum('Temper', ("NTC-ADC",  "MCP9808-I2C"))
-    GPIOWrapperEnum = Enum('GPIOWrapper', ("PIRMotion", "Buzzer", "Electromagnet", "Relay"))
-    StepperMotorEnum = Enum('StepperMotor', ("28BYJ48", "24BYJ48", "YH42BYGH40"))
-    DisplayEnum = Enum('Display', ("JHD1802", "SH1107G"))
+    ButtonEnum = ('Button', "GPIO-LOW", "GPIO-HIGH", "I2C", "I2C-POLL")
+    OneLedEnum = ('OneLed', "GPIO-LOW", "GPIO-HIGH", "WS2812-PWM")
+    TemperEnum = ('Temper', "NTC-ADC",  "MCP9808-I2C")
+    GPIOWrapperEnum = ('GPIOWrapper', "PIRMotion", "Buzzer", "Electromagnet", "Relay")
+    StepperMotorEnum = ('StepperMotor', "28BYJ48", "24BYJ48", "YH42BYGH40")
+    DisplayEnum = ('Display', "JHD1802", "SH1107G")
 
     def __init__(self):
         pass
 
     def __avail_list(self, typ, enum):
-        print("Factory.get: Wrong {} type specified {}".format(enum, typ))
+        print("Factory.get: Wrong {} type specified {}".format(enum[0], typ))
         print("Available types: ", end='')
-        for name,_ in enum.__members__.items():
+        for name in enum[1:]:
             print(name, ',', sep='', end='')
         print("\b ")
 
