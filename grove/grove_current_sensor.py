@@ -11,8 +11,11 @@ This is the code for
     - `Grove - 2.5A DC current sensor  <https://www.seeedstudio.com>`_
     - `Grove - 5A AC/DC current sensor <https://www.seeedstudio.com>`_
     - `Grove - 10A current sensor      <https://www.seeedstudio.com>`_
+    
 Examples:
+
     .. code-block:: python
+    
         import time
         from grove.i2c import Bus
 
@@ -38,6 +41,7 @@ Examples:
             print(current)
             print
             time.sleep(1)
+            
 '''
 
 import time
