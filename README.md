@@ -1,3 +1,5 @@
+![](https://user-images.githubusercontent.com/4081906/55451417-67559d00-5605-11e9-96b3-4c6bdd3e770c.png)
+
 grove.py
 ========
 
@@ -107,4 +109,16 @@ click [here](https://seeed-studio.github.io/grove.py)
 
 [how to update me](sphinx/README.md)
 
-
+<br><br>
+## Contribution
+Check list for adding a new grove device, for simple, take [grove_led](grove/grove_led.py) as a example.
+- Add a Class in the python source file, and export with `__all__ =`
+- Code sytle pep8 is recommanded
+- The python source could run directly with `python <file>` and `python3 <file>`
+- Add demo code at the near top of source file
+- The demo code could run directly with someone python/python3 IDE.
+- Add document to class and it's member and show the result by refering to [API document](#api-documentation)
+- Add a command item in setup.py `console_scripts` list
+- Add a item to command table in [Usage Doc](doc/README.md)
+- If the command need argument but not specified, please list available arguments.
+- If specified invalid argument, also output usage document then exit.
