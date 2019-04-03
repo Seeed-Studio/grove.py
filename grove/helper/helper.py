@@ -1,35 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
-# This is the library for Grove Base Hat.
+# The MIT License (MIT)
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 #
-# Helper Classes
-#
-
+# This is the library for Grove Base Hat
+# which used to connect grove sensors for Raspberry Pi.
 '''
-## License
+This is Helper Classes
 
-The MIT License (MIT)
-
-Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 '''
 from __future__ import print_function
 from grove.adc import *
@@ -37,6 +16,7 @@ import time
 import sys
 import os
 import re
+import io
 
 _SlotsGPIORpi     = { 5:"D5", 12:"PWM", 16:"D16", 18:"D18", 22:"D22", 24:"D24", 26:"D26" }
 _SlotsGPIORpiZero = { 5:"D5", 12:"PWM", 16:"D16"           }
@@ -45,6 +25,14 @@ _SlotsADCRpiZero  = { 0:"A0",  2:"A2",   4:"A4"            }
 _SlotsPWMRpi      = {         12:"PWM",           18:"D18" }
 _SlotsPWMRpiZero  = {         12:"PWM"                     }
 _SlotsNull        = { }
+
+PLATFORM_UNKOWN      = 0
+PLATFORM_RPI         = 1
+PLATFORM_RPI_ZERO    = 2
+PLATFORM_CORAL       = 3
+PLATFORM_JETSON_NANO = 4
+
+__all__ = ['SlotHelper', 'OverlayHelper']
 
 class SlotHelper(object):
     # Slot types
@@ -56,21 +44,34 @@ class SlotHelper(object):
 
     def __init__(self, slot):
         adc = ADC()
-        name = adc.name
-        print("Hat Name = '{}'".format(name))
-        if name == RPI_ZERO_HAT_NAME:
+        self.name = adc.name
+        print("Hat Name = '{}'".format(self.name))
+
+        self.plat = self.get_platform()
+
+        if self.name == RPI_ZERO_HAT_NAME:
             self.__hat_type = RPI_ZERO_HAT_PID
             self.__slots_gpio = _SlotsGPIORpiZero
             self.__slots_adc  = _SlotsADCRpiZero
             self.__slots_pwm  = _SlotsPWMRpiZero
-        elif name != RPI_HAT_NAME:
-            print("Unknown hat, assume {}".format(RPI_HAT_NAME))
-        if name != RPI_ZERO_HAT_NAME:
+        else:
+            if self.name != RPI_HAT_NAME:
+                print("Unknown hat, assume {}".format(RPI_HAT_NAME))
             self.__hat_type = RPI_HAT_PID
             self.__slots_gpio = _SlotsGPIORpi
             self.__slots_adc  = _SlotsADCRpi
             self.__slots_pwm  = _SlotsPWMRpi
         self.__slots_i2c = _SlotsNull
+
+        # fix support for specific platform
+        if self.plat == PLATFORM_CORAL:
+            self.__slots_gpio.pop(12)
+            self.__slots_gpio.pop(18)
+            self.__slots_gpio.pop(22)
+
+            self.__slots_pwm.pop(18)
+            self.__slots_pwm[22] = 'D22'
+
         maps = {                       \
                 SlotHelper.GPIO:self.__slots_gpio, \
                 SlotHelper.ADC :self.__slots_adc,  \
@@ -121,6 +122,15 @@ class SlotHelper(object):
             self.list_avail()
             sys.exit(1)
         return pin
+
+    def get_platform(self):
+        plat = PLATFORM_UNKOWN
+        model = io.open("/proc/device-tree/model").read().strip()
+        if   re.match(r"^Raspberry Pi.*", model) is not None:
+            plat = PLATFORM_RPI_ZERO if self.name == RPI_ZERO_HAT_NAME else PLATFORM_RPI
+        elif re.match(r"^Freescale i.MX8MQ Phanbell.*", model) is not None:
+            plat = PLATFORM_CORAL
+        return plat
 
 def root_check():
     if os.geteuid() != 0:
@@ -191,6 +201,11 @@ class OverlayHelper(object):
 
 
 if __name__ == '__main__':
+    helper = SlotHelper(SlotHelper.PWM)
+    helper.list_avail()
+    print("platform = {}".format(helper.plat))
+    sys.exit(0)
+
     print("module w1_therm installed: {}"
           .format(__module_installed("w1_therm")))
     module_install("w1_therm", "")
