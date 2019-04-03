@@ -4,7 +4,7 @@
 # The MIT License (MIT)
 #
 # Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-# Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+# Copyright (C) 2018  Seeed Technology Co.,Ltd.
 '''
 This is the code for
     - `Grove - 5-Way Switch          <https://www.seeedstudio.com/Grove-5-Way-Switch-p-3136.html>`_

@@ -4,11 +4,14 @@ grove.py
 [![Build Status](https://travis-ci.org/Seeed-Studio/grove.py.svg?branch=master)](https://travis-ci.org/Seeed-Studio/grove.py)
 [![](https://img.shields.io/pypi/v/grove.py.svg)](https://pypi.python.org/pypi/grove.py)
 
-Python library for Seeedstudio Grove Devices on embeded Linux platform.
+Python library for Seeedstudio Grove Devices on embeded Linux platform, especially good on below platforms:
+- [Coral Dev Board](https://www.seeedstudio.com/Coral-Dev-Board-p-2900.html)
+- [NVIDIA Jetson Nano](https://www.seeedstudio.com/NVIDIA-Jetson-Nano-Development-Kit-p-2916.html)
+- [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html)
 
 <br><br>
 # Archtecture
-To operate grove sensors, the grove.py depends many hardware interface libraries such as mraa/smbus2/rpi.gpi/rpi_ws281x. 
+To operate grove sensors, the grove.py depends many hardware interface libraries such as mraa/upm/smbus2. 
 
 <br>
 
@@ -28,12 +31,15 @@ curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo b
 ```
 
 ### Install Dependencies
-#### Install MRAA and UPM for Raspberry Pi
+#### Install MRAA and UPM
 
 - Add repository
 
 ```shell
+# RPi
 echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
+# Coral Dev Board
+echo "deb https://seeed-studio.github.io/pi_repo/ mendel-beaker main" | sudo tee /etc/apt/sources.list.d/seeed.list
 ```
 
 - Add public GPG key
@@ -41,11 +47,10 @@ echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/
 ```shell
 curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
 ```
-or
 
-```shell
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
-```
+[^_^]:
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
+
 
 - Install MRAA & UPM
 
@@ -57,13 +62,13 @@ sudo apt install python-mraa python-upm
 sudo apt install python3-mraa python3-upm
 ```
 
-#### Install library raspberry-gpio-python
+#### Install library raspberry-gpio-python for RPi
 ```shell
 sudo apt update
 sudo apt install python-rpi.gpio python3-rpi.gpio
 ```
 
-#### Install library rpi_ws281x
+#### Install library rpi_ws281x for RPi
 ```shell
 sudo pip install rpi_ws281x
 sudo pip3 install rpi_ws281x
@@ -72,18 +77,16 @@ sudo pip3 install rpi_ws281x
 <br>
 
 ### Install grove.py
-#### From PyPI
-- For Python2
 
-```shell
-sudo pip install grove.py
-```
+[^_^]:
+    #### From PyPI
+    ```shell
+    # python2
+    sudo pip install grove.py
+    # python3
+    sudo pip3 install grove.py
+    ```
 
-- For Python3
-
-```shell
-sudo pip3 install grove.py
-```
 #### From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
@@ -103,4 +106,5 @@ See [demos and how to run](doc/README.md)
 click [here](https://seeed-studio.github.io/grove.py)
 
 [how to update me](sphinx/README.md)
+
 
