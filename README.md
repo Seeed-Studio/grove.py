@@ -22,7 +22,8 @@ To operate grove sensors, the grove.py depends many hardware interface libraries
 <br><br>
 # Installation
 For beginner or library user only, please install with online method.<br>
-For developer, please install dependencies and then install grove.py with source code.
+For developer or advanced user, please install [dependencies](doc/INSTALL.md#install-dependencies)
+and then install grove.py with [source code](#install-grovepy).
 
 <br>
 
@@ -32,64 +33,10 @@ install/update all dependencies and latest grove.py
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
 
-### Install Dependencies
-#### Install MRAA and UPM
-
-- Add repository
-
-```shell
-# RPi
-echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
-# Coral Dev Board
-echo "deb https://seeed-studio.github.io/pi_repo/ mendel-beaker main" | sudo tee /etc/apt/sources.list.d/seeed.list
-```
-
-- Add public GPG key
-
-```shell
-curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
-```
-
-[^_^]:
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
-
-
-- Install MRAA & UPM
-
-```shell
-sudo apt update
-# Python2
-sudo apt install python-mraa python-upm
-# Python3
-sudo apt install python3-mraa python3-upm
-```
-
-#### Install library raspberry-gpio-python for RPi
-```shell
-sudo apt update
-sudo apt install python-rpi.gpio python3-rpi.gpio
-```
-
-#### Install library rpi_ws281x for RPi
-```shell
-sudo pip install rpi_ws281x
-sudo pip3 install rpi_ws281x
-```
-
 <br>
 
 ### Install grove.py
-
-[^_^]:
-    #### From PyPI
-    ```shell
-    # python2
-    sudo pip install grove.py
-    # python3
-    sudo pip3 install grove.py
-    ```
-
-#### From source code
+From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
@@ -101,7 +48,22 @@ sudo pip3 install .
 
 <br><br>
 ## Usage
-See [demos and how to run](doc/README.md)
+Basic GPIO Input & Output demo
+```python
+import time
+from grove.gpio import GPIO
+
+led = GPIO(12, GPIO.OUT)
+button = GPIO(22, GPIO.IN)
+
+while True:
+    if button.read():
+        led.write(1)
+    else:
+        led.write(0)
+    time.sleep(0.1)
+```
+See more [demos and how to run](doc/README.md)
 
 <br><br>
 ## API Documentation
@@ -113,12 +75,12 @@ click [here](https://seeed-studio.github.io/grove.py)
 ## Contribution
 Check list for adding a new grove device, for simple, take [grove_led](grove/grove_led.py) as a example.
 - Add a Class in the python source file, and export with `__all__ =`
-- Code sytle pep8 is recommanded
+- Code sytle [PEP8](https://www.python.org/dev/peps/pep-0008) is recommanded
 - The python source could run directly with `python <file>` and `python3 <file>`
 - Add demo code at the near top of source file
 - The demo code could run directly with someone python/python3 IDE.
 - Add document to class and it's member and show the result by refering to [API document](#api-documentation)
-- Add a command item in setup.py `console_scripts` list
+- Add a command item in setup.py `console_scripts` list, take effect by [install again](#install-grovepy)
 - Add a item to command table in [Usage Doc](doc/README.md)
 - If the command need argument but not specified, please list available arguments.
 - If specified invalid argument, also output usage document then exit.

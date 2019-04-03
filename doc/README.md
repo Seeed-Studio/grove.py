@@ -551,22 +551,6 @@ while True:
     time.sleep(1)
 ```
 
-### Basic GPIO Input & Output
-```python
-import time
-from grove.gpio import GPIO
-
-led = GPIO(12, GPIO.OUT)
-button = GPIO(22, GPIO.IN)
-
-while True:
-    if button.read():
-        led.write(1)
-    else:
-        led.write(0)
-    time.sleep(0.1)
-```
-
 ### PIR Motion Sensor
 #### mini PIR motion sensor
 ```python
