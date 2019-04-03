@@ -141,38 +141,52 @@ class Current():
 
 ADC = Current()
 def main():
-    pin = int(sys.argv[1])
-    sensor_type = sys.argv[2]
+    if(len(sys.argv) == 3):
 
-    if (sensor_type == "2.5A"):
-        sensitivity = 1000.0 / 800.0
-        Vref = 260
-    if (sensor_type == "5A_DC"):
-        sensitivity = 1000.0 / 200.0
-        Vref = 1498
-    if (sensor_type == "5A_AC"):
-        sensitivity = 1000.0 / 200.0
-        Vref = 1498
-    if (sensor_type == "10A"):
-        sensitivity = 1000.0 / 264.0
-        Vref = 322
-    averageValue = 500
-    
-    while True:
-        pin_voltage = ADC.get_nchan_vol_milli_data(pin)
+        pin = int(sys.argv[1])
+        sensor_type = sys.argv[2]
+        if (pin < 8 and (sensor_type == "2.5A" or sensor_type == "5A_DC" or sensor_type == "5A_AC" or sensor_type == "10A") ):
+            if (sensor_type == "2.5A"):
+                sensitivity = 1000.0 / 800.0
+                Vref = 260
+            if (sensor_type == "5A_DC"):
+                sensitivity = 1000.0 / 200.0
+                Vref = 1498
+            if (sensor_type == "5A_AC"):
+                sensitivity = 1000.0 / 200.0
+                Vref = 1498
+            if (sensor_type == "10A"):
+                sensitivity = 1000.0 / 264.0
+                Vref = 322
+            averageValue = 500
 
-        if(sensor_type == "5A_AC"):
-            current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
+            while True:
+                pin_voltage = ADC.get_nchan_vol_milli_data(pin)
+
+                if(sensor_type == "5A_AC"):
+                    current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
+                else:
+                    current = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
+
+                current = round(current)
+                print("pin_voltage(mV):")
+                print(pin_voltage)
+                print("current(mA):")
+                print(current)
+                print()
+                time.sleep(1)
+            
         else:
-            current = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
-        
-        current = round(current)
-        print("pin_voltage(mV):")
-        print(pin_voltage)
-        print("current(mA):")
-        print(current)
-        print()
-        time.sleep(1)
+            print("parameter input error!")
+            print("Please enter parameters for example: python grove_current_sensor 0 2.5A")
+            print("parameter1: 0-7")
+            print("parameter2: 2.5A/5A_DC/5A_AC/10A")
+    
+    else:
+        print("Please enter parameters for example: python grove_current_sensor 0 2.5A")
+        print("parameter1: 0-7")
+        print("parameter2: 2.5A/5A_DC/5A_AC/10A")
+    
     
 if __name__ == '__main__':
     main()
