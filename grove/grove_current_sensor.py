@@ -38,7 +38,7 @@ Examples:
 
         ADC = Current()
         while True:
-            pin_voltage = ADC.get_nchan_vol_milli_data(pin)
+            pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
 
             if(sensor_type == "5A_AC"):
                 current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
@@ -87,16 +87,20 @@ class Current():
         self.bus = Bus(bus_num)
         self.addr = addr
   
-    def get_nchan_vol_milli_data(self,n):
+    def get_nchan_vol_milli_data(self,n,averageValue):
         '''
         Get n chanel data with unit mV.
 
         :param int n: the adc pin.
+        :param int averageValue: Average acquisition frequency.
         Returns: 
             int: voltage value
         '''
-        data = self.bus.read_i2c_block_data(self.addr,REG_VOL_START+n,2)
-        val = data[1]<<8|data[0]
+        val = 0
+        for i in range(averageValue):
+            data = self.bus.read_i2c_block_data(self.addr,REG_VOL_START+n,2)
+            val += data[1]<<8|data[0]
+        val = val / averageValue
         return val
 
     def get_nchan_current_data(self,n,sensitivity,Vref,averageValue):
@@ -161,7 +165,7 @@ def main():
             averageValue = 500
 
             while True:
-                pin_voltage = ADC.get_nchan_vol_milli_data(pin)
+                pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
 
                 if(sensor_type == "5A_AC"):
                     current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
