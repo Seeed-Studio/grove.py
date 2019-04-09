@@ -7,12 +7,12 @@ grove.py
 [![](https://img.shields.io/pypi/v/grove.py.svg)](https://pypi.python.org/pypi/grove.py)
 
 Python library for Seeedstudio Grove Devices on embeded Linux platform, especially good on below platforms:
-- [Coral Dev Board](https://www.seeedstudio.com/Coral-Dev-Board-p-2900.html)
-- [NVIDIA Jetson Nano](https://www.seeedstudio.com/NVIDIA-Jetson-Nano-Development-Kit-p-2916.html)
-- [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html)
+- [Coral Dev Board](https://www.seeedstudio.com/Coral-Dev-Board-p-2900.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
+- [NVIDIA Jetson Nano](https://www.seeedstudio.com/NVIDIA-Jetson-Nano-Development-Kit-p-2916.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
+- [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
 
 <br><br>
-# Archtecture
+# Architecture
 To operate grove sensors, the grove.py depends many hardware interface libraries such as mraa/upm/smbus2. 
 
 <br>
@@ -25,15 +25,11 @@ For beginner or library user only, please install with online method.<br>
 For developer or advanced user, please install [dependencies](doc/INSTALL.md#install-dependencies)
 and then install grove.py with [source code](#install-grovepy).
 
-<br>
-
 ### Online install
 install/update all dependencies and latest grove.py
 ```shell
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
-
-<br>
 
 ### Install grove.py
 From source code

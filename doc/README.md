@@ -28,7 +28,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>1-Wire</td>
     </tr>
     <tr align="center">
-      <td><a href="https://www.seeedstudio.com/s/Grove-3-Axis-Digital-Compass-V2-p-3034.html">3-Axis Digital Compass V2</a></td>
+      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Compass-V2-p-3034.html">3-Axis Digital Compass V2</a></td>
       <td>grove_3_axis_compass_bmm150</td>
       <td>y</td>
       <td></td>
@@ -81,7 +81,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>arg1 - analog pin</td>
     </tr>
     <tr align="center">
-      <td><a href="https://www.seeedstudio.com/s/Grove-Button-p-766.html">Button</a></td>
+      <td><a href="https://www.seeedstudio.com/Grove-Button-p-766.html">Button</a></td>
       <td>grove_button</td>
       <td>y</td>
       <td>&bull;</td>
@@ -102,7 +102,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>arg1 - digital pin</td>
     </tr>
     <tr align="center">
-      <td><a href="http://www.seeedstudio.com/depot/Grove-Gesture-p-2463.html">Gesture Sensor v1.0</a></td>
+      <td><a href="http://www.seeedstudio.com/Grove-Gesture-p-2463.html">Gesture Sensor v1.0</a></td>
       <td>grove_gesture_sensor</td>
       <td>y</td>
       <td></td>
@@ -126,7 +126,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
     </tr>
     <tr align="center">
       <td>
-        <a href="http://www.seeedstudio.com/depot/Grove-I2C-Motor-Driver-p-907.html">I2C Motor Driver</a>
+        <a href="http://www.seeedstudio.com/Grove-I2C-Motor-Driver-p-907.html">I2C Motor Driver</a>
       </td>
       <td>grove_i2c_motor_driver</td>
       <td>y</td>
@@ -277,7 +277,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>&bull;</td>
       <td>
 <pre>
-arg1 - digital pin<br>
+arg1 - digital pin
 arg2 - record duration
        in seconds
 </pre>
@@ -285,7 +285,7 @@ arg2 - record duration
     </tr>
     <tr align="center">
       <td>
-        <a href="https://www.seeedstudio.com/s/Grove-Relay-p-769.html">Relay</a>
+        <a href="https://www.seeedstudio.com/Grove-Relay-p-769.html">Relay</a>
       </td>
       <td>grove_relay</td>
       <td>y</td>
@@ -385,7 +385,7 @@ arg2 - record duration
       <td></td>
       <td>
 <pre>
-arg1 - digital pin<br>
+arg1 - digital pin
 arg2 - dht_type, 
        could be 11 or 22,
        represent DHT11, DHT22/AM2302
@@ -493,7 +493,7 @@ arg2 - dht_type,
       <td></td>
       <td>
 <pre>
-arg1 - PWM pin<br>
+arg1 - PWM pin
 arg2 - led count,
        could be 30, 60, 144
        for the three models listed left.
@@ -502,6 +502,7 @@ arg2 - led count,
     </tr>
   </table>
 </div>
+
 &bull; means supported but prefix `sudo` must be provided.<br>
 `y` means supported without prefix `sudo`.
 

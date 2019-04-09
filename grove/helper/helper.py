@@ -26,12 +26,6 @@ _SlotsPWMRpi      = {         12:"PWM",           18:"D18" }
 _SlotsPWMRpiZero  = {         12:"PWM"                     }
 _SlotsNull        = { }
 
-PLATFORM_UNKOWN      = 0
-PLATFORM_RPI         = 1
-PLATFORM_RPI_ZERO    = 2
-PLATFORM_CORAL       = 3
-PLATFORM_JETSON_NANO = 4
-
 __all__ = ['SlotHelper', 'OverlayHelper']
 
 class SlotHelper(object):
@@ -42,7 +36,14 @@ class SlotHelper(object):
     I2C  = 3
     UART = 4
 
-    def __init__(self, slot):
+    # Platform types
+    PLATFORM_UNKOWN      = 0
+    PLATFORM_RPI         = 1
+    PLATFORM_RPI_ZERO    = 2
+    PLATFORM_CORAL       = 3
+    PLATFORM_JETSON_NANO = 4
+
+    def __init__(self, slot = GPIO):
         adc = ADC()
         self.name = adc.name
         print("Hat Name = '{}'".format(self.name))
@@ -64,7 +65,7 @@ class SlotHelper(object):
         self.__slots_i2c = _SlotsNull
 
         # fix support for specific platform
-        if self.plat == PLATFORM_CORAL:
+        if self.plat == self.PLATFORM_CORAL:
             self.__slots_gpio.pop(12)
             self.__slots_gpio.pop(18)
             self.__slots_gpio.pop(22)
@@ -124,12 +125,12 @@ class SlotHelper(object):
         return pin
 
     def get_platform(self):
-        plat = PLATFORM_UNKOWN
+        plat = self.PLATFORM_UNKOWN
         model = io.open("/proc/device-tree/model").read().strip()
         if   re.match(r"^Raspberry Pi.*", model) is not None:
-            plat = PLATFORM_RPI_ZERO if self.name == RPI_ZERO_HAT_NAME else PLATFORM_RPI
+            plat = self.PLATFORM_RPI_ZERO if self.name == RPI_ZERO_HAT_NAME else self.PLATFORM_RPI
         elif re.match(r"^Freescale i.MX8MQ Phanbell.*", model) is not None:
-            plat = PLATFORM_CORAL
+            plat = self.PLATFORM_CORAL
         return plat
 
 def root_check():
