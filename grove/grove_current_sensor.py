@@ -38,13 +38,15 @@ Examples:
 
         ADC = Current()
         while True:
-            pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
 
             if(sensor_type == "5A_AC"):
+                pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
                 current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
             else:
-                current = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
-
+                temp = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
+                current = temp[0]
+                pin_voltage = temp[1]
+        
             current = round(current)
             print("pin_voltage(mV):")
             print(pin_voltage)
@@ -120,7 +122,7 @@ class Current():
             val += data[1]<<8|data[0]
         val = val / averageValue
         currentVal = (val - Vref) * sensitivity
-        return currentVal
+        return currentVal,val
 
     def get_nchan_AC_current_data(self,n,sensitivity,Vref,averageValue):
         '''
@@ -165,12 +167,14 @@ def main():
             averageValue = 500
 
             while True:
-                pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
 
                 if(sensor_type == "5A_AC"):
+                    pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
                     current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
                 else:
-                    current = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
+                    temp = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)
+                    current = temp[0]
+                    pin_voltage = temp[1]
 
                 current = round(current)
                 print("pin_voltage(mV):")
