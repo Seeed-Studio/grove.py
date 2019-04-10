@@ -38,7 +38,7 @@ Examples:
 
         ADC = Current()
         while True:
-        
+
             if(sensor_type == "5A_AC"):
                 pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)
                 current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)
