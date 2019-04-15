@@ -11,6 +11,8 @@ EOF
 
 _DEBUG=0
 
+_install_extra_library=true
+
 _package_name=grove.py
 _seeed_source_list=/etc/apt/sources.list.d/seeed.list
 _seeed_apt_key="BB8F 40F3"
@@ -103,7 +105,7 @@ function pip_install() {
 	fields=( $pip_cmd )
 	for ((i = 0; i < 3; i++)); {
 		$pip_cmd
-		pkg_status=$(${fields[0]} list --format=legacy | egrep "$pkg_name " | awk '{ printf "%s", $1; }')
+		pkg_status=$(${fields[0]} list --format=columns | egrep "$pkg_name " | awk '{ printf "%s", $1; }')
 		[ "$pkg_status" == "$pkg_name" ] && return 0
 	}
 	return 1
@@ -121,6 +123,8 @@ function platform_get() {
 		platform=rpi;;
 	Freescale\ i\.MX8MQ\ Phanbell)
 		platform=coral;;
+	jetson-nano)
+		platform=jetson_nano;;
 	*)
 		platform="unknown";;
 	esac
@@ -131,6 +135,10 @@ function platform_get() {
 
 # Get platform type
 platform=$(platform_get)
+
+if [[ "$platform" == "jetson_nano" ]];then
+	_install_extra_library=false
+fi	
 
 do_uninstall=false
 if [ "$1" == "uninstall" ]; then
@@ -145,7 +153,7 @@ fi
 
 ### Uninstall this package ###
 if [ "$do_uninstall" == "true" ]; then
-	# To remove all users installation
+	# To remove all users installaon
 	pip  uninstall -y $_package_name
 	pip3 uninstall -y $_package_name
 	apt-get -y remove python-grove-py
@@ -161,6 +169,8 @@ if [ ! -f $_seeed_source_list ]; then
 		code_name="mendel-beaker";;
 	rpi)
 		code_name="stretch";;
+	jetson_nano)
+		code_name="bionic";;
 	*)
 		code_name="unknown";;
 	esac
@@ -191,7 +201,16 @@ coral)
 
 	## install library enum
 	;;
+jetson_nano)
+	
+	apt_install python-pip	
+	apt_install python3-pip
+	apt_install python-setuptools
+	apt_install python3-setuptools
+	apt_install python-wheel
+	apt_install python3-wheel
 
+	;;
 rpi)
 	### install I2C ###
 	if [ $(get_i2c) -ne 0 ]; then
@@ -225,10 +244,14 @@ esac
 (( r == 0 )) && { apt_install python3-upm; r=$?; }
 
 ## install library libbma456
-(( r == 0 )) && { apt_install libbma456; r=$?; }
+if [[ "$_install_extra_library" == "true" ]];then
+	(( r == 0 )) && { apt_install libbma456; r=$?; }
+fi
 
 ## install library libbmi088
-(( r == 0 )) && { apt_install libbmi088; r=$?; }
+if [[ "$_install_extra_library" == "true" ]];then
+	(( r == 0 )) && { apt_install libbmi088; r=$?; }
+fi
 
 ## install library rpi-ws281x
 if [ "X$platform" == "Xrpi" ]; then
@@ -245,17 +268,23 @@ fi
 (( r == 0 )) && { pip_install smbus2 'pip3 install smbus2'; r=$?; }
 
 ## install library bme680
-(( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
-(( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
+
+if [[ "$_install_extra_library" == "true" ]];then
+	(( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
+	(( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
+fi
 
 ## install library rpi-vl53l0x
-(( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
-(( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
+if [[ "$_install_extra_library" == "true" ]];then
+	(( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
+	(( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
+fi
 
 ## install library sgp30
-(( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
-(( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
-
+if [[ "$_install_extra_library" == "true" ]];then
+	(( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
+	(( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
+fi
 # install this python repository
 (( r == 0 )) && { pip_install grove.py "pip  install --upgrade $_repo_package_url"; r=$?; }
 (( r == 0 )) && { pip_install grove.py "pip3 install --upgrade $_repo_package_url"; r=$?; }
