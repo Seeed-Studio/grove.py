@@ -269,10 +269,8 @@ fi
 
 ## install library bme680
 
-if [[ "$_install_extra_library" == "true" ]];then
-	(( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
-	(( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
-fi
+(( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
+(( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
 
 ## install library rpi-vl53l0x
 if [[ "$_install_extra_library" == "true" ]];then
@@ -281,10 +279,8 @@ if [[ "$_install_extra_library" == "true" ]];then
 fi
 
 ## install library sgp30
-if [[ "$_install_extra_library" == "true" ]];then
-	(( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
-	(( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
-fi
+(( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
+(( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
 # install this python repository
 (( r == 0 )) && { pip_install grove.py "pip  install --upgrade $_repo_package_url"; r=$?; }
 (( r == 0 )) && { pip_install grove.py "pip3 install --upgrade $_repo_package_url"; r=$?; }
