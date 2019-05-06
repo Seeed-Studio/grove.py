@@ -99,15 +99,20 @@ except Exception:
     sys.exit(1)
 
 class BMI08xCfg(Structure):
-    _fields_ = [("power", c_uint8), \
-                ("range", c_uint8), \
-                ("bw",    c_uint8), \
-                ("odr",   c_uint8)]
+    _fields_ = [("power", c_ubyte), \
+                ("range", c_ubyte), \
+                ("bw",    c_ubyte), \
+                ("odr",   c_ubyte)]
+
+
 
 class GroveAccelGyroBMI088(object):
     def __init__(self, acc_addr = BMI088_ACCEL_I2C_ADDR, gyro_addr = BMI088_GYRO_I2C_ADDR):
+        _bmi.rpi_bmi088_alloc.restype = c_char_p
         self._dev = _bmi.rpi_bmi088_alloc()
-        dev_path = "/dev/i2c-{}".format(Bus().bus)
+        dev_path = b"/dev/i2c-%d" %(Bus().bus)
+        
+
         accel_cfg = BMI08xCfg(BMI08X_ACCEL_PM_ACTIVE,
                               BMI088_ACCEL_RANGE_6G,
                               BMI08X_ACCEL_BW_NORMAL,
@@ -116,7 +121,7 @@ class GroveAccelGyroBMI088(object):
                               BMI08X_GYRO_RANGE_1000_DPS,
                               BMI08X_GYRO_BW_23_ODR_200_HZ,
                               BMI08X_GYRO_BW_23_ODR_200_HZ)
-
+        _bmi.rpi_bmi088_init.argtypes = [c_char_p,c_char_p,c_int,c_int,POINTER(BMI08xCfg),POINTER(BMI08xCfg)]
         _bmi.rpi_bmi088_init(self._dev,
                              dev_path,
                              acc_addr,
