@@ -209,7 +209,10 @@ jetson_nano)
 	apt_install python3-setuptools
 	apt_install python-wheel
 	apt_install python3-wheel
-
+	pushd .
+	cd `dirname $0`
+	cp ./udev/jetson-nano/99-tegra-i2cset.rules /etc/udev/rules.d/
+	popd	
 	;;
 rpi)
 	### install I2C ###
