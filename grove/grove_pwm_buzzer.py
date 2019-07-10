@@ -36,6 +36,7 @@ from upm import pyupm_buzzer as upmBuzzer
 
 def main():
     from grove import helper
+    from grove.helper import helper
     helper.root_check()
 
     print("Insert Grove-Buzzer to Grove-Base-Hat slot PWM[12 13 VCC GND]")

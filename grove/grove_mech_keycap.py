@@ -129,6 +129,7 @@ Grove = GroveKeycap
 
 def main():
     from grove import helper
+    from grove.helper import helper
     helper.root_check()
 
     from grove.helper import SlotHelper
