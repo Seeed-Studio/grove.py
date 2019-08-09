@@ -103,7 +103,6 @@ setup(
             'grove_touch_sensor=grove.grove_touch_sensor:main',
             'grove_ultrasonic_ranger=grove.grove_ultrasonic_ranger:main',
             'grove_uv_sensor=grove.grove_uv_sensor:main',
-            'grove_voc_eco2_gas_sgp30=grove.grove_voc_eco2_gas_sgp30:main',
             'grove_water_sensor=grove.grove_water_sensor:main',
             'grove_ws2813_rgb_led_strip=grove.grove_ws2813_rgb_led_strip:main',
             'grove_current_sensor=grove.grove_current_sensor:main'
