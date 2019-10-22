@@ -188,7 +188,7 @@ fi
 r=0
 
 ## Update apt source
-apt update
+apt -y update
 
 case "$platform" in
 coral)
