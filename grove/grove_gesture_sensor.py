@@ -547,12 +547,16 @@ class gesture:
 				return 9
 		return 0
 		
-if __name__ == "__main__":
-	g=gesture()
-	g.init()
-	while True:
-		g.print_gesture()
-		time.sleep(.1)
-		# print g.return_gesture()
-		# time.sleep(.1)
+def main():
+    g = gesture()
+    g.init()
+
+    while True:
+        g.print_gesture()
+        time.sleep(.1)
+        # print g.return_gesture()
+        # time.sleep(.1)
+
+if __name__ == '__main__':
+    main()
 
