@@ -51,7 +51,7 @@ def main():
 
     chords = [upmBuzzer.BUZZER_DO, upmBuzzer.BUZZER_RE, upmBuzzer.BUZZER_MI,
               upmBuzzer.BUZZER_FA, upmBuzzer.BUZZER_SOL, upmBuzzer.BUZZER_LA,
-              upmBuzzer.BUZZER_SI];
+              upmBuzzer.BUZZER_SI]
 
     # Print sensor name
     print(buzzer.name())
