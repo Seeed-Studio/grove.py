@@ -30,7 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 import smbus2 as smbus
-
+from smbus2 import i2c_msg
 class Bus:
     instance = None
     MRAA_I2C = 0
@@ -50,8 +50,7 @@ class Bus:
         if not Bus.instance:
             Bus.instance = smbus.SMBus(bus)
         self.bus = bus
-
+        self.msg = i2c_msg
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
 
