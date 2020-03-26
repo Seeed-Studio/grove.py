@@ -43,6 +43,8 @@ class GPIOWrapper(GPIO):
         else:
             self.__enable_attr  = wrapper["enable-attr"]
             self.__disable_attr = wrapper["disable-attr"]
+        # cannot support py3
+        # super().__init__(pin, self.__dir) if use py3
         super(GPIOWrapper, self).__init__(pin, self.__dir)
 
     def __is_enabled(self):
