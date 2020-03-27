@@ -64,7 +64,7 @@ compats_imx6ull = (
     'fsl,imx6ull-14x14-evkfsl',
     'fsl,imx6ull',
 )
-debian_gpio_data = {
+gpio_data = {
     NPi_i_MX6ULL: (
         NPi_i_MX6ULL_PIN_DEFS,
         {
@@ -77,7 +77,6 @@ debian_gpio_data = {
         }
     ),
 }
-_SYSFS_ROOT = '/sys/class/gpio'
 class ChannelInfo(object):
     def __init__(self, channel, gpio_chip_dir, pin, pwm_chip_dir, pwm_id):
         self.channel = channel
@@ -85,40 +84,10 @@ class ChannelInfo(object):
         self.pin = pin
         self.pwm_chip_dir = pwm_chip_dir
         self.pwm_id = pwm_id
-
-class _Gpios:
-    def __init__(self, gpio, edge=None, bouncetime=None):
-        self.edge = edge
-        self.value_fd = open(_SYSFS_ROOT + "/gpio%i" % gpio + "/value", 'r')
-        self.initial_thread = True
-        self.initial_wait = True
-        self.thread_added = False
-        self.bouncetime = bouncetime
-        self.gpio = gpio
-        self.callbacks = []
-        self.lastcall = 0
-        self.event_occurred = False
-
-    def __del__(self):
-        self.value_fd.close()
-        del self.callbacks
-
 def get_data():
-    compatible_path = '/proc/device-tree/compatible'
-    # gpio_chip_dir = '/sys/class/gpio'
-    
-    with open(compatible_path, 'r') as f:
-        compatibles = f.read().split('\x00')
 
-    def matches(vals):
-        return any(v in compatibles for v in vals)
-
-    if matches(compats_imx6ull):
-        model = NPi_i_MX6ULL
-    else:
-        raise Exception('Could not determine model')
-
-    pin_defs, board_info = debian_gpio_data[model]
+    # pin_defs, board_info = gpio_data[model]
+    pin_defs = NPi_i_MX6ULL_PIN_DEFS
     pwm_dirs = {}
 
     def pwm_dir(chip_dir):
@@ -148,10 +117,29 @@ def get_data():
             pwm_dir(x[6]),
             x[7]) for x in pin_defs}
     channel_data = model_data(BCM, pin_defs)
-    return model, board_info, channel_data
+    return  channel_data
 
-MODEL, BOARD_INFO, CHANNEL_DATA = get_data()
-RPI_INFO = BOARD_INFO
+CHANNEL_DATA = get_data()
+
+_SYSFS_ROOT = '/sys/class/gpio'
+
+
+class _Gpios:
+    def __init__(self, gpio, edge=None, bouncetime=None):
+        self.edge = edge
+        self.value_fd = open(_SYSFS_ROOT + "/gpio%i" % gpio + "/value", 'r')
+        self.initial_thread = True
+        self.initial_wait = True
+        self.thread_added = False
+        self.bouncetime = bouncetime
+        self.gpio = gpio
+        self.callbacks = []
+        self.lastcall = 0
+        self.event_occurred = False
+
+    def __del__(self):
+        self.value_fd.close()
+        del self.callbacks
 
 def _channel_to_info(channel, need_gpio=False, need_pwm=False):
     if channel not in CHANNEL_DATA:
@@ -296,10 +284,10 @@ class SYSFSGPIO(object):
         if pin not in _gpio_event_list:
             return self.NO_EDGE
         return _gpio_event_list[pin].edge
-    def get_gpio_object(gpio):
-        if gpio not in _gpio_event_list:
+    def get_gpio_object(self):
+        if self.pin not in _gpio_event_list:
             return None
-        return _gpio_event_list[gpio]
+        return _gpio_event_list[self.pin]
     def set_edge(self):
         pin = self.pin
         edge = self.edge
@@ -318,7 +306,7 @@ class SYSFSGPIO(object):
 
         # event already added
         elif self.edge == res:
-            gpios = self.get_gpio_object(self.pin)
+            gpios = self.get_gpio_object()
             if ((self.bouncetime is not None and gpios.bouncetime != self.bouncetime) or
                     gpios.thread_added):
                 return 1
@@ -334,7 +322,7 @@ class SYSFSGPIO(object):
         try:
             _epoll_fd_thread.register(gpios.value_fd, EPOLLIN | EPOLLET | EPOLLPRI)
         except IOError:
-            self.remove_edge_detect(gpio)
+            self.remove_edge_detect()
             return 2
 
         gpios.thread_added = 1
@@ -345,7 +333,7 @@ class SYSFSGPIO(object):
             try:
                 thread.start_new_thread(_poll_thread, ())
             except RuntimeError:
-                self.remove_edge_detect(self.pin)
+                self.remove_edge_detect()
                 return 2
         return 0
     # Function used to add threaded event detection for a specified gpio channel.
@@ -389,6 +377,19 @@ class SYSFSGPIO(object):
         if self.pin not in _gpio_event_list or not _gpio_event_list[self.pin].thread_added:
             return
         _gpio_event_list[self.pin].callbacks.append(callback)
+    def remove_edge_detect(self):
+        if self.pin not in _gpio_event_list:
+            return
+
+        if _epoll_fd_thread is not None:
+            _epoll_fd_thread.unregister(_gpio_event_list[self.pin].value_fd)
+
+        self.set_edge()
+
+        _mutex.acquire()
+        del _gpio_event_list[self.pin]
+        _mutex.release()
+
 class GPIO(object):
 
     # GPIO directions. UNKNOWN constant is for gpios that are not yet setup
