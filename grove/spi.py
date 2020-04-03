@@ -29,29 +29,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import serial
+import spidev
 from grove.gpio import GPIO
-rev_to_tty = {
-    1 : "/dev/ttyAMA0",
-    2 : "/dev/ttyAMA0",
-    3 : "/dev/ttyAMA0",
-    'NPi_i_MX6ULL' : "/dev/ttymxc2"
+rev_to_bus = {
+    1 : [0,0],
+    2 : [0,0],
+    3 : [0,0],
+    'NPi_i_MX6ULL' : [2,0]
 }
-class UART:
+class SPI:
     instance = None
-    def __init__(self, tty = None, Baudrate = 9600, timeout = None):
-        if tty is None:
-            rev = GPIO.RPI_REVISION
-            tty = rev_to_tty[rev]
+    bus = None
+    device = None
+    def __init__(self):
+        rev = GPIO.RPI_REVISION
+        self.bus = rev_to_bus[rev][0]
+        self.device = rev_to_bus[rev][1]
         if not self.instance:
-            self.instance = serial.Serial(tty, Baudrate, timeout = timeout)
+            self.instance = spidev.SpiDev()
     def __getattr__(self, name):
         return getattr(self.instance, name)
 def main():
-    # https://pyserial.readthedocs.io/en/latest/shortintro.html
-    ser = UART()
-    print(ser.name)
-    ser.write(b'hello')
-    ser.close()
+    # https://github.com/doceme/py-spidev
+    spi = SPI()
+    spi.open(spi.bus, spi.device)
+    spi.max_speed_hz = 5000
+    spi.mode = 0b01
+    to_send = [0x01, 0x02, 0x03]
+    spi.xfer(to_send)
+    spi.close()
 if __name__ == "__main__":
     main()

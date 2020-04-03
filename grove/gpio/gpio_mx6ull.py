@@ -118,15 +118,7 @@ def get_data():
             x[7]) for x in pin_defs}
     channel_data = model_data(BCM, pin_defs)
     return  channel_data
-<<<<<<< HEAD:grove/gpio/gpio_mx6ull.py
-
 CHANNEL_DATA = get_data()
-
-=======
-
-CHANNEL_DATA = get_data()
-
->>>>>>> 2bcc37cadb2d57916452d9ea1c79fcacd3eb9f17:grove/gpio/gpio_mx6ull.py
 _SYSFS_ROOT = '/sys/class/gpio'
 
 
