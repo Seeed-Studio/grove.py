@@ -244,6 +244,29 @@ class SYSFSGPIO(object):
     def __init__(self, pin, direction=None):
         self.ch_info = _channel_to_info(pin, need_gpio=True)
         self.pin = self.ch_info.pin
+
+    def __del__(self):
+        self.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, t, value, traceback):
+        self.close()
+
+    def close(self):
+        pin = self.pin
+        self._line_fd = self._SYSFS_ROOT + "/gpio%i" % pin
+        try:
+            if self._line_fd is not None:
+                os.close(self._line_fd)
+        except OSError as e:
+            raise GPIOError(e.errno, "Closing GPIO line: " + e.strerror)
+        unexport_gpio()
+        self._line_fd = None
+        self.edge = "none"
+        self.direction = "in"
+        self.pin = None
     def export_gpio(self):
         pin = self.pin
         if os.path.exists(self._SYSFS_ROOT + "/gpio%i" % pin):
@@ -403,7 +426,7 @@ class GPIO(object):
     RISING = 1 + _EDGE_OFFSET
     FALLING = 2 + _EDGE_OFFSET
     BOTH = 3 + _EDGE_OFFSET
-    
+    RPI_REVISION = NPi_i_MX6ULL
     def __init__(self, pin, direction=None):
         self.pin = pin
         self.gpio = SYSFSGPIO(self.pin)

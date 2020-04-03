@@ -29,27 +29,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import smbus2 as smbus
-from smbus2 import i2c_msg
+import serial
 from grove.gpio import GPIO
+import time
 rev_to_bus = {
-    1 : 0,
-    2 : 1,
-    3 : 1,
-    'NPi_i_MX6ULL' : 1 
+    1 : "/dev/ttyAMA0",
+    2 : "/dev/ttyAMA0",
+    3 : "/dev/ttyAMA0",
+    'NPi_i_MX6ULL' : "/dev/ttymxc2"
 }
-class Bus:
+class UART:
     instance = None
-    MRAA_I2C = 0
-
-    def __init__(self, bus=None):
-        if bus is None:
+    def __init__(self, tty = None, Baudrate = 9600, timeout = None):
+        if tty is None:
             rev = GPIO.RPI_REVISION
-            bus = rev_to_bus[rev]
+            tty = rev_to_tty[rev]
         if not self.instance:
-            self.instance = smbus.SMBus(bus)
-        self.bus = bus
-        self.msg = i2c_msg
+            self.instance = serial.Serial(tty,Baudrate,timeout)
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
+def main():
+    ser = UART()
+    print(ser.name)
+    ser.write(b'hello')
+    ser.close()
+if __name__ == "__main__":
+    main()
