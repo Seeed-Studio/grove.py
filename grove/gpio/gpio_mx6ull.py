@@ -52,8 +52,8 @@ NPi_i_MX6ULL_PIN_DEFS = [
     ((1-1)*32+18, '/sys/class/gpio', 26, 7, 'SPI0_CS1', 'SPI1_CS1_N', None, None),
     ((4-1)*32+21, '/sys/class/gpio', 29, 5, 'GPIO01', 'SOC_GPIO41', None, None),
     ((4-1)*32+22, '/sys/class/gpio', 31, 6, 'GPIO11', 'SOC_GPIO42', None, None),
-    ((4-1)*32+19, '/sys/class/gpio', 32, 12, 'GPIO07', 'SOC_GPIO44', '/sys/class/pwm', 0),
-    ((4-1)*32+20, '/sys/class/gpio', 33, 13, 'GPIO13', 'SOC_GPIO54', '/sys/class/pwm', 0),
+    ((4-1)*32+19, '/sys/class/gpio', 32, 12, 'GPIO07', 'SOC_GPIO44', '/sys/class/pwm/pwmchip6', 0),
+    ((4-1)*32+20, '/sys/class/gpio', 33, 13, 'GPIO13', 'SOC_GPIO54', '/sys/class/pwm/pwmchip7', 0),
     ((4-1)*32+25, '/sys/class/gpio', 35, 19, 'I2S0_FS', 'DAP5_FS', None, None),
     ((4-1)*32+24, '/sys/class/gpio', 36, 16, 'UART1_CTS', 'UART1_CTS', None, None),
     ((1-1)*32+26, '/sys/class/gpio', 37, 26, 'SPI1_MOSI', 'SPI3_MOSI', None, None),
@@ -64,19 +64,6 @@ compats_imx6ull = (
     'fsl,imx6ull-14x14-evkfsl',
     'fsl,imx6ull',
 )
-gpio_data = {
-    NPi_i_MX6ULL: (
-        NPi_i_MX6ULL_PIN_DEFS,
-        {
-            'P1_REVISION': 1,
-            'RAM': '16384M',
-            'REVISION': 'Unknown',
-            'TYPE': 'board NX',
-            'MANUFACTURER': 'NVIDIA',
-            'PROCESSOR': 'ARM Carmel'
-        }
-    ),
-}
 class ChannelInfo(object):
     def __init__(self, channel, gpio_chip_dir, pin, pwm_chip_dir, pwm_id):
         self.channel = channel
@@ -84,48 +71,11 @@ class ChannelInfo(object):
         self.pin = pin
         self.pwm_chip_dir = pwm_chip_dir
         self.pwm_id = pwm_id
-def get_data():
-
-    # pin_defs, board_info = gpio_data[model]
-    pin_defs = NPi_i_MX6ULL_PIN_DEFS
-    pwm_dirs = {}
-
-    def pwm_dir(chip_dir):
-        if chip_dir is None:
-            return None
-        if chip_dir in pwm_dirs:
-            return pwm_dirs[chip_dir]
-        chip_pwm_dir = chip_dir + '/pwm'
-        # Some PWM controllers aren't enabled in all versions of the DT. In
-        # this case, just hide the PWM function on this pin, but let all other
-        # aspects of the library continue to work.
-        if not os.path.exists(chip_pwm_dir):
-            return None
-        for fn in os.listdir(chip_pwm_dir):
-            if not fn.startswith('pwmchip'):
-                continue
-            chip_pwm_pwmchip_dir = chip_pwm_dir + '/' + fn
-            pwm_dirs[chip_dir] = chip_pwm_pwmchip_dir
-            return chip_pwm_pwmchip_dir
-        return None
-
-    def model_data(key_col, pin_defs):
-        return {x[key_col]: ChannelInfo(
-            x[key_col],
-            x[1],
-            x[0],
-            pwm_dir(x[6]),
-            x[7]) for x in pin_defs}
-    channel_data = model_data(BCM, pin_defs)
-    return  channel_data
-CHANNEL_DATA = get_data()
-_SYSFS_ROOT = '/sys/class/gpio'
-
-
 class _Gpios:
+    _SYSFS_ROOT = '/sys/class/gpio'
     def __init__(self, gpio, edge=None, bouncetime=None):
         self.edge = edge
-        self.value_fd = open(_SYSFS_ROOT + "/gpio%i" % gpio + "/value", 'r')
+        self.value_fd = open(self._SYSFS_ROOT + "/gpio%i" % gpio + "/value", 'r')
         self.initial_thread = True
         self.initial_wait = True
         self.thread_added = False
@@ -138,6 +88,20 @@ class _Gpios:
     def __del__(self):
         self.value_fd.close()
         del self.callbacks
+def get_data():
+
+    pin_defs = NPi_i_MX6ULL_PIN_DEFS
+
+    def model_data(key_col, pin_defs):
+        return {x[key_col]: ChannelInfo(
+            x[key_col],
+            x[1],
+            x[0],
+            x[6],
+            x[7]) for x in pin_defs}
+    channel_data = model_data(BCM, pin_defs)
+    return  channel_data
+CHANNEL_DATA = get_data()
 
 def _channel_to_info(channel, need_gpio=False, need_pwm=False):
     if channel not in CHANNEL_DATA:
@@ -148,7 +112,6 @@ def _channel_to_info(channel, need_gpio=False, need_pwm=False):
     if need_pwm and ch_info.pwm_chip_dir is None:
         raise ValueError("Channel %s is not a PWM" % str(channel))
     return ch_info
-
 
 # lock object for thread
 _mutex = thread.allocate_lock()
