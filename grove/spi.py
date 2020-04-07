@@ -51,9 +51,9 @@ class SPI:
         if not self.instance:
             self.instance = spidev.SpiDev()
             try:
-                print("the default SPI is spidev%s.%s"%(self.bus,self.device))
                 self.instance.open(self.bus, self.device)
             except IOError as e:
+                print("the default SPI is spidev%s.%s"%(self.bus,self.device))
                 meg = "\n\
 #############################################################################\
 \n\

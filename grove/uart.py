@@ -48,8 +48,8 @@ class UART:
         if tty is None:
             rev = GPIO.RPI_REVISION
             tty = rev_to_tty[rev]
-            print("the default UART is %s"%(tty))
             if not os.path.exists(tty):
+                print("the default UART is %s"%(tty))
                 meg = "\n\
 #############################################################################\
 \n\

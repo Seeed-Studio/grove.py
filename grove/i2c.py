@@ -50,9 +50,9 @@ class Bus:
         if bus is None:
             rev = GPIO.RPI_REVISION
             bus = rev_to_bus[rev]
-            print("the default i2c is i2c-%s"%(bus))
             file_path = "/dev/i2c-%s"%(bus)
             if not os.path.exists(file_path):
+                print("the default i2c is i2c-%s"%(bus))
                 meg = "\n\
 #############################################################################\
 \n\
