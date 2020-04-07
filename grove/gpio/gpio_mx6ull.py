@@ -434,9 +434,6 @@ class GPIO(object):
             self.dir(direction)
         self._event_handle = None
 
-    # def __del__(self):
-    #     _unexport_gpio(self.ch_info.gpio)
-
     def dir(self, direction):
         # check direction is valid
         if direction != self.OUT and direction != self.IN:
@@ -467,9 +464,8 @@ class GPIO(object):
 
     @on_event.setter
     def on_event(self, handle):
-        # if not callable(handle):
-        #     raise TypeError("Callback Parameter must be callable")
-        assert callable(handle) , "Callback Parameter must be callable"
+        if not callable(handle):
+            raise TypeError("Callback Parameter must be callable")
         if self._event_handle is None:
             assert self.IN == self.DIR , "You must dir() the GPIO channel as an input first"
             self.gpio.add_event_detect(self.pin, self.BOTH - self._EDGE_OFFSET, self._on_event)

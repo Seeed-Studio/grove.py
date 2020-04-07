@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# We use python module smbus2 instead of smbus.
+# We use python module spidev to enable spi.
 #
 '''
 ## License
@@ -9,7 +9,7 @@
 The MIT License (MIT)
 
 Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+Copyright (C) 2020  Seeed Technology Co.,Ltd. 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,9 @@ rev_to_bus = {
     3 : [0,0],
     'NPi_i_MX6ULL' : [2,0]
 }
+rev_to_dtoverlay = {
+    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-ecspi3-overlay.dtbo >> /boot/uEnv.txt"
+}
 class SPI:
     instance = None
     bus = None
@@ -47,6 +50,12 @@ class SPI:
         self.device = rev_to_bus[rev][1]
         if not self.instance:
             self.instance = spidev.SpiDev()
+            try:
+                print("the default SPI is spidev%s.%s"%(self.bus,self.device))
+                self.instance.open(self.bus, self.device)
+            except IOError as e:
+                raise OSError (None, " Please use \'sudo sh -c echo \"{:s}\"\' then reboot to \
+enable the default SPI".format(rev_to_dtoverlay[rev]))
     def __getattr__(self, name):
         return getattr(self.instance, name)
 def main():

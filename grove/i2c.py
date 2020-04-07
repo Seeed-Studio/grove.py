@@ -9,7 +9,7 @@
 The MIT License (MIT)
 
 Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd. 
+Copyright (C) 2020  Seeed Technology Co.,Ltd. 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,11 +32,15 @@ THE SOFTWARE.
 import smbus2 as smbus
 from smbus2 import i2c_msg
 from grove.gpio import GPIO
+import os
 rev_to_bus = {
     1 : 0,
     2 : 1,
     3 : 1,
     'NPi_i_MX6ULL' : 1 
+}
+rev_to_dtoverlay = {
+    "NPi_i_MX6ULL" : ""
 }
 class Bus:
     instance = None
@@ -46,10 +50,22 @@ class Bus:
         if bus is None:
             rev = GPIO.RPI_REVISION
             bus = rev_to_bus[rev]
+            print("the default i2c is i2c-%s"%(bus))
+            file_path = "/dev/i2c-%s"%(bus)
+            if not os.path.exists(file_path):
+                raise OSError (None, " Please use \'sudo sh -c echo \"{:s}\"\' then reboot to \
+enable the default I2C".format(rev_to_dtoverlay[rev]))            
         if not self.instance:
             self.instance = smbus.SMBus(bus)
         self.bus = bus
         self.msg = i2c_msg
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
+def main():
+    # https://github.com/kplindegaard/smbus2
+    bus = Bus()
+    print(bus.bus)
+    print(bus.msg)
+    bus.close()
+if __name__ == "__main__":
+    main()
