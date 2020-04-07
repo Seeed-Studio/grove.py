@@ -53,8 +53,15 @@ class Bus:
             print("the default i2c is i2c-%s"%(bus))
             file_path = "/dev/i2c-%s"%(bus)
             if not os.path.exists(file_path):
-                raise OSError (None, " Please use \'sudo sh -c echo \"{:s}\"\' then reboot to \
-enable the default I2C".format(rev_to_dtoverlay[rev]))            
+                meg = "\n\
+#############################################################################\
+\n\
+\n\
+Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default I2C\
+\n\
+\n\
+#############################################################################"%(rev_to_dtoverlay[rev])
+                raise OSError (None, meg)
         if not self.instance:
             self.instance = smbus.SMBus(bus)
         self.bus = bus

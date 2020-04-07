@@ -50,8 +50,15 @@ class UART:
             tty = rev_to_tty[rev]
             print("the default UART is %s"%(tty))
             if not os.path.exists(tty):
-                raise OSError (None, " Please use \'sudo sh -c echo \"{:s}\"\' then reboot to \
-enable the default UART".format(rev_to_dtoverlay[rev]))
+                meg = "\n\
+#############################################################################\
+\n\
+\n\
+Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default UART\
+\n\
+\n\
+#############################################################################"%(rev_to_dtoverlay[rev])
+                raise OSError (None, meg)
         if not self.instance:
             self.instance = serial.Serial(tty, Baudrate, timeout = timeout)
     def __getattr__(self, name):

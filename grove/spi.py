@@ -54,8 +54,15 @@ class SPI:
                 print("the default SPI is spidev%s.%s"%(self.bus,self.device))
                 self.instance.open(self.bus, self.device)
             except IOError as e:
-                raise OSError (None, " Please use \'sudo sh -c echo \"{:s}\"\' then reboot to \
-enable the default SPI".format(rev_to_dtoverlay[rev]))
+                meg = "\n\
+#############################################################################\
+\n\
+\n\
+Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default SPI\
+\n\
+\n\
+#############################################################################"%(rev_to_dtoverlay[rev])
+                raise OSError (None, meg)
     def __getattr__(self, name):
         return getattr(self.instance, name)
 def main():
