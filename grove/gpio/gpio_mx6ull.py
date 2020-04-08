@@ -216,14 +216,7 @@ class SYSFSGPIO(object):
         self.close()
 
     def close(self):
-        pin = self.pin
-        self._line_fd = self._SYSFS_ROOT + "/gpio%i" % pin
-        try:
-            if self._line_fd is not None:
-                os.close(self._line_fd)
-        except OSError as e:
-            raise GPIOError(e.errno, "Closing GPIO line: " + e.strerror)
-        unexport_gpio()
+        self.unexport_gpio()
         self._line_fd = None
         self.edge = "none"
         self.direction = "in"
