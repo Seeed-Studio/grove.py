@@ -36,9 +36,11 @@ rev_to_bus = {
     2 : [0,0],
     3 : [0,0],
     'NPi_i_MX6ULL' : [2,0]
+    'STM32MP1' : [0,0]
 }
 rev_to_dtoverlay = {
-    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-ecspi3-overlay.dtbo >> /boot/uEnv.txt"
+    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-ecspi3-overlay.dtbo >> /boot/uEnv.txt",
+    'STM32MP1' : "uboot_overlay_addr1=/lib/firmware/stm32mp1-seeed-spi5-overlay.dtbo >> /boot/uEnv.txt"
 }
 class SPI:
     instance = None

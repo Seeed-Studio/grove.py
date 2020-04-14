@@ -37,10 +37,12 @@ rev_to_bus = {
     1 : 0,
     2 : 1,
     3 : 1,
-    'NPi_i_MX6ULL' : 1 
+    'NPi_i_MX6ULL' : 1 ,
+    "STM32MP1" : 1
 }
 rev_to_dtoverlay = {
-    "NPi_i_MX6ULL" : ""
+    "NPi_i_MX6ULL" : "",
+    'STM32MP1' : "uboot_overlay_addr2=/lib/firmware/stm32mp1-seeed-i2c4-overlay.dtbo >> /boot/uEnv.txt"
 }
 class Bus:
     instance = None

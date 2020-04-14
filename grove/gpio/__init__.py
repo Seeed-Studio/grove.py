@@ -2,7 +2,10 @@ compats_imx6ull = (
     'fsl,imx6ull-14x14-evkfsl',
     'fsl,imx6ull',
 )
-
+compats_stm32mp1 = (
+    'seeed,npi-stm32mp1',
+    'st,stm32mp157'
+)
 def matches(vals):
     compatible_path = '/proc/device-tree/compatible'
     with open(compatible_path, 'r') as f:
@@ -14,6 +17,8 @@ try:
 except ImportError:
     if matches(compats_imx6ull):
         from grove.gpio.gpio_mx6ull import GPIO
+    elif matches(compats_stm32mp1):
+        from grove.gpio.gpio_stm32mp1 import GPIO
     else:
         raise Exception('Could not determine model')
 from grove.gpio.wrapper import GPIOWrapper

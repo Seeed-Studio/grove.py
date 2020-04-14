@@ -38,9 +38,11 @@ rev_to_tty = {
     3 : "/dev/ttyAMA0",
     4 : "/dev/ttyAMA0",
     'NPi_i_MX6ULL' : "/dev/ttymxc2"
+    'STM32MP1' : "/dev/ttySTM2"
 }
 rev_to_dtoverlay = {
-    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-uart3-overlay.dtbo >> /boot/uEnv.txt"
+    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-uart3-overlay.dtbo >> /boot/uEnv.txt",
+    'STM32MP1' : "uboot_overlay_addr0=/lib/firmware/stm32mp1-seeed-usart2-overlay.dtbo >> /boot/uEnv.txt"
 }
 class UART:
     instance = None
