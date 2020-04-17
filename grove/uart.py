@@ -37,7 +37,7 @@ rev_to_tty = {
     2 : "/dev/ttyAMA0",
     3 : "/dev/ttyAMA0",
     4 : "/dev/ttyAMA0",
-    'NPi_i_MX6ULL' : "/dev/ttymxc2"
+    'NPi_i_MX6ULL' : "/dev/ttymxc2",
     'STM32MP1' : "/dev/ttySTM2"
 }
 rev_to_dtoverlay = {
