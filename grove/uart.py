@@ -69,7 +69,9 @@ def main():
     # https://pyserial.readthedocs.io/en/latest/shortintro.html
     ser = UART()
     print(ser.name)
-    ser.write(b'hello')
+    ser.write(b'hello seeeder \n')
+    data = ser.readline() 
+    print(data)
     ser.close()
 if __name__ == "__main__":
     main()
