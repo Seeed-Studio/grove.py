@@ -40,7 +40,7 @@ if is_pi():
 
 setup(
     name='Seeed_grove.py',
-    version='0.2',
+    version='0.3',
     description='Python library for Seeedstudio Grove devices',
     long_description=long_description,
     long_description_content_type='text/markdown',
