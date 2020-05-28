@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# We use python module smbus2 instead of smbus.
+# We use python module spidev to enable spi.
 #
 '''
 ## License
@@ -29,60 +29,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import smbus2 as smbus
-from smbus2 import i2c_msg
+import spidev
 from grove.gpio import GPIO
-import os
 rev_to_bus = {
-    1 : 0,
-    2 : 1,
-    3 : 1,
-    4 : 1,
-    'NPi_i_MX6ULL' : 1 ,
-    "STM32MP1" : 1
+    1 : [0,0],
+    2 : [0,0],
+    3 : [0,0],
+    4 : [0,0],
+    'NPi_i_MX6ULL' : [2,0],
+    'STM32MP1' : [0,0]
 }
 rev_to_dtoverlay = {
-    1 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    2 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    3 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    4 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    "NPi_i_MX6ULL" : "",
-    'STM32MP1' : "uboot_overlay_addr2=/lib/firmware/stm32mp1-seeed-i2c4-overlay.dtbo >> /boot/uEnv.txt"
+    1 :"dtparam=spi=on >> /boot/config.txt",
+    2 :"dtparam=spi=on >> /boot/config.txt",
+    3 :"dtparam=spi=on >> /boot/config.txt",
+    4 :"dtparam=spi=on >> /boot/config.txt",
+    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-ecspi3-overlay.dtbo >> /boot/uEnv.txt",
+    'STM32MP1' : "uboot_overlay_addr1=/lib/firmware/stm32mp1-seeed-spi5-overlay.dtbo >> /boot/uEnv.txt"
 }
-
-class Bus:
+class SPI:
     instance = None
-    MRAA_I2C = 0
-
-    def __init__(self, bus=None):
-        if bus is None:
-            rev = GPIO.RPI_REVISION
-            bus = rev_to_bus[rev]
-            file_path = "/dev/i2c-%s"%(bus)
-            if not os.path.exists(file_path):
-                print("the default i2c is i2c-%s"%(bus))
+    bus = None
+    device = None
+    def __init__(self):
+        rev = GPIO.RPI_REVISION
+        self.bus = rev_to_bus[rev][0]
+        self.device = rev_to_bus[rev][1]
+        if not self.instance:
+            self.instance = spidev.SpiDev()
+            try:
+                self.instance.open(self.bus, self.device)
+            except IOError as e:
+                print("the default SPI is spidev%s.%s"%(self.bus,self.device))
                 meg = "\n\
 #############################################################################\
 \n\
 \n\
-Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default I2C\
+Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default SPI\
 \n\
 \n\
 #############################################################################"%(rev_to_dtoverlay[rev])
                 raise OSError (None, meg)
-        if not self.instance:
-            self.instance = smbus.SMBus(bus)
-        self.bus = bus
-        self.msg = i2c_msg
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
 def main():
-    # https://github.com/kplindegaard/smbus2
-    bus = Bus()
-    print(bus.bus)
-    print(bus.msg)
-    bus.close()
+    # https://github.com/doceme/py-spidev
+    spi = SPI()
+    spi.open(spi.bus, spi.device)
+    spi.max_speed_hz = 5000
+    spi.mode = 0b01
+    to_send = [0x01, 0x02, 0x03]
+    spi.xfer(to_send)
+    spi.close()
 if __name__ == "__main__":
     main()
-

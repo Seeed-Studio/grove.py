@@ -35,9 +35,9 @@ from __future__ import print_function
 import sys
 from grove.button      import *
 from grove.led         import *
-from grove.temperature import *
+# from grove.temperature import *
 from grove.gpio        import *
-from grove.display     import *
+# from grove.display     import *
 from grove.motor       import *
 
 # GPIOWrapper settings

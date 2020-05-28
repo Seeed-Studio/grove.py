@@ -20,7 +20,7 @@ RPi.GPIO.setmode(RPi.GPIO.BCM)
 class GPIO(object):
     OUT = RPi.GPIO.OUT
     IN = RPi.GPIO.IN
-    
+    RPI_REVISION = RPi.GPIO.RPI_REVISION
     def __init__(self, pin, direction=None):
         self.pin = pin
         if direction is not None:

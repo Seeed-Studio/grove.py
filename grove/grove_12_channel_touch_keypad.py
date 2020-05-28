@@ -53,7 +53,6 @@ def main():
         data = ser.read(1)
         parse_data(ord(data))
 
-
 if __name__ ==  '__main__':
     main()
 

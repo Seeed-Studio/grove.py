@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
-# We use python module smbus2 instead of smbus.
+# We use python module serial to enable uart.
 #
 '''
 ## License
@@ -29,60 +29,49 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
-import smbus2 as smbus
-from smbus2 import i2c_msg
-from grove.gpio import GPIO
+import serial
 import os
-rev_to_bus = {
-    1 : 0,
-    2 : 1,
-    3 : 1,
-    4 : 1,
-    'NPi_i_MX6ULL' : 1 ,
-    "STM32MP1" : 1
+from grove.gpio import GPIO
+rev_to_tty = {
+    1 : "/dev/ttyAMA0",
+    2 : "/dev/ttyAMA0",
+    3 : "/dev/ttyAMA0",
+    4 : "/dev/ttyAMA0",
+    'NPi_i_MX6ULL' : "/dev/ttymxc2",
+    'STM32MP1' : "/dev/ttySTM2"
 }
 rev_to_dtoverlay = {
-    1 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    2 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    3 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    4 :"dtparam=i2c_arm=on >> /boot/config.txt",
-    "NPi_i_MX6ULL" : "",
-    'STM32MP1' : "uboot_overlay_addr2=/lib/firmware/stm32mp1-seeed-i2c4-overlay.dtbo >> /boot/uEnv.txt"
+    "NPi_i_MX6ULL" : "dtoverlay=/lib/firmware/imx-fire-uart3-overlay.dtbo >> /boot/uEnv.txt",
+    'STM32MP1' : "uboot_overlay_addr0=/lib/firmware/stm32mp1-seeed-usart2-overlay.dtbo >> /boot/uEnv.txt"
 }
-
-class Bus:
+class UART:
     instance = None
-    MRAA_I2C = 0
-
-    def __init__(self, bus=None):
-        if bus is None:
+    def __init__(self, tty = None, Baudrate = 9600, timeout = None):
+        if tty is None:
             rev = GPIO.RPI_REVISION
-            bus = rev_to_bus[rev]
-            file_path = "/dev/i2c-%s"%(bus)
-            if not os.path.exists(file_path):
-                print("the default i2c is i2c-%s"%(bus))
+            tty = rev_to_tty[rev]
+            if not os.path.exists(tty):
+                print("the default UART is %s"%(tty))
                 meg = "\n\
 #############################################################################\
 \n\
 \n\
-Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default I2C\
+Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default UART\
 \n\
 \n\
 #############################################################################"%(rev_to_dtoverlay[rev])
                 raise OSError (None, meg)
         if not self.instance:
-            self.instance = smbus.SMBus(bus)
-        self.bus = bus
-        self.msg = i2c_msg
+            self.instance = serial.Serial(tty, Baudrate, timeout = timeout)
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
 def main():
-    # https://github.com/kplindegaard/smbus2
-    bus = Bus()
-    print(bus.bus)
-    print(bus.msg)
-    bus.close()
+    # https://pyserial.readthedocs.io/en/latest/shortintro.html
+    ser = UART()
+    print(ser.name)
+    ser.write(b'hello seeeder \n')
+    data = ser.readline() 
+    print(data)
+    ser.close()
 if __name__ == "__main__":
     main()
-
