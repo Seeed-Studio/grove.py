@@ -49,6 +49,7 @@ rev_to_dtoverlay = {
     "NPi_i_MX6ULL" : "",
     'STM32MP1' : "uboot_overlay_addr2=/lib/firmware/stm32mp1-seeed-i2c4-overlay.dtbo >> /boot/uEnv.txt"
 }
+
 class Bus:
     instance = None
     MRAA_I2C = 0
@@ -75,6 +76,7 @@ Please use \'sudo sh -c echo \"%s\"\' then reboot to enable the default I2C\
         self.msg = i2c_msg
     def __getattr__(self, name):
         return getattr(self.instance, name)
+
 def main():
     # https://github.com/kplindegaard/smbus2
     bus = Bus()
@@ -83,3 +85,4 @@ def main():
     bus.close()
 if __name__ == "__main__":
     main()
+
