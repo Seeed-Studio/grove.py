@@ -123,7 +123,7 @@ function platform_get() {
 		platform=rpi;;
 	Freescale\ i\.MX8MQ\ Phanbell)
 		platform=coral;;
-	jetson-nano)
+	NVIDIA\ Jetson\ Nano*)
 		platform=jetson_nano;;
 	*)
 		platform="unknown";;
