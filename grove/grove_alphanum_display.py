@@ -115,6 +115,7 @@ display_font2 = {
 }
 
 REG_INIT = 0x21
+DISP_ON = 0x81
 REG_BRIGHT = 0xE0
 BRIGHT_DARKEST = 0
 BRIGHT_DEFAULT = 6
@@ -140,7 +141,8 @@ class GroveAlphanumDisplay(object):
         self.bus = Bus()
         self.data = [0] * 4 if self.display_type == FOUR_TUBES else 2
 
-        self.bus.write_byte(self.address, REG_INIT)
+        self.bus.write_i2c_block_data(self.address, REG_INIT, [])
+        self.bus.write_i2c_block_data(self.address, DISP_ON, [])
         self.set_brightness(brightness)
 
     def clear(self):
@@ -159,14 +161,13 @@ class GroveAlphanumDisplay(object):
         self._show()
 
     def _show(self):
-        wire_bytes = bytes([0, 0])
+        wire_bytes = [0, 0]
         byte_10 = 0
         byte_11 = 0
 
         if self.display_type == FOUR_TUBES:
             for d in self.data:
                 wire_bytes += [d & 0xFF, (d >> 8) & 0xFF]
-
             for i, d in enumerate(self.data):
                 if i == 0:
                     byte_10 |= (1 if (d & 0x02) else 0) << 4
@@ -199,9 +200,11 @@ class GroveAlphanumDisplay(object):
 
             wire_bytes += [0] * 4
 
-        wire_bytes += [byte_10, byte_11, 0, 0, 0, 0]
+        wire_bytes += [byte_10, byte_11]
 
-        self.bus.write_block_data(self.address, 0, wire_bytes)
+        print(' '.join([f'0x{b:02x}' for b in wire_bytes]))
+
+        self.bus.write_i2c_block_data(self.address, 0, wire_bytes)
 
     def set_brightness(self, brightness):
         if brightness > BRIGHT_HIGHEST or brightness < 0:
@@ -216,6 +219,7 @@ class GroveAlphanumDisplay(object):
     def set_dots(self, first, second):
         self.first_dot = first
         self.second_dot = second
+        self._show()
 
 
 Grove = GroveAlphanumDisplay
