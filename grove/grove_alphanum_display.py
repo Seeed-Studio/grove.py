@@ -132,6 +132,14 @@ TWO_TUBES = 1
 class GroveAlphanumDisplay(object):
 
     def __init__(self, address=0x71, brightness=BRIGHT_DEFAULT, display_type=FOUR_TUBES):
+        """
+        Constructor
+
+        Args:
+            address: I2C address, default is 0x71
+            brightness: Startup brightness, value between 0 and 15
+            display_type: Display type, can be one of 0: FOUR_TUBES and 1: TWO_TUBES
+        """
         self.address = address
         self.display_type = display_type
         self.font = display_font4 if display_type == FOUR_TUBES else display_font2
@@ -146,13 +154,24 @@ class GroveAlphanumDisplay(object):
         self.set_brightness(brightness)
 
     def clear(self):
+        """
+        Clear display
+        """
         self.data = [0] * 4 if self.display_type == FOUR_TUBES else 2
         self.first_dot = False
         self.second_dot = False
         self._show()
 
     def show(self, data):
+        """
+        Show a string on the display
+
+        Args:
+            data: String to show. If it is longer than the display size (2 or 4),
+                  the string is trimmed to display length.
+        """
         if type(data) is str:
+            self.data = [0] * 4 if self.display_type == FOUR_TUBES else 2
             length = min(len(data), len(self.data))
             for i in range(length):
                 self.data[i] = self.font.get(data[i], 0)
@@ -161,6 +180,10 @@ class GroveAlphanumDisplay(object):
         self._show()
 
     def _show(self):
+        """
+        Internal function to show the display data.
+        First, create the I2C data to write to the display controller and then send it.
+        """
         wire_bytes = [0, 0]
         byte_10 = 0
         byte_11 = 0
@@ -202,21 +225,41 @@ class GroveAlphanumDisplay(object):
 
         wire_bytes += [byte_10, byte_11]
 
-        print(' '.join([f'0x{b:02x}' for b in wire_bytes]))
-
         self.bus.write_i2c_block_data(self.address, 0, wire_bytes)
 
     def set_brightness(self, brightness):
+        """
+        Sets the LED brightness.
+
+        Args:
+            brightness: Brightness as integer, value between 0 and 15
+        """
         if brightness > BRIGHT_HIGHEST or brightness < 0:
             brightness = BRIGHT_HIGHEST
 
         self.bus.write_byte(self.address, REG_BRIGHT | brightness)
 
     def set_blink_type(self, blink_type):
+        """
+        Configures the blinking of the display, can be one of:
+            - 0: No blinking
+            - 1: Blink with 2 Hz
+            - 2: Blink with 1 Hz
+
+        Args:
+            blink_type: Blinking type
+        """
         if 0 < blink_type <= 2:
             self.bus.write_byte(self.address, 0x81 | (blink_type << 1))
 
     def set_dots(self, first, second):
+        """
+        Sets the dots in the display.
+
+        Args:
+            first: If set, the first/upper dot is on
+            second: If set, the second/lower dot is on
+        """
         self.first_dot = first
         self.second_dot = second
         self._show()
@@ -229,6 +272,7 @@ def main():
     display = GroveAlphanumDisplay()
 
     count = 0
+    brightness = 0
     while True:
         t = time.strftime("%H%M", time.localtime(time.time()))
         display.first_dot = not display.first_dot
@@ -238,7 +282,9 @@ def main():
 
         time.sleep(1)
 
-        count += 1
+        if count % 5 == 0:
+            display.set_brightness(brightness % 16)
+            brightness += 1
 
         if count % 60 == 0:
             display.set_blink_type(BLINK_OFF)
@@ -246,6 +292,8 @@ def main():
             display.set_blink_type(BLINK_1HZ)
         if count % 60 == 40:
             display.set_blink_type(BLINK_2HZ)
+
+        count += 1
 
 
 if __name__ == '__main__':
