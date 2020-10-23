@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# This library is for Grove - 4 Digit Display(https:#www.seeedstudio.com/Grove-Servo-p-1241.html) which has 4 red seven-segment displays
+# This library is for Grove - 4 Digit Display(https://wiki.seeedstudio.com/Grove-0.54_inch_Red_Quad_Alphanumeric_Display/)
+# which has 4 red seven-segment displays.
 # This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.
 #
 
