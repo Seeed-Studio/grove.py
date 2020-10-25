@@ -250,7 +250,7 @@ class GroveAlphanumDisplay(object):
         Args:
             blink_type: Blinking type
         """
-        if 0 < blink_type <= 2:
+        if 0 <= blink_type <= 2:
             self.bus.write_byte(self.address, 0x81 | (blink_type << 1))
 
     def set_dots(self, first, second):
