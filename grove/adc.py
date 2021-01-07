@@ -121,7 +121,7 @@ class ADC(object):
         Returns:
             (int): firmware version
         '''
-        return self.read_register(0x3)
+        return self.read_register(0x2)
 
     # read 16 bits register
     def read_register(self, n):
