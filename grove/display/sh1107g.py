@@ -295,7 +295,7 @@ class SH1107G_SSD1327(Display):
         if not self._sh1107:
             self._ssd1327.home()
             return
-        self.setCusor(0, 0)
+        self.setCursor(0, 0)
 
     def setCursor(self, row, column):
         '''
