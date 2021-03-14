@@ -202,8 +202,8 @@ class GroveIMU9DOFAK09918(object):
 
     def is_ready(self):
         if _akicm.rpi_ak09918_is_ready(self._dev) == AK09918_ERR_OK:
-	    return True
-	return False
+            return True
+        return False
 
     def is_skip(self):
         r = _akicm.rpi_ak09918_is_skip(self._dev)
