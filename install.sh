@@ -215,6 +215,9 @@ jetson_nano)
 	popd	
 	;;
 rpi)
+	apt_install python-pip	
+	apt_install python3-pip
+	
 	### install I2C ###
 	if [ $(get_i2c) -ne 0 ]; then
 		# enable i2c interface
