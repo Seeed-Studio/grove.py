@@ -38,8 +38,8 @@ from grove.temperature import Temper
 from upm.pyupm_mcp9808 import MCP9808
 
 class TemperMCP9808(Temper):
-    def __init__(self):
-        self.mcp = MCP9808(I2C.MRAA_I2C)
+    def __init__(self, address=0x18):
+        self.mcp = MCP9808(I2C.MRAA_I2C,address=address)
         self.mcp.setMode(True)  # Celsius
         self._resolution = Temper.RES_1_2_CELSIUS
 

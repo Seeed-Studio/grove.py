@@ -39,7 +39,10 @@ def main():
     print("Insert Grove - I2C-High-Accuracy-Temperature")
     print("  to Grove-Base-Hat any I2C slot")
 
-    sensor = Factory.getTemper("MCP9808-I2C")
+    #I2C address of temperature device: 0x18 (default) to 0x1F
+    i2c_id=0x18
+
+    sensor = Factory.getTemper("MCP9808-I2C", address=i2c_id)
     sensor.resolution(Temper.RES_1_16_CELSIUS)
 
     print('Detecting temperature...')
