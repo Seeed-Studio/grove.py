@@ -143,11 +143,11 @@ class __factory(object):
             self.__avail_list(typ, self.OneLedEnum)
             sys.exit(1)
 
-    def getTemper(self, typ, channel = None):
+    def getTemper(self, typ, channel = None, address=0x18):
         if typ == "NTC-ADC":
             return TemperTypedNTC(channel)
         elif typ == "MCP9808-I2C":
-            return TemperMCP9808()
+            return TemperMCP9808(address=address)
         else:
             self.__avail_list(typ, self.TemperEnum)
             sys.exit(1)
