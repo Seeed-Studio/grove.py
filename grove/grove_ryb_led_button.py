@@ -61,9 +61,9 @@ class GroveLedButton(object):
         # High = light on
         self.led = Factory.getOneLed("GPIO-HIGH", pin)
         # Low = pressed
-        self.__btn = Factory.getButton("GPIO-LOW", pin + 1)
+        self.btn = Factory.getButton("GPIO-LOW", pin + 1)
         self.__on_event = None
-        self.__btn.on_event(self, GroveLedButton.__handle_event)
+        self.btn.on_event(self, GroveLedButton.__handle_event)
 
     @property
     def on_event(self):
