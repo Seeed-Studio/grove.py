@@ -107,14 +107,16 @@ class GPS:
             if self.new_data():
                 # Read one line of data
                 if self.__read_line(3):
+                    # Get the type without the sender to support all constellations
+                    message_type = self.line[0][-3:]
                     # Select correct function to proceed if read successful
-                    if self.line[0] == "$GPGGA":
+                    if message_type == "GGA":
                         return self.__GGA(self.line)
-                    elif self.line[0] == "$GPGSA":
+                    elif message_type == "GSA":
                         return self.__GSA(self.line)
-                    elif self.line[0] == "$GPGSV":
+                    elif message_type == "GSV":
                         return self.__GSV(self.line)
-                    elif self.line[0] == "$GPRMC":
+                    elif message_type == "RMC":
                         return self.__RMC(self.line)
         except IndexError:
             pass
