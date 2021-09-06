@@ -1,6 +1,6 @@
 import time , sys, math
 from adc import ADC
-from datetime import date
+from datetime import date, time, datetime
  
 __all__ = ["OxygenSensor"]
  
@@ -32,13 +32,13 @@ def main():
         sys.exit(1)
  
     sensor = O2Sensor(int(sys.argv[1]))
-    today = date.today()
+    
     print('Detecting 02 value...')
  
     while True:
-        print(today)
-        print(time.time())
-        print('Detected Value: {0}'.format(sensor.capture))
+        time_stamp = datetime.now()
+        clock = '{}:{}:{}'.format(time_stamp.hour, time_stamp.minute, time_stamp.second)
+        print('{} Detected Value: {0}'.format(clock, sensor.capture))
         time.sleep(1)
  
 if __name__ == '__main__':
