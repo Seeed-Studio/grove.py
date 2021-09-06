@@ -1,6 +1,9 @@
 import time , sys, math
 from adc import ADC
 from datetime import date, time, datetime
+# Log file
+import os.path
+import json
  
 __all__ = ["OxygenSensor"]
  
@@ -34,12 +37,16 @@ def main():
     sensor = O2Sensor(int(sys.argv[1]))
     
     print('Detecting 02 value...')
- 
-    while True:
-        time_stamp = datetime.now()
-        clock = '{}:{}:{}'.format(time_stamp.hour, time_stamp.minute, time_stamp.second)
-        print('{} Detected Value: {0}'.format(clock, sensor.capture))
-        time.sleep(1)
+    time_stamp = datetime.now()
+    file_name = '{}{}{}'.format(time_stamp.year, time_stamp.month, time_stamp.day) + '.json'
+    clock = '{}:{}:{}'.format(time_stamp.hour, time_stamp.minute, time_stamp.second)
+    capture = sensor.capture
+    print('{clock} Detected Value: {capture}'.format(clock=clock, capture=capture))
+
+    data = {}
+    data[time_stamp] = capture
+    with open(file_name, 'w') as file:
+        json.dump(data, file)
  
 if __name__ == '__main__':
     main() 
