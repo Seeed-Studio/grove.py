@@ -26,13 +26,13 @@ For developer or advanced user, please install [dependencies](doc/INSTALL.md#ins
 and then install grove.py with [source code](#install-grovepy).
 
 ### Online install
-install/update all dependencies and latest grove.py (If you are using Raspberry Pi with Raspberrypi OS >= Bullseye, you **cannot use** this command line.)
+install/update all dependencies and latest grove.py
 ```shell
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
 
 ### Install grove.py
-From source code (If you are using Raspberry Pi with Raspberrypi OS >= Bullseye, you **have to use** this command line.)
+From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
