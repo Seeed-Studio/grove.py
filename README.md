@@ -32,13 +32,13 @@ curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo b
 ```
 
 ### Install grove.py
-From source code (If you are using Raspberry Pi with Raspberrypi OS >= Bullseye, you **have to use** this command line.)
+From source code (If you are using Raspberry Pi with Raspberrypi OS >= Bullseye, you **have to use** this command line only with **Python3**.)
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
-# Python2
+# Python2 (Do not use it on Raspberrypi OS >= Bullseye)
 sudo pip install .
-# Python3
+# Python3 (For Raspberrypi OS >= Bullseye)
 sudo pip3 install .
 ```
 
