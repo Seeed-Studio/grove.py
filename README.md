@@ -25,6 +25,19 @@ For beginner or library user only, please install with online method.<br>
 For developer or advanced user, please install [dependencies](doc/INSTALL.md#install-dependencies)
 and then install grove.py with [source code](#install-grovepy).
 
+### Caution
+
+Here is the compatibility of [grove.py](https://github.com/Seeed-Studio/grove.py) with Python2 and Python3 on each releases of Raspbian/Raspberry Pi OS.
+
+| Raspberry Pi OS Releases | grove.py for Python2 | grove.py for Python3 |
+| ---- | ---- | ---- |
+| 9 (Stretch) | √ | √ |
+| 10 (Buster) until 2020-08-20 | √ | √ |
+| 10 (Buster) after 2020-08-20 | × | √ |
+| 11 (Bullseye) | × | √ |
+
+**Because Python2 is obsolete and APT repository does not provide `python-pip`, so the Raspberry Pi OS releases which after `10 (Buster) 2020-08-20` cannot use `Online install` command. We also recommend using Python3 to all the users and developers.**
+
 ### Online install
 install/update all dependencies and latest grove.py
 ```shell
@@ -36,9 +49,9 @@ From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
-# Python2
+# Python2 (This command line does not provide for Raspberrypi OS 10 (Buster) >= 2020-12-02)
 sudo pip install .
-# Python3
+# Python3 
 sudo pip3 install .
 ```
 
