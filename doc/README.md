@@ -31,22 +31,6 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>1-Wire</td>
     </tr>
     <tr align="center">
-      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Compass-V2-p-3034.html">3-Axis Digital Compass V2</a></td>
-      <td>grove_3_axis_compass_bmm150</td>
-      <td>y</td>
-      <td></td>
-      <td>&bull;</td>
-      <td>I2C</td>
-    </tr>
-    <tr align="center">
-      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-400-p-1897.html">3-Axis Digital Accelerometer(+/-400g)</a></td>
-      <td>grove_3_axis_digital_accelerometer</td>
-      <td>y</td>
-      <td></td>
-      <td></td>
-      <td>I2C</td>
-    </tr>
-    <tr align="center">
       <td><a href="https://www.seeedstudio.com/Grove-4-Digit-Display-p-1198.html">4 Digit Display</a></td>
       <td>grove_4_digit_display</td>
       <td>y</td>
@@ -291,16 +275,6 @@ Some devices need root permission signed in sudo column, the coresponding comman
     </tr>
     <tr align="center">
       <td>
-        <a href="https://www.seeedstudio.com/Grove-Buzzer-p-768.html">Buzzer</a>
-      </td>
-      <td>grove_pwm_buzzer</td>
-      <td>&bull;</td>
-      <td>&bull;</td>
-      <td></td>
-      <td>PWM</td>
-    </tr>
-    <tr align="center">
-      <td>
         <a href="https://www.seeedstudio.com/Grove-Recorder-v3.0-p-2709.html">Recorder v3.0</a>
       </td>
       <td>grove_recorder_v3_0</td>
@@ -504,16 +478,6 @@ arg2 - dht_type,
       <td>&bull;</td>
       <td></td>
       <td>arg1 - digital pin</td>
-    </tr>
-    <tr align="center">
-      <td>
-        <a href="https://www.seeedstudio.com/Grove-UV-Sensor-p-1540.html">UV Sensor</a>
-      </td>
-      <td>grove_uv_sensor</td>
-      <td>y</td>
-      <td></td>
-      <td>&bull;</td>
-      <td>I2C</td>
     </tr>
     <tr align="center">
       <td>
@@ -763,21 +727,6 @@ while True:
     time.sleep(1.0)
 
 print("Motor run ended, time = {:.2f} !".format(time.time()))
-```
-
-#### Buzzer PWM mode
-```python
-from mraa import getGpioLookup
-from upm import pyupm_buzzer as GroveBuzzer
-
-# Grove Base Hat for Raspberry Pi
-#   PWM JST SLOT - PWM[12 13 VCC GND]
-pin = 12
-# Create the buzzer object using RaspberryPi GPIO12
-mraa_pin = getGpioLookup("GPIO%d" % pin)
-buzzer = GroveBuzzer.Buzzer(mraa_pin)
-# 1000 Hz sound last 2 seconds
-print(buzzer.playSound(1000, 2000000))
 ```
 
 ### Temperature & Humidity Sensor(DHT11)
