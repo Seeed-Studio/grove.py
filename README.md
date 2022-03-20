@@ -13,7 +13,7 @@ Python library for Seeedstudio Grove Devices on embeded Linux platform, especial
 
 <br><br>
 # Architecture
-To operate grove sensors, the grove.py depends many hardware interface libraries such as mraa/upm/smbus2. 
+To operate grove sensors, the grove.py depends on the smbus2 hardware interface library.
 
 <br>
 
