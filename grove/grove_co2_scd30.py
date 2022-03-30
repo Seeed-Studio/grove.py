@@ -37,6 +37,17 @@ import time
 
 
 class GroveCo2Scd30(object):
+    __COMMAND_TRIGGER_CONTINUOUS_MEASUREMENT = 0x0010
+    __COMMAND_STOP_CONTINUOUS_MEASUREMENT = 0x0104
+    __COMMAND_SET_MEASUREMENT_INTERVAL = 0x4600
+    __COMMAND_GET_DATA_READY_STATUS = 0x0202
+    __COMMAND_READ_MEASUREMENT = 0x0300
+    __COMMAND_ACTIVATE_ASC = 0x5306
+    __COMMAND_SET_FRC = 0x5204
+    __COMMAND_SET_TEMPRATURE_OFFSET = 0x5403
+    __COMMAND_ALTITUDE_COMPENSATION = 0x5102
+    __COMMAND_READ_FIRMWARE_VERSION = 0xd100
+    __COMMAND_SOFT_RESET = 0xd304
 
     def __init__(self, address=0x61, bus=None):
         self.address = address
@@ -90,26 +101,26 @@ class GroveCo2Scd30(object):
         return result
 
     def trigger_continuous_measurement(self, pressure: int = 0):
-        self._write(0x0010, [pressure])
+        self._write(self.__COMMAND_TRIGGER_CONTINUOUS_MEASUREMENT, [pressure])
 
     def stop_continuous_measurement(self):
-        self._write(0x0104, None)
+        self._write(self.__COMMAND_STOP_CONTINUOUS_MEASUREMENT, None)
 
     def set_measurement_interval(self, interval: int):
-        self._write(0x4600, [interval])
+        self._write(self.__COMMAND_SET_MEASUREMENT_INTERVAL, [interval])
 
     def get_measurement_interval(self) -> int:
-        data = self._read(0x4600, 1)
+        data = self._read(self.__COMMAND_SET_MEASUREMENT_INTERVAL, 1)
 
         return data[0]
 
     def get_data_ready_status(self) -> bool:
-        data = self._read(0x0202, 1)
+        data = self._read(self.__COMMAND_GET_DATA_READY_STATUS, 1)
 
         return True if data[0] == 1 else False
 
     def read_measurement(self) -> tuple:
-        data = self._read(0x0300, 6)
+        data = self._read(self.__COMMAND_READ_MEASUREMENT, 6)
 
         data_bytes = struct.pack(">HHHHHH", data[0], data[1], data[2], data[3], data[4], data[5])
         data_floats = struct.unpack(">fff", data_bytes)
@@ -120,29 +131,29 @@ class GroveCo2Scd30(object):
         return co2, temp, humi
 
     def set_forced_recalibration(self, co2: float):
-        self._write(0x5204, [int(co2)])
+        self._write(self.__COMMAND_SET_FRC, [int(co2)])
 
     def set_automatic_self_calibration(self, activate: bool):
-        self._write(0x5306, [1 if activate else 0])
+        self._write(self.__COMMAND_ACTIVATE_ASC, [1 if activate else 0])
 
     def get_automatic_self_calibration(self) -> bool:
-        data = self._read(0x5306, 1)
+        data = self._read(self.__COMMAND_ACTIVATE_ASC, 1)
 
         return True if data[0] == 1 else False
 
     def set_temperature_offset(self, offset: float):
-        self._write(0x5403, [int(offset * 100)])
+        self._write(self.__COMMAND_SET_TEMPRATURE_OFFSET, [int(offset * 100)])
 
     def get_temperature_offset(self) -> float:
-        data = self._read(0x5403, 1)
+        data = self._read(self.__COMMAND_SET_TEMPRATURE_OFFSET, 1)
 
         return float(data[0]) / 100
 
     def set_altitude_compensation(self, altitude: int):
-        self._write(0x5102, [altitude])
+        self._write(self.__COMMAND_ALTITUDE_COMPENSATION, [altitude])
 
     def get_altitude_compensation(self) -> int:
-        data = self._read(0x5102, 1)
+        data = self._read(self.__COMMAND_ALTITUDE_COMPENSATION, 1)
 
         return data[0]
 
