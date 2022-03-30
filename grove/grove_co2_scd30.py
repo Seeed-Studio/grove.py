@@ -76,8 +76,6 @@ class GroveCo2Scd30(object):
         write_msg = self.bus.msg.write(self.address, write_data)
         self.bus.i2c_rdwr(write_msg)
 
-        time.sleep(0.003)
-
         read_msg = self.bus.msg.read(self.address, 3 * data_number)
         self.bus.i2c_rdwr(read_msg)
 
