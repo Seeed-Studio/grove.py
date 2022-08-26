@@ -67,10 +67,10 @@ def main():
     sh = SlotHelper(SlotHelper.GPIO)
     pin = sh.argv2pin()
 
-    swicth = GroveSwitch(pin)
+    switch = GroveSwitch(pin)
 
     while True:
-        if swicth.state:
+        if switch.state:
             print("HIGH")
         else:
             print("LOW")
