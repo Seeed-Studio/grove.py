@@ -47,8 +47,8 @@ class Bus:
                 bus = 1  # for Pi 2+
             else:
                 bus = 0
-        if not Bus.instance:
-            Bus.instance = smbus.SMBus(bus)
+        if not self.instance:
+            self.instance = smbus.SMBus(bus)
         self.bus = bus
         self.msg = i2c_msg
     def __getattr__(self, name):
