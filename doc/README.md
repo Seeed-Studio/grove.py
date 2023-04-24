@@ -631,7 +631,7 @@ while True:
 ### I2C Color Sensor V2
 ```python
 import time
-from grove.grove_i2c_color_sensor_v2 import GroveI2CColorSensorV2
+from grove.grove_i2c_color_sensor_v2 import GroveI2cColorSensorV2
 sensor = GroveI2cColorSensorV2()
 
 print('Raw data of red-filtered, green-filtered, blue-filtered and unfiltered photodiodes')
