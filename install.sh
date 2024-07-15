@@ -227,8 +227,8 @@ rpi)
 	echo I2C interface enabled...
 
 	## install library raspberry-gpio-python
-	(( r == 0 )) && { apt_install python-rpi.gpio;  r=$?; }
-	(( r == 0 )) && { apt_install python3-rpi.gpio; r=$?; }
+	apt_install python-rpi.gpio
+	apt_install python3-rpi.gpio
 	;;
 
 *)
@@ -271,11 +271,6 @@ fi
 (( r == 0 )) && { pip_install bmm150 'pip  install bmm150'; r=$?; }
 (( r == 0 )) && { pip_install bmm150 'pip3 install bmm150'; r=$?; }
 
-## install library rpi-vl53l0x
-if [[ "$_install_extra_library" == "true" ]];then
-	(( r == 0 )) && { pip_install rpi-vl53l0x 'pip  install rpi-vl53l0x'; r=$?; }
-	(( r == 0 )) && { pip_install rpi-vl53l0x 'pip3 install rpi-vl53l0x'; r=$?; }
-fi
 
 ## install library sgp30
 (( r == 0 )) && { pip_install sgp30 'pip  install sgp30'; r=$?; }
