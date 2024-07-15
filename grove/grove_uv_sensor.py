@@ -27,11 +27,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 from __future__ import print_function
-import smbus
+from grove.i2c import Bus
 import time
 
-# Get I2C bus
-bus = smbus.SMBus(1)
 
 # I2C address of the device
 VEML6070_DEFAULT_ADDRESS				= 0x38
@@ -52,18 +50,20 @@ VEML6070_CMD_READ_LSB					= 0x38 # Read LSB of the data
 VEML6070_CMD_READ_MSB					= 0x39 # Read MSB of the data
 
 class VEML6070():
-	def __init__(self):
+	def __init__(self, address = VEML6070_DEFAULT_ADDRESS):
+		self._addr = address
+		self._bus  = Bus(1)
 		self.write_command()
 	
 	def write_command(self):
 		"""Select the UV light command from the given provided values"""
 		COMMAND_CONFIG = (VEML6070_CMD_ACK_DISABLE | VEML6070_CMD_IT_1_2T | VEML6070_CMD_SD_DISABLE | VEML6070_CMD_RESERVED)
-		bus.write_byte(VEML6070_DEFAULT_ADDRESS, COMMAND_CONFIG)
+		self._bus.write_byte(VEML6070_DEFAULT_ADDRESS, COMMAND_CONFIG)
 	
 	def read_uvlight(self):
 		"""Read data back VEML6070_CMD_READ_MSB(0x73) and VEML6070_CMD_READ_LSB(0x71), uvlight MSB, uvlight LSB"""
-		data0 = bus.read_byte(VEML6070_CMD_READ_MSB)
-		data1 = bus.read_byte(VEML6070_CMD_READ_LSB)
+		data0 = self._bus.read_byte(VEML6070_CMD_READ_MSB)
+		data1 = self._bus.read_byte(VEML6070_CMD_READ_LSB)
 		
 		# Convert the data
 		uvlight = data0 * 256 + data1
@@ -87,7 +87,7 @@ def main():
 	
 	while True:
 		light = veml6070.read_uvlight()
-		print("UV Value: {0}".format(vlight['u']))
+		print("UV Value: {0}".format(light['u']))
 		print(" *********************************** ")
 		time.sleep(1)
 

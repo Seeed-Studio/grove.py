@@ -37,11 +37,8 @@ THE SOFTWARE.
 '''
 
 from __future__ import print_function
-import smbus
+from grove.i2c import Bus
 import time
-
-# Get I2C bus
-bus = smbus.SMBus(1)
 
 # I2C address of the device
 H3LIS331DL_DEFAULT_ADDRESS			= 0x19
@@ -92,25 +89,27 @@ H3LIS331DL_ACCL_SIM_3					= 0x01 # 3-Wire Interface
 
 H3LIS331DL_SCALE_FS_100 = 0.049
 class H3LIS331DL(object):
-	def __init__ (self):
+	def __init__ (self, address=H3LIS331DL_DEFAULT_ADDRESS):
+		self._addr = address
+		self._bus  = Bus(1)
 		self.select_datarate()
 		self.select_data_config()
 	
 	def select_datarate(self):
 		"""Select the data rate of the accelerometer from the given provided values"""
 		DATARATE_CONFIG = (H3LIS331DL_ACCL_PM_NRMl | H3LIS331DL_ACCL_DR_50 | H3LIS331DL_ACCL_XAXIS | H3LIS331DL_ACCL_YAXIS | H3LIS331DL_ACCL_ZAXIS)
-		bus.write_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_CTRL1, DATARATE_CONFIG)
+		self._bus.write_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_CTRL1, DATARATE_CONFIG)
 	
 	def select_data_config(self):
 		"""Select the data configuration of the accelerometer from the given provided values"""
 		DATA_CONFIG = (H3LIS331DL_ACCL_RANGE_100G | H3LIS331DL_ACCL_BDU_CONT)
-		bus.write_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_CTRL4, DATA_CONFIG)
+		self._bus.write_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_CTRL4, DATA_CONFIG)
 	
 	def read_accl(self):
 		"""Read data back from H3LIS331DL_REG_OUT_X_L(0x28), 2 bytes
 		X-Axis Accl LSB, X-Axis Accl MSB"""
-		data0 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_X_L)
-		data1 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_X_H)
+		data0 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_X_L)
+		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_X_H)
 		
 		xAccl = data1 * 256 + data0
 		if xAccl > 32767 :
@@ -118,8 +117,8 @@ class H3LIS331DL(object):
 		
 		"""Read data back from H3LIS331DL_REG_OUT_Y_L(0x2A), 2 bytes
 		Y-Axis Accl LSB, Y-Axis Accl MSB"""
-		data0 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Y_L)
-		data1 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Y_H)
+		data0 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Y_L)
+		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Y_H)
 		
 		yAccl = data1 * 256 + data0
 		if yAccl > 32767 :
@@ -127,8 +126,8 @@ class H3LIS331DL(object):
 		
 		"""Read data back from H3LIS331DL_REG_OUT_Z_L(0x2C), 2 bytes
 		Z-Axis Accl LSB, Z-Axis Accl MSB"""
-		data0 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Z_L)
-		data1 = bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Z_H)
+		data0 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Z_L)
+		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Z_H)
 		
 		zAccl = data1 * 256 + data0
 		if zAccl > 32767 :
