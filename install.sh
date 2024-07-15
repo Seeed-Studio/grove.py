@@ -104,7 +104,7 @@ function pip_install() {
 
 	fields=( $pip_cmd )
 	for ((i = 0; i < 3; i++)); {
-		$pip_cmd
+		$pip_cmd --break-system-packages
 		pkg_status=$(${fields[0]} list --format=columns | egrep "$pkg_name " | awk '{ printf "%s", $1; }')
 		[ "$pkg_status" == "$pkg_name" ] && return 0
 	}
@@ -237,18 +237,6 @@ rpi)
 	;;
 esac
 
-## install MRAA & UPM
-### libmraa
-(( r == 0 )) && { apt_install libmraa1;    r=$?; }
-
-### python2
-(( r == 0 )) && { apt_install python-mraa; r=$?; }
-(( r == 0 )) && { apt_install python-upm;  r=$?; }
-
-### python3
-(( r == 0 )) && { apt_install python3-mraa;r=$?; }
-(( r == 0 )) && { apt_install python3-upm; r=$?; }
-
 ## install library libbma456
 if [[ "$_install_extra_library" == "true" ]];then
 	(( r == 0 )) && { apt_install libbma456; r=$?; }
@@ -277,6 +265,11 @@ fi
 
 (( r == 0 )) && { pip_install bme680 'pip  install bme680'; r=$?; }
 (( r == 0 )) && { pip_install bme680 'pip3 install bme680'; r=$?; }
+
+## install library bmm150
+
+(( r == 0 )) && { pip_install bmm150 'pip  install bmm150'; r=$?; }
+(( r == 0 )) && { pip_install bmm150 'pip3 install bmm150'; r=$?; }
 
 ## install library rpi-vl53l0x
 if [[ "$_install_extra_library" == "true" ]];then
