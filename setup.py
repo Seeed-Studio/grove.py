@@ -14,19 +14,20 @@ from setuptools import setup, find_packages
 with open('README.md') as f:
     long_description = f.read()
 
-requirements = ['smbus2']
+requirements = ['smbus2', 'bmm150', 'bme680', 'sgp30']
 
 
 def is_pi():
     found = False
     try:
-        with io.open('/proc/cpuinfo', 'r') as cpuinfo:
+        with open('/proc/cpuinfo', 'r') as cpuinfo:
             for line in cpuinfo:
-                if line.startswith('Hardware'):
+                if line.startswith('Model'):
                     _, value = line.strip().split(':', 1)
                     value = value.strip()
-                    if value in ('BCM2708', 'BCM2709', 'BCM2835', 'BCM2836'):
+                    if value.startswith('Raspberry Pi'):
                         found = True
+                        break  
     except IOError:
         pass
 
