@@ -86,8 +86,11 @@ H3LIS331DL_ACCL_RANGE_400G				= 0x30 # Full scale = +/-400g
 H3LIS331DL_ACCL_RANGE_200G				= 0x10 # Full scale = +/-200g
 H3LIS331DL_ACCL_RANGE_100G				= 0x00 # Full scale = +/-100g
 H3LIS331DL_ACCL_SIM_3					= 0x01 # 3-Wire Interface
+H3LIS331DL_RAW_DATA_MAX					= 65536
 
-H3LIS331DL_SCALE_FS_100 = 0.049
+H3LIS331DL_DEFAULT_RANGE = H3LIS331DL_ACCL_RANGE_100G
+H3LIS331DL_SCALE_FS = H3LIS331DL_RAW_DATA_MAX / 4 / ((H3LIS331DL_DEFAULT_RANGE >> 4) + 1)
+
 class H3LIS331DL(object):
 	def __init__ (self, address=H3LIS331DL_DEFAULT_ADDRESS):
 		self._addr = address
@@ -102,7 +105,7 @@ class H3LIS331DL(object):
 	
 	def select_data_config(self):
 		"""Select the data configuration of the accelerometer from the given provided values"""
-		DATA_CONFIG = (H3LIS331DL_ACCL_RANGE_100G | H3LIS331DL_ACCL_BDU_CONT)
+		DATA_CONFIG = (H3LIS331DL_DEFAULT_RANGE | H3LIS331DL_ACCL_BDU_CONT)
 		self._bus.write_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_CTRL4, DATA_CONFIG)
 	
 	def read_accl(self):
@@ -112,8 +115,8 @@ class H3LIS331DL(object):
 		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_X_H)
 		
 		xAccl = data1 * 256 + data0
-		if xAccl > 32767 :
-			xAccl -= 65536
+		if xAccl > H3LIS331DL_RAW_DATA_MAX / 2:
+			xAccl -= H3LIS331DL_RAW_DATA_MAX
 		
 		"""Read data back from H3LIS331DL_REG_OUT_Y_L(0x2A), 2 bytes
 		Y-Axis Accl LSB, Y-Axis Accl MSB"""
@@ -121,8 +124,8 @@ class H3LIS331DL(object):
 		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Y_H)
 		
 		yAccl = data1 * 256 + data0
-		if yAccl > 32767 :
-			yAccl -= 65536
+		if yAccl > H3LIS331DL_RAW_DATA_MAX / 2 :
+			yAccl -= H3LIS331DL_RAW_DATA_MAX
 		
 		"""Read data back from H3LIS331DL_REG_OUT_Z_L(0x2C), 2 bytes
 		Z-Axis Accl LSB, Z-Axis Accl MSB"""
@@ -130,8 +133,8 @@ class H3LIS331DL(object):
 		data1 = self._bus.read_byte_data(H3LIS331DL_DEFAULT_ADDRESS, H3LIS331DL_REG_OUT_Z_H)
 		
 		zAccl = data1 * 256 + data0
-		if zAccl > 32767 :
-			zAccl -= 65536
+		if zAccl > H3LIS331DL_RAW_DATA_MAX / 2 :
+			zAccl -= H3LIS331DL_RAW_DATA_MAX
 		
 		return {'x' : xAccl, 'y' : yAccl, 'z' : zAccl}
 
@@ -145,7 +148,7 @@ def main():
 		print("Raw:    X = {0:6}   Y = {1:6}   Z = {2:6}"
 			.format(accl['x'], accl['y'], accl['z']))
 		print("Accel: AX = {0:6.3}g AY = {1:6.3}g AZ = {2:6.3}g"
-			.format(accl['x'] * H3LIS331DL_SCALE_FS_100, accl['y'] * H3LIS331DL_SCALE_FS_100, accl['z'] * H3LIS331DL_SCALE_FS_100))
+			.format(accl['x'] / H3LIS331DL_SCALE_FS, accl['y'] / H3LIS331DL_SCALE_FS, accl['z'] / H3LIS331DL_SCALE_FS))
 		time.sleep(.5)
 
 if __name__ == '__main__':
