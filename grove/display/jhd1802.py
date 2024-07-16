@@ -38,7 +38,8 @@ Examples:
 '''
 import upm.pyupm_jhd1313m1 as upmjhd
 from grove.display.base import *
-import sys, mraa
+from grove.i2c import Bus
+import sys
 
 # sphinx autoapi required
 __all__ = ["JHD1802"]
@@ -57,10 +58,9 @@ class JHD1802(Display):
         address(int): I2C device address, default to 0x3E.
     '''
     def __init__(self, address = 0x3E):
-        self._bus = mraa.I2c(0)
+        self._bus = Bus()
         self._addr = address
-        self._bus.address(self._addr)
-        if self._bus.writeByte(0):
+        if self._bus.write_byte(self._addr, 0):
             print("Check if the LCD {} inserted, then try again"
                     .format(self.name))
             sys.exit(1)

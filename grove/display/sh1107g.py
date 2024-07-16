@@ -37,7 +37,7 @@ Examples:
 from grove.display.base import *
 from upm.pyupm_lcd import *
 from grove.i2c import Bus
-import sys, mraa
+import sys
 
 # sphinx autoapi required
 __all__ = ["SH1107G_SSD1327"]
@@ -157,17 +157,14 @@ class SH1107G_SSD1327(Display):
 
     def __init__(self, address = 0x3C):
         super(SH1107G_SSD1327, self).__init__()
-        # self._bus = Bus()
-        self._bus = mraa.I2c(0)
+        self._bus = Bus()
         self._addr = address
-        self._bus.address(self._addr)
 
-        if self._bus.writeByte(0):
+        if self._bus.write_byte(self._addr, 0):
             print("Check if the OLED SH1107G/SSD1307 inserted, then try again")
             sys.exit(1)
  
-        # id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)
-        id = self._bus.readReg(SH1107G_SSD1327._REG_CMD)
+        id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)
         # print(" id = 0x{:2x}".format(id))
         self._sh1107 = (id & 0x3F) == 0x07
         if not self._sh1107:
@@ -199,8 +196,7 @@ class SH1107G_SSD1327(Display):
 
     def _cmd(self, cmd):
         try:
-            # self._bus.write_byte_data(self._addr,
-            self._bus.writeReg(
+            self._bus.write_byte_data(self._addr,
                                     SH1107G_SSD1327._REG_CMD, cmd)
         except IOError:
             print("*** Check if OLED module inserted ***")
@@ -217,9 +213,8 @@ class SH1107G_SSD1327(Display):
         for i in range(length):
             data[i + 1] = datas[i]
         try:
-            self._bus.write(data)
-            # self._bus.write_i2c_block_data(self._addr,
-            #                       SH1107G_SSD1327._REG_DATA, datas)
+            self._bus.write_i2c_block_data(self._addr,
+                                  SH1107G_SSD1327._REG_DATA, datas)
         except IOError:
             print("*** Check if OLED module inserted ***")
             sys.exit(1)
