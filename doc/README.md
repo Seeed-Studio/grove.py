@@ -39,7 +39,7 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>I2C</td>
     </tr>
     <tr align="center">
-      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-400-p-1897.html">3-Axis Digital Accelerometer(+/-400g)</a></td>
+      <td><a href="https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-LIS3DHTR-p-4533.html">3-Axis Digital Accelerometer(+/-400g)</a></td>
       <td>grove_3_axis_digital_accelerometer</td>
       <td>y</td>
       <td></td>
@@ -507,7 +507,7 @@ arg2 - dht_type,
     </tr>
    <tr align="center">
       <td>
-        <a href="https://www.seeedstudio.com/Grove-UV-Sensor-p-1540.html">UV Sensor</a>
+        <a href="https://www.seeedstudio.com/Grove-I2C-UV-Sensor-VEML6070.html">UV Sensor</a>
       </td>
       <td>grove_uv_sensor</td>
       <td>y</td>
