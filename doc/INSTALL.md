@@ -1,6 +1,5 @@
 
 # Install Dependencies
-#### Install MRAA and UPM
 
 - Add repository
 
@@ -20,27 +19,30 @@ curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
 # or
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
 ```
-
-- Install MRAA & UPM
-
+### In later versions of Python 3, it is recommended to use a virtualenv for isolated package management
 ```shell
-sudo apt update
-# Python2
-sudo apt install python-mraa python-upm
-# Python3
-sudo apt install python3-mraa python3-upm
+sudo apt install python3-virtualenv
+virtualenv -p python3 env
+source env/bin/activate
 ```
 
 #### Install library raspberry-gpio-python for RPi
 ```shell
 sudo apt update
-sudo apt install python-rpi.gpio python3-rpi.gpio
+# python2
+sudo apt install python-rpi.gpio 
+# python3
+sudo apt install python3-rpi.gpio
 ```
 
 #### Install library rpi_ws281x for RPi
 ```shell
+# python2
 sudo pip install rpi_ws281x
+# python3
 sudo pip3 install rpi_ws281x
+# env
+pip install rpi_ws281x
 ```
 
 <br><br>
@@ -54,4 +56,6 @@ From PyPI
 sudo pip install grove.py
 # python3
 sudo pip3 install grove.py
+# env
+pip install grove.py
 ```

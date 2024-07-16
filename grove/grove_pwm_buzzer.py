@@ -35,7 +35,7 @@ import RPi.GPIO as GPIO
 
 def main():
     from grove.helper import helper
-    helper.root_check()
+    # helper.root_check()
 
     print("Insert Grove-Buzzer to Grove-Base-Hat slot PWM[12 13 VCC GND]")
     # Grove Base Hat for Raspberry Pi

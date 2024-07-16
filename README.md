@@ -35,6 +35,7 @@ Here is the compatibility of [grove.py](https://github.com/Seeed-Studio/grove.py
 | 10 (Buster) until 2020-08-20 | √ | √ |
 | 10 (Buster) after 2020-08-20 | × | √ |
 | 11 (Bullseye) | × | √ |
+| 12 (bookworm) | × | √ |
 
 **Because Python2 is obsolete and APT repository does not provide `python-pip`, so the Raspberry Pi OS releases which after `10 (Buster) 2020-08-20` cannot use `Online install` command. We also recommend using Python3 to all the users and developers.**
 
@@ -53,6 +54,11 @@ cd grove.py
 sudo pip install .
 # Python3 
 sudo pip3 install .
+# virutalenv for Python3 (If the installation fails when using pip3)
+sudo apt install python3-virtualenv
+virtualenv -p python3 env
+source env/bin/activate
+pip3 install .
 ```
 
 <br><br>
