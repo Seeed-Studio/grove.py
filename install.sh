@@ -198,6 +198,11 @@ coral)
 	apt_install python3-setuptools
 	apt_install python-wheel
 	apt_install python3-wheel
+ 	
+  	# install mraa and upm (out dated but working as of January 2024)
+	apt-get install python3-upm
+ 	apt-get install python3-mraa
+  	echo MRAA and UPM installed
 
 	## install library enum
 	;;
@@ -209,6 +214,11 @@ jetson_nano)
 	apt_install python3-setuptools
 	apt_install python-wheel
 	apt_install python3-wheel
+ 	# install mraa and upm (out dated but working as of January 2024)
+	apt-get install python3-upm
+ 	apt-get install python3-mraa
+
+  	echo MRAA and UPM installed
 	pushd .
 	cd `dirname $0`
 	cp ./udev/jetson-nano/99-tegra-i2cset.rules /etc/udev/rules.d/
@@ -225,6 +235,12 @@ rpi)
 		do_i2c 0
 	fi
 	echo I2C interface enabled...
+
+ 	# install mraa and upm (out dated but working as of January 2024)
+	apt-get install python3-upm
+ 	apt-get install python3-mraa
+
+  	echo MRAA and UPM installed
 
 	## install library raspberry-gpio-python
 	apt_install python-rpi.gpio
