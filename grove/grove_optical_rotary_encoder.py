@@ -36,7 +36,6 @@ from grove.gpio import GPIO
 
 __all__ = ["GroveOpticalRotaryEncoder"]
 
-# The UPM version rotaryencoder has bug result in segment fault.
 # This pure python version could work well.
 class GroveOpticalRotaryEncoder(object):
     '''
@@ -81,16 +80,6 @@ def main():
     sh = SlotHelper(SlotHelper.GPIO)
     pin = sh.argv2pin()
 
-    '''
-    from upm.pyupm_rotaryencoder import RotaryEncoder as GroveOpticalRotaryEncoder
-    from mraa import getGpioLookup
-
-    mraa_pin1 = getGpioLookup("GPIO%02d" % (pin + 0))
-    mraa_pin2 = getGpioLookup("GPIO%02d" % (pin + 1))
-
-    # Instantiate a Grove Rotary Encoder, using signal pins mraa_pin1 & mraa_pin2
-    myRotaryEncoder = GroveOpticalRotaryEncoder(mraa_pin1, mraa_pin2);
-    '''
     myRotaryEncoder = GroveOpticalRotaryEncoder(pin)
 
     ## Exit handlers ##

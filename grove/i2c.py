@@ -33,7 +33,6 @@ import smbus2 as smbus
 from smbus2 import i2c_msg
 class Bus:
     instance = None
-    MRAA_I2C = 0
 
     def __init__(self, bus=None):
         if bus is None:
