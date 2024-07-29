@@ -37,7 +37,6 @@ from grove.button      import *
 from grove.led         import *
 from grove.temperature import *
 from grove.gpio        import *
-from grove.display     import *
 from grove.motor       import *
 
 # GPIOWrapper settings
@@ -146,8 +145,6 @@ class __factory(object):
     def getTemper(self, typ, channel = None, address=0x18):
         if typ == "NTC-ADC":
             return TemperTypedNTC(channel)
-        elif typ == "MCP9808-I2C":
-            return TemperMCP9808(address=address)
         else:
             self.__avail_list(typ, self.TemperEnum)
             sys.exit(1)
@@ -175,18 +172,6 @@ class __factory(object):
         else:
             self._avail_list(typ, self.StepperMotorEnum)
             sys.exit(1)
-
-    def getDisplay(self, typ):
-        if typ == "JHD1802":
-            return JHD1802()
-        elif typ == "SH1107G":
-            return SH1107G_SSD1327()
-        else:
-            self._avail_list(typ, self.DisplayEnum)
-            sys.exit(1)
-
-    # Compability
-    getLcd = getDisplay
 
 
 

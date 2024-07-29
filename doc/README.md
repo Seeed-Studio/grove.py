@@ -71,18 +71,6 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>I2C</td>
     </tr>
     <tr align="center">
-      <td>
-        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Red-p-3197.html">16 x 2 LCD (Black on Red)</a><br>
-        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Yellow-p-3198.html">16 x 2 LCD (Black on Yellow)</a><br>
-        <a href="https://www.seeedstudio.com/Grove-16-x-2-LCD-White-on-Blue-p-3196.html">16 x 2 LCD (White on Blue)</a>
-      </td>
-      <td>grove_16x2_lcd</td>
-      <td>y</td>
-      <td></td>
-      <td></td>
-      <td>I2C</td>
-    </tr>
-    <tr align="center">
       <td><a href="https://www.seeedstudio.com/Grove-Air-quality-sensor-v1.3-p-2439.html">Air quality sensor v1.3</a></td>
       <td>grove_air_quality_sensor_v1_3</td>
       <td>y</td>
@@ -168,17 +156,6 @@ Some devices need root permission signed in sudo column, the coresponding comman
       <td>y</td>
       <td></td>
       <td></td>
-      <td>I2C</td>
-    </tr>
-    <tr align="center">
-      <td>
-        <a href="https://www.seeedstudio.com/Grove-OLED-Display-1-1-p-824.html">OLED Display 1.12"</a><br>
-        <a href="https://www.seeedstudio.com/Grove-OLED-Display-1-12-V2-p-3031.html">OLED Display 1.12" V2</a><br>
-      </td>
-      <td>grove_lcd_1.2inches</td>
-      <td>y</td>
-      <td></td>
-      <td>&bull;</td>
       <td>I2C</td>
     </tr>
     <tr align="center">

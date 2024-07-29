@@ -50,11 +50,6 @@ From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
-# Python2 (This command line does not provide for Raspberrypi OS 10 (Buster) >= 2020-12-02)
-sudo pip install .
-# Python3 
-sudo pip3 install .
-# virutalenv for Python3 (If the installation fails when using pip3)
 sudo apt install python3-virtualenv
 virtualenv -p python3 env
 source env/bin/activate
