@@ -36,9 +36,10 @@ Examples:
         time.sleep(3)
         lcd.clear()
 '''
-import upm.pyupm_jhd1313m1 as upmjhd
+
 from grove.display.base import *
 from grove.i2c import Bus
+import time
 import sys
 
 # sphinx autoapi required
@@ -58,13 +59,16 @@ class JHD1802(Display):
         address(int): I2C device address, default to 0x3E.
     '''
     def __init__(self, address = 0x3E):
-        self._bus = Bus()
+        self._bus = Bus(1)
         self._addr = address
         if self._bus.write_byte(self._addr, 0):
             print("Check if the LCD {} inserted, then try again"
                     .format(self.name))
             sys.exit(1)
-        self.jhd = upmjhd.Jhd1313m1(0, address, address)
+        self.textCommand(0x02)
+        time.sleep(0.1)
+        self.textCommand(0x08 | 0x04) # display on, no cursor
+        self.textCommand(0x28)
 
     @property
     def name(self):
@@ -97,10 +101,7 @@ class JHD1802(Display):
         return 2, 16
 
     def clear(self):
-        '''
-        Clears the screen and positions the cursor in the upper-left corner.
-        '''
-        self.jhd.clear()
+        self.textCommand(0x01)
 
     def draw(self, data, bytes):
         '''
@@ -113,7 +114,8 @@ class JHD1802(Display):
         Positions the cursor in the upper-left of the LCD.
         That is, use that location in outputting subsequent text to the display.
         '''
-        self.jhd.home()
+        self.textCommand(0x02)
+        time.sleep(0.2)
 
     def setCursor(self, row, column):
         '''
@@ -127,7 +129,8 @@ class JHD1802(Display):
 	Returns:
 	    None
         '''
-        self.jhd.setCursor(row, column)
+        print("setCursor: row={}, column={}".format(row,column))
+        self.textCommand((0x40 * row) + (column % 0x10) + 0x80)
 
     def write(self, msg):
         '''
@@ -139,14 +142,19 @@ class JHD1802(Display):
         Returns:
             None
         '''
-        self.jhd.write(msg)
+        for c in msg:
+            self._bus.write_byte_data(self._addr,0x40,ord(c))
 
     def _cursor_on(self, enable):
         if enable:
-            self.jhd.cursorOn()
+            self.textCommand(0x0E)
         else:
-            self.jhd.cursorOff()
-
+            self.textCommand(0x0C)
+            
+            
+    def textCommand(self, cmd):
+        self._bus.write_byte_data(self._addr,0x80,cmd)
+        
 def main():
     import time
 

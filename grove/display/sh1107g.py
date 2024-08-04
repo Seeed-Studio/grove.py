@@ -35,7 +35,7 @@ Examples:
         oled.clear()
 '''
 from grove.display.base import *
-from upm.pyupm_lcd import *
+# from upm.pyupm_lcd import *
 from grove.i2c import Bus
 import sys
 
@@ -154,10 +154,16 @@ class SH1107G_SSD1327(Display):
     _PAGE_CNT   = 16
     _PAGE_BYTES = 128
     _TOTAL_BYTES= _PAGE_CNT * _PAGE_BYTES
+    
+    _DISPLAY_CMD_OFF = 0xAE;
+    _DISPLAY_CMD_ON = 0xAF;
 
+    _BASE_LOW_COLUMN_ADDR = 0x00;
+    _BASE_HIGH_COLUMN_ADDR = 0x10;
+    _BASE_PAGE_START_ADDR = 0xB0;
     def __init__(self, address = 0x3C):
         super(SH1107G_SSD1327, self).__init__()
-        self._bus = Bus()
+        self._bus = Bus(1)
         self._addr = address
 
         if self._bus.write_byte(self._addr, 0):
@@ -167,9 +173,9 @@ class SH1107G_SSD1327(Display):
         id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)
         # print(" id = 0x{:2x}".format(id))
         self._sh1107 = (id & 0x3F) == 0x07
-        if not self._sh1107:
-            self._ssd1327 = SSD1327(0)
-            return
+        # if not self._sh1107:
+        #     self._ssd1327 = sh1107(self._bus)
+        #     return
 
         blk =     [0xAE]   # Display OFF
         blk.append(0xD5)   # Set Dclk
@@ -227,7 +233,7 @@ class SH1107G_SSD1327(Display):
         Returns:
             string: SH1107G/SSD1307 depends your device plugin.
         '''
-        return "SH1107G" if self._sh1107 else "SSD1327"
+        return "SH1107G" # if self._sh1107 else "SSD1327"
 
     def type(self):
         '''
@@ -239,9 +245,9 @@ class SH1107G_SSD1327(Display):
         return TYPE_GRAY
 
     def size(self):
-        if not self._sh1107:
-            # Gray OLED 96x96
-            return 12, 12
+        # if not self._sh1107:
+        #     # Gray OLED 96x96
+        #     return 12, 12
         # Gray OLED 128x128
         return 16, 16
 
@@ -249,9 +255,9 @@ class SH1107G_SSD1327(Display):
         '''
         Clears the screen and positions the cursor in the upper-left corner.
         '''
-        if not self._sh1107:
-            self._ssd1327.clear()
-            return
+        # if not self._sh1107:
+        #     self._ssd1327.clear()
+        #     return
         zeros = [ 0x0 for dummy in range(SH1107G_SSD1327._TOTAL_BYTES) ]
         self.draw(zeros, SH1107G_SSD1327._TOTAL_BYTES)
 
@@ -264,17 +270,17 @@ class SH1107G_SSD1327(Display):
             data (list of int): the data to transfer/draw
             bytes (int)       : data size
         '''
-        if not self._sh1107:
-            self._ssd1327.draw(data, bytes)
-            return
+        # if not self._sh1107:
+        #     self._ssd1327.draw(data, bytes)
+        #     return
 
         # all pages fill with data
         for i in range(SH1107G_SSD1327._PAGE_CNT):
             if i > bytes / SH1107G_SSD1327._PAGE_BYTES:
                 return
-            self._cmd(BASE_PAGE_START_ADDR + i)
-            self._cmd(BASE_LOW_COLUMN_ADDR)
-            self._cmd(BASE_HIGH_COLUMN_ADDR)
+            self._cmd(self._BASE_PAGE_START_ADDR + i)
+            self._cmd(self._BASE_LOW_COLUMN_ADDR)
+            self._cmd(self._BASE_HIGH_COLUMN_ADDR)
             # fill one PAGE bytes
             for k in range(0, SH1107G_SSD1327._PAGE_BYTES, 32):
                 # I2C limit to 32 bytes each transfer
@@ -287,9 +293,9 @@ class SH1107G_SSD1327(Display):
         Positions the cursor in the upper-left of the OLED.
         That is, use that location in outputting subsequent text to the display.
         '''
-        if not self._sh1107:
-            self._ssd1327.home()
-            return
+        # if not self._sh1107:
+        #     self._ssd1327.home()
+        #     return
         self.setCursor(0, 0)
 
     def setCursor(self, row, column):
@@ -304,12 +310,12 @@ class SH1107G_SSD1327(Display):
 	Returns:
 	    None
         '''
-        if not self._sh1107:
-            self._ssd1327.setCursor(row, column)
-            return
-        self._cmd(BASE_PAGE_START_ADDR + row)
-        self._cmd(0x08 if column % 2 else BASE_LOW_COLUMN_ADDR)
-        self._cmd(BASE_HIGH_COLUMN_ADDR + (column >> 1))
+        # if not self._sh1107:
+        #     self._ssd1327.setCursor(row, column)
+        #     return
+        self._cmd(self._BASE_PAGE_START_ADDR + row)
+        self._cmd(0x08 if column % 2 else self._BASE_LOW_COLUMN_ADDR)
+        self._cmd(self._BASE_HIGH_COLUMN_ADDR + (column >> 1))
 
     def _putchar(self, c):
         asc = ord(c)
@@ -330,14 +336,14 @@ class SH1107G_SSD1327(Display):
         Returns:
             None
         '''
-        if not self._sh1107:
-            self._ssd1327.write(msg)
-            return
+        # if not self._sh1107:
+        #     self._ssd1327.write(msg)
+        #     return
         for i in range(len(msg)):
             self._putchar(msg[i])
 
     def _backlight_on(self, en):
-        self._cmd(DISPLAY_CMD_ON if en else DISPLAY_CMD_OFF)
+        self._cmd(self._DISPLAY_CMD_ON if en else self._DISPLAY_CMD_OFF)
 
 
 def main():
