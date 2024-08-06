@@ -49,7 +49,7 @@ class GroveOpticalRotaryEncoder(object):
         pin2 = pin1 + 1 if pin2 is None else pin2
         self.__gpio  = GPIO(pin1, GPIO.IN)
         self.__gpio2 = GPIO(pin2, GPIO.IN)
-        self.__gpio.on_event = self.__gpio_event
+        self.__gpio.on_event(self.__gpio_event)
         self._pos = 0
 
     # called by GPIO library

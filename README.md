@@ -7,8 +7,6 @@ grove.py
 [![](https://img.shields.io/pypi/v/grove.py.svg)](https://pypi.python.org/pypi/grove.py)
 
 Python library for Seeedstudio Grove Devices on embeded Linux platform, especially good on below platforms:
-- [Coral Dev Board](https://www.seeedstudio.com/Coral-Dev-Board-p-2900.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
-- [NVIDIA Jetson Nano](https://www.seeedstudio.com/NVIDIA-Jetson-Nano-Development-Kit-p-2916.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
 - [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
 
 <br><br>
@@ -25,33 +23,21 @@ For beginner or library user only, please install with online method.<br>
 For developer or advanced user, please install [dependencies](doc/INSTALL.md#install-dependencies)
 and then install grove.py with [source code](#install-grovepy).
 
-### Caution
-
-Here is the compatibility of [grove.py](https://github.com/Seeed-Studio/grove.py) with Python2 and Python3 on each releases of Raspbian/Raspberry Pi OS.
-
-| Raspberry Pi OS Releases | grove.py for Python2 | grove.py for Python3 |
-| ---- | ---- | ---- |
-| 9 (Stretch) | √ | √ |
-| 10 (Buster) until 2020-08-20 | √ | √ |
-| 10 (Buster) after 2020-08-20 | × | √ |
-| 11 (Bullseye) | × | √ |
-| 12 (bookworm) | × | √ |
-
-**Because Python2 is obsolete and APT repository does not provide `python-pip`, so the Raspberry Pi OS releases which after `10 (Buster) 2020-08-20` cannot use `Online install` command. We also recommend using Python3 to all the users and developers.**
-
 ### Online install
 install/update all dependencies and latest grove.py
 ```shell
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
+To install into a virtual environment, first active your virtualenv and type the following command:
 
+```bash
+curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | bash -s -- --user-local --bypass-gui-installation
+```
 ### Install grove.py
 From source code
 ```shell
 git clone https://github.com/Seeed-Studio/grove.py
 cd grove.py
-# Python2 (This command line does not provide for Raspberrypi OS 10 (Buster) >= 2020-12-02)
-sudo pip install .
 # Python3 
 sudo pip3 install .
 # virutalenv for Python3 (If the installation fails when using pip3)

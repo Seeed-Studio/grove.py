@@ -33,34 +33,49 @@ THE SOFTWARE.
 '''
 import math
 import threading
-from grove.i2c import Bus as I2C
+from grove.i2c import Bus 
 from grove.temperature import Temper
-from upm.pyupm_mcp9808 import MCP9808
+
+RES_LOW = 0x00
+RES_MEDIUM = 0x01
+RES_HIGH = 0x02
+RES_PRECISION = 0x03
+
+MCP9808_REG_AMBIENT_TEMP = 0x05
 
 class TemperMCP9808(Temper):
     def __init__(self, address=0x18):
-        self.mcp = MCP9808(I2C.MRAA_I2C,address=address)
-        self.mcp.setMode(True)  # Celsius
+        self._addr = address
+        self._bus = Bus(1)
         self._resolution = Temper.RES_1_2_CELSIUS
 
     def _derive_res(self, res):
         ares = -1
         if res >= Temper.RES_1_2_CELSIUS:
-            ares = MCP9808.RES_LOW
+            ares = RES_LOW
         elif res >= Temper.RES_1_4_CELSIUS:
-            ares = MCP9808.RES_MIDDLE
+            ares = RES_MEDIUM
         elif res >= Temper.RES_1_8_CELSIUS:
-            ares = MCP9808.RES_HIGH
+            ares = RES_HIGH
         elif res >= Temper.RES_1_16_CELSIUS:
-            ares = MCP9808.RES_PRECISION
+            ares = RES_PRECISION
 
         if ares < 0:
             return False
-        self.mcp.setResolution(ares)
+        self._bus.write_byte(self._addr, ares)
         # print("ares = {}".format(ares))
         return True
 
     @property
     def temperature(self):
-        return self.mcp.getTemp()
-
+        result = self._bus.read_word_data(self._addr, MCP9808_REG_AMBIENT_TEMP)
+        # Swap the bytes
+        data = (result & 0xff) << 8 | (result & 0xff00) >> 8
+        # print("data = {}".format(data))
+        # print("data = {}".format(hex(data)))
+        # Check if the temperature is negative
+        if data & 0x1000:
+            data = -((data ^ 0x0FFF) + 1)
+        else:
+            data = data & 0x0fff
+        return data / 16.0
