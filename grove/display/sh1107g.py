@@ -242,6 +242,12 @@ class SH1107G(Display):
         return TYPE_GRAY
 
     def size(self):
+        '''
+        Get display size
+
+        Returns:
+            (Rows, Columns): the display size, in characters.
+        '''
         return 16, 16
 
     def clear(self):

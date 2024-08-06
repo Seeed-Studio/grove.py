@@ -101,6 +101,9 @@ class JHD1802(Display):
         return 2, 16
 
     def clear(self):
+        '''
+        Clears the screen and positions the cursor in the upper-left corner.
+        '''
         self.textCommand(0x01)
 
     def draw(self, data, bytes):

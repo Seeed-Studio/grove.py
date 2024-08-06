@@ -1,1 +1,0 @@
-KERNEL=="i2c-1" OWNER="root" GROUP="root" MODE="0666"

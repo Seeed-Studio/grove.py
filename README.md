@@ -24,14 +24,15 @@ For developer or advanced user, please install [dependencies](doc/INSTALL.md#ins
 and then install grove.py with [source code](#install-grovepy).
 
 ### Online install
-install/update all dependencies and latest grove.py
-```shell
-curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
-```
 To install into a virtual environment, first active your virtualenv and type the following command:
 
 ```bash
 curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | bash -s -- --user-local --bypass-gui-installation
+```
+
+If you want to install into the system, you can type the following command:
+```shell
+curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 ```
 ### Install grove.py
 From source code
