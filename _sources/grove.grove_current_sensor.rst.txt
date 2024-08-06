@@ -1,0 +1,35 @@
+==============================
+``grove.grove_current_sensor``
+==============================
+
+.. automodule:: grove.grove_current_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_current_sensor
+
+
+Classes
+=======
+
+- :py:class:`Current`:
+  Grove Current Sensor class
+
+- :py:class:`Bus`:
+  Undocumented.
+
+
+.. autoclass:: Current
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Current
+      :parts: 1
+
+.. autoclass:: Bus
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Bus
+      :parts: 1

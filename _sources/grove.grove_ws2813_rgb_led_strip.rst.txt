@@ -1,0 +1,45 @@
+====================================
+``grove.grove_ws2813_rgb_led_strip``
+====================================
+
+.. automodule:: grove.grove_ws2813_rgb_led_strip
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_ws2813_rgb_led_strip
+
+
+Functions
+=========
+
+- :py:func:`Color`:
+  Convert the provided red, green, blue color to a 24-bit color value.
+
+
+.. autofunction:: Color
+
+
+Classes
+=======
+
+- :py:class:`GroveWS2813RgbStrip`:
+  Wrapper Class for Grove - WS2813 RGB LED Strip Waterproof - XXX LED/m
+
+- :py:class:`PixelStrip`:
+  Undocumented.
+
+
+.. autoclass:: GroveWS2813RgbStrip
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveWS2813RgbStrip
+      :parts: 1
+
+.. autoclass:: PixelStrip
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PixelStrip
+      :parts: 1

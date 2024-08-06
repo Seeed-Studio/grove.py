@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>grove.grove_ws2813_rgb_led_strip &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    
+    <script src="../../_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_ws2813_rgb_led_strip</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_ws2813_rgb_led_strip</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># The MIT License (MIT)</span>
+<span class="c1"># Port to support Grove - WS2813 RGB LED Strip Waterproff - XXX LED/m</span>
+<span class="c1">#</span>
+<span class="c1"># Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># NeoPixel library strandtest example</span>
+<span class="c1"># Author: Tony DiCola (tony@tonydicola.com)</span>
+<span class="c1">#</span>
+<span class="c1"># Direct port of the Arduino NeoPixel library strandtest example.  Showcases</span>
+<span class="c1"># various animations on a strip of NeoPixels.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `Grove - WS2813 RGB LED Strip Waterproof - 30 LED/m -1m   &lt;https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-30-LED-m-1m-p-3124.html&gt;`_</span>
+<span class="sd">    - `Grove - WS2813 RGB LED Strip Waterproof - 60 LED/m - 1m  &lt;https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m-p-3126.html&gt;`_</span>
+<span class="sd">    - `Grove - WS2813 RGB LED Strip Waterproof - 144 LED/m - 1m &lt;https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-144-LED-m-1m-p-3127.html&gt;`_</span>
+
+<span class="sd">Examples:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import time</span>
+<span class="sd">        from rpi_ws281x import Color</span>
+<span class="sd">        from grove.grove_ws2813_rgb_led_strip import GroveWS2813RgbStrip</span>
+
+<span class="sd">        # connect to pin 12(slot PWM)</span>
+<span class="sd">        PIN   = 12</span>
+<span class="sd">        # For Grove - WS2813 RGB LED Strip Waterproof - 30 LED/m</span>
+<span class="sd">        # there is 30 RGB LEDs.</span>
+<span class="sd">        COUNT = 30</span>
+<span class="sd">        strip = GroveWS2813RgbStrip(PIN, COUNT)</span>
+
+<span class="sd">        # Define functions which animate LEDs in various ways.</span>
+<span class="sd">        def colorWipe(strip, color, wait_ms=50):</span>
+<span class="sd">            &quot;&quot;&quot;Wipe color across display a pixel at a time.&quot;&quot;&quot;</span>
+<span class="sd">            for i in range(strip.numPixels()):</span>
+<span class="sd">                strip.setPixelColor(i, color)</span>
+<span class="sd">                strip.show()</span>
+<span class="sd">                time.sleep(wait_ms/1000.0)</span>
+
+<span class="sd">        print (&#39;Color wipe animations.&#39;)</span>
+<span class="sd">        colorWipe(strip, Color(255, 0, 0))  # Red wipe</span>
+<span class="sd">        colorWipe(strip, Color(0, 255, 0))  # Blue wipe</span>
+<span class="sd">        colorWipe(strip, Color(0, 0, 255))  # Green wipe</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GroveWS2813RgbStrip&#39;</span><span class="p">,</span> <span class="s1">&#39;PixelStrip&#39;</span><span class="p">,</span> <span class="s1">&#39;Color&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">rpi_ws281x</span> <span class="kn">import</span> <span class="n">PixelStrip</span><span class="p">,</span> <span class="n">Color</span>
+
+<span class="c1"># LED strip configuration</span>
+<span class="n">LED_FREQ_HZ</span>    <span class="o">=</span> <span class="mi">800000</span>  <span class="c1"># LED signal frequency in hertz (usually 800khz)</span>
+<span class="n">LED_DMA</span>        <span class="o">=</span> <span class="mi">10</span>      <span class="c1"># DMA channel to use for generating signal (try 10)</span>
+<span class="n">LED_BRIGHTNESS</span> <span class="o">=</span> <span class="mi">255</span>     <span class="c1"># Set to 0 for darkest and 255 for brightest</span>
+<span class="n">LED_INVERT</span>     <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># True to invert the signal (when using NPN transistor level shift)</span>
+
+<div class="viewcode-block" id="GroveWS2813RgbStrip">
+<a class="viewcode-back" href="../../grove.grove_ws2813_rgb_led_strip.html#grove.grove_ws2813_rgb_led_strip.GroveWS2813RgbStrip">[docs]</a>
+<span class="k">class</span> <span class="nc">GroveWS2813RgbStrip</span><span class="p">(</span><span class="n">PixelStrip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wrapper Class for Grove - WS2813 RGB LED Strip Waterproof - XXX LED/m</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pin(int)  : 12, 18 for RPi</span>
+<span class="sd">        count(int): strip LEDs count</span>
+<span class="sd">        brightness(int): optional, set to 0 for darkest and 255 for brightest, default 255</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">brightness</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">ws2812_pins</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">12</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pin</span> <span class="ow">in</span> <span class="n">ws2812_pins</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OneLedTypedWs2812: pin </span><span class="si">{}</span><span class="s2"> could not used with WS2812&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="n">ws2812_pins</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">brightness</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">brightness</span> <span class="o">=</span> <span class="n">LED_BRIGHTNESS</span>
+
+        <span class="c1"># Create PixelStrip object with appropriate configuration.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GroveWS2813RgbStrip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">count</span><span class="p">,</span>
+            <span class="n">pin</span><span class="p">,</span>
+            <span class="n">LED_FREQ_HZ</span><span class="p">,</span>
+            <span class="n">LED_DMA</span><span class="p">,</span>
+            <span class="n">LED_INVERT</span><span class="p">,</span>
+            <span class="n">brightness</span><span class="p">,</span>
+            <span class="n">channel</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Intialize the library (must be called once before other functions).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># Define functions which animate LEDs in various ways.</span>
+<span class="k">def</span> <span class="nf">colorWipe</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">wait_ms</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wipe color across display a pixel at a time.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">()):</span>
+        <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="n">strip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_ms</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">theaterChase</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">wait_ms</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Movie theater light style chaser animation.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">q</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">strip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_ms</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">q</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">wheel</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate rainbow colors across 0-255 positions.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">85</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">170</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">-=</span> <span class="mi">85</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">-=</span> <span class="mi">170</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">pos</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rainbow</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">wait_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw rainbow that fades across all pixels at once.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="o">*</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">()):</span>
+            <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">wheel</span><span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">))</span>
+        <span class="n">strip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_ms</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rainbowCycle</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">wait_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw rainbow that uniformly distributes itself across all pixels.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="o">*</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">()):</span>
+            <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">wheel</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">/</span> <span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">())</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">))</span>
+        <span class="n">strip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_ms</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">theaterChaseRainbow</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">wait_ms</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rainbow movie theater light style chaser animation.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">q</span><span class="p">,</span> <span class="n">wheel</span><span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">)</span> <span class="o">%</span> <span class="mi">255</span><span class="p">))</span>
+            <span class="n">strip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_ms</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strip</span><span class="o">.</span><span class="n">numPixels</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">strip</span><span class="o">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">q</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">grove</span> <span class="kn">import</span> <span class="n">helper</span>
+    <span class="kn">from</span> <span class="nn">grove.helper</span> <span class="kn">import</span> <span class="n">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">root_check</span><span class="p">()</span>
+
+    <span class="kn">from</span> <span class="nn">grove.helper</span> <span class="kn">import</span> <span class="n">SlotHelper</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">SlotHelper</span><span class="p">(</span><span class="n">SlotHelper</span><span class="o">.</span><span class="n">PWM</span><span class="p">)</span>
+    <span class="n">pin</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">argv2pin</span><span class="p">(</span><span class="s2">&quot; [led-count]&quot;</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="n">strip</span> <span class="o">=</span> <span class="n">GroveWS2813RgbStrip</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Press Ctrl-C to quit.&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Color wipe animations.&#39;</span><span class="p">)</span>
+            <span class="n">colorWipe</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># Red wipe</span>
+            <span class="n">colorWipe</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># Blue wipe</span>
+            <span class="n">colorWipe</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>  <span class="c1"># Green wipe</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Theater chase animations.&#39;</span><span class="p">)</span>
+            <span class="n">theaterChase</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">127</span><span class="p">))</span>  <span class="c1"># White theater chase</span>
+            <span class="n">theaterChase</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">))</span>  <span class="c1"># Red theater chase</span>
+            <span class="n">theaterChase</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">127</span><span class="p">))</span>  <span class="c1"># Blue theater chase</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Rainbow animations.&#39;</span><span class="p">)</span>
+            <span class="n">rainbow</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+            <span class="n">rainbowCycle</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+            <span class="n">theaterChaseRainbow</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="c1"># clear all leds when exit</span>
+        <span class="n">colorWipe</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_ws2813_rgb_led_strip</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+=======================================
+``grove.grove_air_quality_sensor_v1_3``
+=======================================
+
+.. automodule:: grove.grove_air_quality_sensor_v1_3
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_air_quality_sensor_v1_3
+
+
+Classes
+=======
+
+- :py:class:`GroveAirQualitySensor`:
+  Grove Air Quality Sensor class
+
+
+.. autoclass:: GroveAirQualitySensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveAirQualitySensor
+      :parts: 1

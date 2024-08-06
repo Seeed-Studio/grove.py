@@ -1,0 +1,45 @@
+=================
+``grove.display``
+=================
+
+.. automodule:: grove.display
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.display.base
+   grove.display.jhd1802
+   grove.display.sh1107g
+
+.. currentmodule:: grove.display
+
+
+Classes
+=======
+
+- :py:class:`JHD1802`:
+  Grove - 16 x 2 LCD, using chip JHD1802.
+
+- :py:class:`SH1107G`:
+  OLED Display 1.12"(v2) use chip SH1107G.
+
+
+.. autoclass:: JHD1802
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: JHD1802
+      :parts: 1
+
+.. autoclass:: SH1107G
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SH1107G
+      :parts: 1

@@ -1,0 +1,25 @@
+======================
+``grove.grove_switch``
+======================
+
+.. automodule:: grove.grove_switch
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_switch
+
+
+Classes
+=======
+
+- :py:class:`GroveSwitch`:
+  Grove Switch class
+
+
+.. autoclass:: GroveSwitch
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveSwitch
+      :parts: 1

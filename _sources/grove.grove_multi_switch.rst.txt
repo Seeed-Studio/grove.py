@@ -1,0 +1,25 @@
+============================
+``grove.grove_multi_switch``
+============================
+
+.. automodule:: grove.grove_multi_switch
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_multi_switch
+
+
+Classes
+=======
+
+- :py:class:`GroveMultiSwitch`:
+  Grove 5-Way-Switch/6-Po-DIP-Switch class
+
+
+.. autoclass:: GroveMultiSwitch
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveMultiSwitch
+      :parts: 1

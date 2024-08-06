@@ -1,0 +1,25 @@
+======================================
+``grove.grove_optical_rotary_encoder``
+======================================
+
+.. automodule:: grove.grove_optical_rotary_encoder
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_optical_rotary_encoder
+
+
+Classes
+=======
+
+- :py:class:`GroveOpticalRotaryEncoder`:
+  Grove optical Rotary Encoder(TCUT1600X01) class
+
+
+.. autoclass:: GroveOpticalRotaryEncoder
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveOpticalRotaryEncoder
+      :parts: 1

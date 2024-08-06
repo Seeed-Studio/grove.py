@@ -1,0 +1,25 @@
+==============================
+``grove.grove_thumb_joystick``
+==============================
+
+.. automodule:: grove.grove_thumb_joystick
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_thumb_joystick
+
+
+Classes
+=======
+
+- :py:class:`GroveThumbJoystick`:
+  Grove Thumb Joystick class
+
+
+.. autoclass:: GroveThumbJoystick
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveThumbJoystick
+      :parts: 1

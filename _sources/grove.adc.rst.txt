@@ -1,0 +1,62 @@
+=============
+``grove.adc``
+=============
+
+.. automodule:: grove.adc
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.adc
+
+
+Classes
+=======
+
+- :py:class:`ADC`:
+  Class ADC for the ADC unit on Grove Base Hat for RPi.
+
+
+.. autoclass:: ADC
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ADC
+      :parts: 1
+
+
+Variables
+=========
+
+- :py:data:`RPI_HAT_NAME`
+- :py:data:`RPI_ZERO_HAT_NAME`
+- :py:data:`RPI_HAT_PID`
+- :py:data:`RPI_ZERO_HAT_PID`
+
+.. autodata:: RPI_HAT_NAME
+   :annotation:
+
+   .. code-block:: text
+
+      'Grove Base Hat RPi'
+
+.. autodata:: RPI_ZERO_HAT_NAME
+   :annotation:
+
+   .. code-block:: text
+
+      'Grove Base Hat RPi Zero'
+
+.. autodata:: RPI_HAT_PID
+   :annotation:
+
+   .. code-block:: text
+
+      4
+
+.. autodata:: RPI_ZERO_HAT_PID
+   :annotation:
+
+   .. code-block:: text
+
+      5

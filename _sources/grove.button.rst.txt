@@ -1,0 +1,55 @@
+================
+``grove.button``
+================
+
+.. automodule:: grove.button
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.button.button
+   grove.button.button_gpio
+   grove.button.button_i2c
+
+.. currentmodule:: grove.button
+
+
+Classes
+=======
+
+- :py:class:`Button`:
+  Button Base Class
+
+- :py:class:`ButtonTypedGpio`:
+  GPIO Button Class
+
+- :py:class:`ButtonTypedI2c`:
+  I2C Button/Switch Array Class
+
+
+.. autoclass:: Button
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Button
+      :parts: 1
+
+.. autoclass:: ButtonTypedGpio
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ButtonTypedGpio
+      :parts: 1
+
+.. autoclass:: ButtonTypedI2c
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ButtonTypedI2c
+      :parts: 1

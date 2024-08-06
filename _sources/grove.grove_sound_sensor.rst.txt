@@ -1,0 +1,25 @@
+============================
+``grove.grove_sound_sensor``
+============================
+
+.. automodule:: grove.grove_sound_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_sound_sensor
+
+
+Classes
+=======
+
+- :py:class:`GroveSoundSensor`:
+  Grove Sound Sensor class
+
+
+.. autoclass:: GroveSoundSensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveSoundSensor
+      :parts: 1

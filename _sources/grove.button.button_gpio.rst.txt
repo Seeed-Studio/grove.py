@@ -1,0 +1,25 @@
+============================
+``grove.button.button_gpio``
+============================
+
+.. automodule:: grove.button.button_gpio
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.button.button_gpio
+
+
+Classes
+=======
+
+- :py:class:`ButtonTypedGpio`:
+  GPIO Button Class
+
+
+.. autoclass:: ButtonTypedGpio
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ButtonTypedGpio
+      :parts: 1

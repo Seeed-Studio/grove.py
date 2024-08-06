@@ -1,0 +1,10 @@
+=================================
+``grove.grove_i2c_8channels_hub``
+=================================
+
+.. automodule:: grove.grove_i2c_8channels_hub
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_i2c_8channels_hub

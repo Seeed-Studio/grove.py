@@ -1,0 +1,25 @@
+===================================
+``grove.grove_slide_potentiometer``
+===================================
+
+.. automodule:: grove.grove_slide_potentiometer
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_slide_potentiometer
+
+
+Classes
+=======
+
+- :py:class:`GroveSlidePotentiometer`:
+  Grove Slide Poteniometer Sensor class
+
+
+.. autoclass:: GroveSlidePotentiometer
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveSlidePotentiometer
+      :parts: 1

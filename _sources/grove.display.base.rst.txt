@@ -1,0 +1,62 @@
+======================
+``grove.display.base``
+======================
+
+.. automodule:: grove.display.base
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.display.base
+
+
+Classes
+=======
+
+- :py:class:`Display`:
+  All display devices should inherit this virtual class,
+
+
+.. autoclass:: Display
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Display
+      :parts: 1
+
+
+Variables
+=========
+
+- :py:data:`TYPE_CHAR`
+- :py:data:`TYPE_GRAY`
+- :py:data:`TYPE_COLOR`
+- :py:data:`MAX_GRAY`
+
+.. autodata:: TYPE_CHAR
+   :annotation:
+
+   .. code-block:: text
+
+      0
+
+.. autodata:: TYPE_GRAY
+   :annotation:
+
+   .. code-block:: text
+
+      1
+
+.. autodata:: TYPE_COLOR
+   :annotation:
+
+   .. code-block:: text
+
+      2
+
+.. autodata:: MAX_GRAY
+   :annotation:
+
+   .. code-block:: text
+
+      100

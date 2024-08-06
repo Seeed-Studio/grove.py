@@ -1,0 +1,25 @@
+============================
+``grove.grove_touch_sensor``
+============================
+
+.. automodule:: grove.grove_touch_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_touch_sensor
+
+
+Classes
+=======
+
+- :py:class:`GroveTouchSensor`:
+  Grove Touch Sensor class
+
+
+.. autoclass:: GroveTouchSensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveTouchSensor
+      :parts: 1

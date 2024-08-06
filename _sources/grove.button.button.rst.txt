@@ -1,0 +1,25 @@
+=======================
+``grove.button.button``
+=======================
+
+.. automodule:: grove.button.button
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.button.button
+
+
+Classes
+=======
+
+- :py:class:`Button`:
+  Button Base Class
+
+
+.. autoclass:: Button
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Button
+      :parts: 1

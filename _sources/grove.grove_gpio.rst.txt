@@ -1,0 +1,25 @@
+====================
+``grove.grove_gpio``
+====================
+
+.. automodule:: grove.grove_gpio
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_gpio
+
+
+Classes
+=======
+
+- :py:class:`GroveGpio`:
+  Class for Grove - Relay
+
+
+.. autoclass:: GroveGpio
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveGpio
+      :parts: 1

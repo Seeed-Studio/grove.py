@@ -1,36 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>grove.temperature &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script src="_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
     <link rel="next" title="grove.temperature.mcp9808" href="grove.temperature.mcp9808.html" />
     <link rel="prev" title="grove.motor.i2c_motor_driver" href="grove.motor.i2c_motor_driver.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -45,7 +34,8 @@
         <li class="right" >
           <a href="grove.motor.i2c_motor_driver.html" title="grove.motor.i2c_motor_driver"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.temperature</span></code></a></li> 
       </ul>
     </div>  
 
@@ -54,100 +44,131 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-grove.temperature">
-<span id="grove-temperature"></span><h1><code class="docutils literal"><span class="pre">grove.temperature</span></code><a class="headerlink" href="#module-grove.temperature" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="contents">
+  <section id="module-grove.temperature">
+<span id="grove-temperature"></span><h1><code class="docutils literal notranslate"><span class="pre">grove.temperature</span></code><a class="headerlink" href="#module-grove.temperature" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#submodules" id="id1">Submodules</a></li>
-<li><a class="reference internal" href="#classes" id="id2">Classes</a></li>
+<li><p><a class="reference internal" href="#submodules" id="id1">Submodules</a></p></li>
+<li><p><a class="reference internal" href="#classes" id="id2">Classes</a></p></li>
 </ul>
-</div>
-<div class="section" id="submodules">
-<h2><a class="toc-backref" href="#id1">Submodules</a><a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</nav>
+<section id="submodules">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Submodules</a><a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="grove.temperature.mcp9808.html"><code class="docutils literal"><span class="pre">grove.temperature.mcp9808</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="grove.temperature.temper.html"><code class="docutils literal"><span class="pre">grove.temperature.temper</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="grove.temperature.mcp9808.html"><code class="docutils literal notranslate"><span class="pre">grove.temperature.mcp9808</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="grove.temperature.temper.html"><code class="docutils literal notranslate"><span class="pre">grove.temperature.temper</span></code></a></li>
 </ul>
 </div>
-</div>
-<div class="section" id="classes">
-<h2><a class="toc-backref" href="#id2">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="classes">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Classes</a><a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="#grove.temperature.Temper" title="grove.temperature.Temper"><code class="xref py py-class docutils literal"><span class="pre">Temper</span></code></a>:
-Undocumented.</li>
-<li><a class="reference internal" href="#grove.temperature.TemperTypedNTC" title="grove.temperature.TemperTypedNTC"><code class="xref py py-class docutils literal"><span class="pre">TemperTypedNTC</span></code></a>:
-Undocumented.</li>
-<li><a class="reference internal" href="#grove.temperature.TemperMCP9808" title="grove.temperature.TemperMCP9808"><code class="xref py py-class docutils literal"><span class="pre">TemperMCP9808</span></code></a>:
-Undocumented.</li>
+<li><p><a class="reference internal" href="#grove.temperature.Temper" title="grove.temperature.Temper"><code class="xref py py-class docutils literal notranslate"><span class="pre">Temper</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#grove.temperature.TemperTypedNTC" title="grove.temperature.TemperTypedNTC"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemperTypedNTC</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#grove.temperature.TemperMCP9808" title="grove.temperature.TemperMCP9808"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemperMCP9808</span></code></a>:
+Undocumented.</p></li>
 </ul>
-<dl class="class">
-<dt id="grove.temperature.Temper">
-<em class="property">class </em><code class="descclassname">grove.temperature.</code><code class="descname">Temper</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/temperature/temper.html#Temper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.temperature.Temper" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.temperature.Temper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.temperature.</span></span><span class="sig-name descname"><span class="pre">Temper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/temperature/temper.html#Temper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.temperature.Temper" title="Link to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
-<img src="_images/inheritance-ccd643f041706aa353bed7e375a44a10a8577732.png" alt="Inheritance diagram of Temper" class="inheritance"/>
+digraph inheritanceeab70c94d1 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Temper&quot; [URL=&quot;#grove.temperature.Temper&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+}
 </dd></dl>
 
-<dl class="class">
-<dt id="grove.temperature.TemperTypedNTC">
-<em class="property">class </em><code class="descclassname">grove.temperature.</code><code class="descname">TemperTypedNTC</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/temperature/temper.html#TemperTypedNTC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.temperature.TemperTypedNTC" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.temperature.TemperTypedNTC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.temperature.</span></span><span class="sig-name descname"><span class="pre">TemperTypedNTC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/temperature/temper.html#TemperTypedNTC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.temperature.TemperTypedNTC" title="Link to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
-<img src="_images/inheritance-428be5cf050f8f5096449bf77695d4533c437d8d.png" alt="Inheritance diagram of TemperTypedNTC" class="inheritance"/>
+digraph inheritance238e47d0fa {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Temper&quot; [URL=&quot;#grove.temperature.Temper&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;TemperTypedNTC&quot; [URL=&quot;#grove.temperature.TemperTypedNTC&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;Temper&quot; -&gt; &quot;TemperTypedNTC&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 </dd></dl>
 
-<dl class="class">
-<dt id="grove.temperature.TemperMCP9808">
-<em class="property">class </em><code class="descclassname">grove.temperature.</code><code class="descname">TemperMCP9808</code><a class="reference internal" href="_modules/grove/temperature/mcp9808.html#TemperMCP9808"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.temperature.TemperMCP9808" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.temperature.TemperMCP9808">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.temperature.</span></span><span class="sig-name descname"><span class="pre">TemperMCP9808</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/temperature/mcp9808.html#TemperMCP9808"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.temperature.TemperMCP9808" title="Link to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
-<img src="_images/inheritance-6d6cdd85f8eb443e95be6f0a2438fb662fff74d9.png" alt="Inheritance diagram of TemperMCP9808" class="inheritance"/>
+digraph inheritancee519861e08 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Temper&quot; [URL=&quot;#grove.temperature.Temper&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;TemperMCP9808&quot; [URL=&quot;#grove.temperature.TemperMCP9808&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;Temper&quot; -&gt; &quot;TemperMCP9808&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">grove.temperature</span></code></a><ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">grove.temperature</span></code></a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#grove.temperature.Temper"><code class="docutils literal notranslate"><span class="pre">Temper</span></code></a></li>
+<li><a class="reference internal" href="#grove.temperature.TemperTypedNTC"><code class="docutils literal notranslate"><span class="pre">TemperTypedNTC</span></code></a></li>
+<li><a class="reference internal" href="#grove.temperature.TemperMCP9808"><code class="docutils literal notranslate"><span class="pre">TemperMCP9808</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="grove.motor.i2c_motor_driver.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">grove.motor.i2c_motor_driver</span></code></a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="grove.temperature.mcp9808.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">grove.temperature.mcp9808</span></code></a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="grove.motor.i2c_motor_driver.html"
+                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">grove.motor.i2c_motor_driver</span></code></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="grove.temperature.mcp9808.html"
+                          title="next chapter"><code class="docutils literal notranslate"><span class="pre">grove.temperature.mcp9808</span></code></a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/grove.temperature.txt"
+      <li><a href="_sources/grove.temperature.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -162,12 +183,13 @@ Undocumented.</li>
         <li class="right" >
           <a href="grove.motor.i2c_motor_driver.html" title="grove.motor.i2c_motor_driver"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.temperature</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

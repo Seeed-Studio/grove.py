@@ -1,36 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>grove.button &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script src="_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
     <link rel="next" title="grove.button.button" href="grove.button.button.html" />
     <link rel="prev" title="grove.adc_8chan_12bit" href="grove.adc_8chan_12bit.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -45,7 +34,8 @@
         <li class="right" >
           <a href="grove.adc_8chan_12bit.html" title="grove.adc_8chan_12bit"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.button</span></code></a></li> 
       </ul>
     </div>  
 
@@ -54,92 +44,433 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-grove.button">
-<span id="grove-button"></span><h1><code class="docutils literal"><span class="pre">grove.button</span></code><a class="headerlink" href="#module-grove.button" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="contents">
+  <section id="module-grove.button">
+<span id="grove-button"></span><h1><code class="docutils literal notranslate"><span class="pre">grove.button</span></code><a class="headerlink" href="#module-grove.button" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#submodules" id="id1">Submodules</a></li>
-<li><a class="reference internal" href="#classes" id="id2">Classes</a></li>
+<li><p><a class="reference internal" href="#submodules" id="id1">Submodules</a></p></li>
+<li><p><a class="reference internal" href="#classes" id="id2">Classes</a></p></li>
 </ul>
-</div>
-<div class="section" id="submodules">
-<h2><a class="toc-backref" href="#id1">Submodules</a><a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</nav>
+<section id="submodules">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Submodules</a><a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="grove.button.button.html"><code class="docutils literal"><span class="pre">grove.button.button</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="grove.button.button_gpio.html"><code class="docutils literal"><span class="pre">grove.button.button_gpio</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="grove.button.button_i2c.html"><code class="docutils literal"><span class="pre">grove.button.button_i2c</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="grove.button.button.html"><code class="docutils literal notranslate"><span class="pre">grove.button.button</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grove.button.button.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grove.button.button.html#grove.button.button.Button"><code class="docutils literal notranslate"><span class="pre">Button</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button.html#grove.button.button.Button.get_on_event"><code class="docutils literal notranslate"><span class="pre">Button.get_on_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button.html#grove.button.button.Button.is_pressed"><code class="docutils literal notranslate"><span class="pre">Button.is_pressed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button.html#grove.button.button.Button.on_event"><code class="docutils literal notranslate"><span class="pre">Button.on_event()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grove.button.button_gpio.html"><code class="docutils literal notranslate"><span class="pre">grove.button.button_gpio</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grove.button.button_gpio.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grove.button.button_gpio.html#grove.button.button_gpio.ButtonTypedGpio"><code class="docutils literal notranslate"><span class="pre">ButtonTypedGpio</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_gpio.html#grove.button.button_gpio.ButtonTypedGpio.is_pressed"><code class="docutils literal notranslate"><span class="pre">ButtonTypedGpio.is_pressed()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grove.button.button_i2c.html"><code class="docutils literal notranslate"><span class="pre">grove.button.button_i2c</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grove.button.button_i2c.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c.is_pressed"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.is_pressed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c.name"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c.read"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c.size"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c.version"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grove.button.button_i2c.html#variables">Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.NAME_5_WAY_SWITCH"><code class="docutils literal notranslate"><span class="pre">NAME_5_WAY_SWITCH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grove.button.button_i2c.html#grove.button.button_i2c.NAME_6_POS_DIP_SWITCH"><code class="docutils literal notranslate"><span class="pre">NAME_6_POS_DIP_SWITCH</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
-</div>
-<div class="section" id="classes">
-<h2><a class="toc-backref" href="#id2">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="classes">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Classes</a><a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="#grove.button.Button" title="grove.button.Button"><code class="xref py py-class docutils literal"><span class="pre">Button</span></code></a>:
-Undocumented.</li>
-<li><a class="reference internal" href="#grove.button.ButtonTypedGpio" title="grove.button.ButtonTypedGpio"><code class="xref py py-class docutils literal"><span class="pre">ButtonTypedGpio</span></code></a>:
-Undocumented.</li>
+<li><p><a class="reference internal" href="#grove.button.Button" title="grove.button.Button"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a>:
+Button Base Class</p></li>
+<li><p><a class="reference internal" href="#grove.button.ButtonTypedGpio" title="grove.button.ButtonTypedGpio"><code class="xref py py-class docutils literal notranslate"><span class="pre">ButtonTypedGpio</span></code></a>:
+GPIO Button Class</p></li>
+<li><p><a class="reference internal" href="#grove.button.ButtonTypedI2c" title="grove.button.ButtonTypedI2c"><code class="xref py py-class docutils literal notranslate"><span class="pre">ButtonTypedI2c</span></code></a>:
+I2C Button/Switch Array Class</p></li>
 </ul>
-<dl class="class">
-<dt id="grove.button.Button">
-<em class="property">class </em><code class="descclassname">grove.button.</code><code class="descname">Button</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button.html#Button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.button.Button" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Inheritance</p>
-<img src="_images/inheritance-8995f61defb55ea7f10cf00700ddd9f438020f29.png" alt="Inheritance diagram of Button" class="inheritance"/>
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.button.Button">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.button.</span></span><span class="sig-name descname"><span class="pre">Button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button.html#Button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.Button" title="Link to this definition">¶</a></dt>
+<dd><p>Button Base Class</p>
+<p>provide event callback ability to derived class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pin</strong> (<em>int</em>) – optional, for GPIO type button, it’s the GPIO pin number.</p>
+</dd>
+</dl>
+<p class="rubric">Inheritance</p>
+digraph inheritance9a3741d07e {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Button&quot; [URL=&quot;grove.button.button.html#grove.button.button.Button&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Button Base Class&quot;];
+}
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.Button.get_on_event">
+<span class="sig-name descname"><span class="pre">get_on_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button.html#Button.get_on_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.Button.get_on_event" title="Link to this definition">¶</a></dt>
+<dd><p>Get the event receiving object and callback member function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a pair consist of event receiving object</dt><dd><p>and callback member function</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(obj, event_callback)</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
-<dt id="grove.button.ButtonTypedGpio">
-<em class="property">class </em><code class="descclassname">grove.button.</code><code class="descname">ButtonTypedGpio</code><span class="sig-paren">(</span><em>pin</em>, <em>low_pressed=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_gpio.html#ButtonTypedGpio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grove.button.ButtonTypedGpio" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Inheritance</p>
-<img src="_images/inheritance-5e3026f4271d80b83482693660e35d4e8d447b87.png" alt="Inheritance diagram of ButtonTypedGpio" class="inheritance"/>
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.Button.is_pressed">
+<span class="sig-name descname"><span class="pre">is_pressed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button.html#Button.is_pressed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.Button.is_pressed" title="Link to this definition">¶</a></dt>
+<dd><p>Get the button status if it’s being pressed ?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – optional, the index number of which button to be checked.
+must be specified only if it’s a multiple button device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True  if the button is being pressed.</dt><dd><p>False if not.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(bool)</p>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
-</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.Button.on_event">
+<span class="sig-name descname"><span class="pre">on_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button.html#Button.on_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.Button.on_event" title="Link to this definition">¶</a></dt>
+<dd><p>Set the event receiving object and it’callback member function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>object</em>) – the object to receiving event</p></li>
+<li><p><strong>callback</strong> (<em>callable</em>) – <p>a member function of <cite>obj</cite>,
+will be called when there is button event</p>
+<dl>
+<dt>callback prototype:</dt><dd><p>callback(obj, evt_dict)</p>
+</dd>
+<dt>callback argument:</dt><dd><dl>
+<dt>Args:</dt><dd><p>obj(object)   : the object that is <cite>obj</cite> argument of <a class="reference internal" href="#grove.button.Button.on_event" title="grove.button.Button.on_event"><code class="xref py py-class docutils literal notranslate"><span class="pre">on_event</span></code></a></p>
+<dl class="simple">
+<dt>evt_dict(dict): the event dictionary include items:</dt><dd><ul>
+<li><p>index</p></li>
+<li><p>code</p></li>
+<li><p>pressed</p></li>
+<li><p>time</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns: none</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedGpio">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.button.</span></span><span class="sig-name descname"><span class="pre">ButtonTypedGpio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_pressed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_gpio.html#ButtonTypedGpio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedGpio" title="Link to this definition">¶</a></dt>
+<dd><p>GPIO Button Class</p>
+<p>provide event checking ability to derived class,
+should not use directly by end-user.
+The checking events include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Button.EV_SINGLE_CLICK</p></li>
+<li><p>Button.EV_DOUBLE_CLICK</p></li>
+<li><p>Button.EV_LONG_PRESS</p></li>
+<li><p>Button.EV_LEVEL_CHANGED</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pin</strong> (<em>int</em>) – GPIO pin number the button connected.</p></li>
+<li><p><strong>low_pressed</strong> (<em>bool</em>) – <p>optional, default True</p>
+<p>True if the the button gpio level is low when pressed.</p>
+<p>False if level high when pressed</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Inheritance</p>
+digraph inheritanceb602b86845 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Button&quot; [URL=&quot;grove.button.button.html#grove.button.button.Button&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Button Base Class&quot;];
+  &quot;ButtonTypedGpio&quot; [URL=&quot;grove.button.button_gpio.html#grove.button.button_gpio.ButtonTypedGpio&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;GPIO Button Class&quot;];
+  &quot;Button&quot; -&gt; &quot;ButtonTypedGpio&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedGpio.is_pressed">
+<span class="sig-name descname"><span class="pre">is_pressed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_gpio.html#ButtonTypedGpio.is_pressed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedGpio.is_pressed" title="Link to this definition">¶</a></dt>
+<dd><p>Get the button status if it’s being pressed ?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – optional, the arg <cite>index</cite> not be used.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True  if the button is being pressed.</dt><dd><p>False if not.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.button.</span></span><span class="sig-name descname"><span class="pre">ButtonTypedI2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evt_en</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c" title="Link to this definition">¶</a></dt>
+<dd><p>I2C Button/Switch Array Class</p>
+<p>provide event checking ability to derived class,
+should not use directly by end-user.
+The checking events include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Button.EV_SINGLE_CLICK</p></li>
+<li><p>Button.EV_DOUBLE_CLICK</p></li>
+<li><p>Button.EV_LONG_PRESS</p></li>
+<li><p>Button.EV_LEVEL_CHANGED</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<em>int</em>) – optional, the I2C address of the connected device.</p></li>
+<li><p><strong>evt_en</strong> (<em>bool</em>) – <p>optional, default True</p>
+<p>True:  provide event checking ability.</p>
+<p>False: used in poll environment, manually call <a class="reference internal" href="#grove.button.ButtonTypedI2c.read" title="grove.button.ButtonTypedI2c.read"><code class="xref py py-class docutils literal notranslate"><span class="pre">ButtonTypedI2c.read</span></code></a>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Inheritance</p>
+digraph inheritance669ed9cee8 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;Button&quot; [URL=&quot;grove.button.button.html#grove.button.button.Button&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Button Base Class&quot;];
+  &quot;ButtonTypedI2c&quot; [URL=&quot;grove.button.button_i2c.html#grove.button.button_i2c.ButtonTypedI2c&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;I2C Button/Switch Array Class&quot;];
+  &quot;Button&quot; -&gt; &quot;ButtonTypedI2c&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c.is_pressed">
+<span class="sig-name descname"><span class="pre">is_pressed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c.is_pressed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c.is_pressed" title="Link to this definition">¶</a></dt>
+<dd><p>Get the button status if it’s being pressed ?</p>
+<p><a class="reference internal" href="#grove.button.ButtonTypedI2c.read" title="grove.button.ButtonTypedI2c.read"><code class="xref py py-class docutils literal notranslate"><span class="pre">ButtonTypedI2c.read</span></code></a> must be called before this api call
+when used with poll method object (created with evt_en = False).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – optional, the index number of button to be checked.
+must be specified for this device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the button is being pressed.
+False if not.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c.name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the device name or specified button name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – optional, the index number of button to get name.
+if not specified, return the device name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the name of the device or pecified button</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c.read" title="Link to this definition">¶</a></dt>
+<dd><p>Get the button array status</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl>
+<dt>a list has the size button count + 1</dt><dd><dl>
+<dt>item [0] indicate if there is a event (bit 0x80).</dt><dd><p>bit 0x80 set if one or more the switches have event.
+bit 0x80 clear if no one has event.</p>
+</dd>
+<dt>item [ 1 + <cite>index</cite> ] indicate the event of button specified</dt><dd><p>by index, be bits combination of</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Button.EV_LEVEL_CHANGED</p></li>
+<li><p>Button.EV_SINGLE_CLICK</p></li>
+<li><p>Button.EV_DOUBLE_CLICK</p></li>
+<li><p>Button.EV_LONG_PRESS</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c.size" title="Link to this definition">¶</a></dt>
+<dd><p>Get the button count the device have.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>button count</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.button.ButtonTypedI2c.version">
+<span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/button/button_i2c.html#ButtonTypedI2c.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.button.ButtonTypedI2c.version" title="Link to this definition">¶</a></dt>
+<dd><p>Get the device firmware version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>firmware version, the first version is 1</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">grove.button</span></code></a><ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">grove.button</span></code></a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#grove.button.Button"><code class="docutils literal notranslate"><span class="pre">Button</span></code></a><ul>
+<li><a class="reference internal" href="#grove.button.Button.get_on_event"><code class="docutils literal notranslate"><span class="pre">Button.get_on_event()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.Button.is_pressed"><code class="docutils literal notranslate"><span class="pre">Button.is_pressed()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.Button.on_event"><code class="docutils literal notranslate"><span class="pre">Button.on_event()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedGpio"><code class="docutils literal notranslate"><span class="pre">ButtonTypedGpio</span></code></a><ul>
+<li><a class="reference internal" href="#grove.button.ButtonTypedGpio.is_pressed"><code class="docutils literal notranslate"><span class="pre">ButtonTypedGpio.is_pressed()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c</span></code></a><ul>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c.is_pressed"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.is_pressed()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c.name"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.name()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c.read"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.read()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c.size"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.size()</span></code></a></li>
+<li><a class="reference internal" href="#grove.button.ButtonTypedI2c.version"><code class="docutils literal notranslate"><span class="pre">ButtonTypedI2c.version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="grove.adc_8chan_12bit.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">grove.adc_8chan_12bit</span></code></a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="grove.button.button.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">grove.button.button</span></code></a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="grove.adc_8chan_12bit.html"
+                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">grove.adc_8chan_12bit</span></code></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="grove.button.button.html"
+                          title="next chapter"><code class="docutils literal notranslate"><span class="pre">grove.button.button</span></code></a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/grove.button.txt"
+      <li><a href="_sources/grove.button.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -154,12 +485,13 @@ Undocumented.</li>
         <li class="right" >
           <a href="grove.adc_8chan_12bit.html" title="grove.adc_8chan_12bit"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.button</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

@@ -1,0 +1,25 @@
+==================================
+``grove.grove_round_force_sensor``
+==================================
+
+.. automodule:: grove.grove_round_force_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_round_force_sensor
+
+
+Classes
+=======
+
+- :py:class:`GroveRoundForceSensor`:
+  Class for Grove - Round Force Sensor
+
+
+.. autoclass:: GroveRoundForceSensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveRoundForceSensor
+      :parts: 1

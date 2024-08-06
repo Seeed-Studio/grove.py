@@ -1,35 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../../../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>grove.temperature.mcp9808 &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script src="../../../_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -39,7 +26,8 @@
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.temperature.mcp9808</a></li> 
       </ul>
     </div>  
 
@@ -84,59 +72,78 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="k">import</span> <span class="n">Bus</span> <span class="k">as</span> <span class="n">I2C</span>
-<span class="kn">from</span> <span class="nn">grove.temperature</span> <span class="k">import</span> <span class="n">Temper</span>
-<span class="kn">from</span> <span class="nn">upm.pyupm_mcp9808</span> <span class="k">import</span> <span class="n">MCP9808</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="kn">import</span> <span class="n">Bus</span> 
+<span class="kn">from</span> <span class="nn">grove.temperature</span> <span class="kn">import</span> <span class="n">Temper</span>
 
-<div class="viewcode-block" id="TemperMCP9808"><a class="viewcode-back" href="../../../grove.temperature.html#grove.temperature.TemperMCP9808">[docs]</a><span class="k">class</span> <span class="nc">TemperMCP9808</span><span class="p">(</span><span class="n">Temper</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mcp</span> <span class="o">=</span> <span class="n">MCP9808</span><span class="p">(</span><span class="n">I2C</span><span class="o">.</span><span class="n">MRAA_I2C</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mcp</span><span class="o">.</span><span class="n">setMode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Celsius</span>
+<span class="n">RES_LOW</span> <span class="o">=</span> <span class="mh">0x00</span>
+<span class="n">RES_MEDIUM</span> <span class="o">=</span> <span class="mh">0x01</span>
+<span class="n">RES_HIGH</span> <span class="o">=</span> <span class="mh">0x02</span>
+<span class="n">RES_PRECISION</span> <span class="o">=</span> <span class="mh">0x03</span>
+
+<span class="n">MCP9808_REG_AMBIENT_TEMP</span> <span class="o">=</span> <span class="mh">0x05</span>
+
+<div class="viewcode-block" id="TemperMCP9808">
+<a class="viewcode-back" href="../../../grove.temperature.html#grove.temperature.TemperMCP9808">[docs]</a>
+<span class="k">class</span> <span class="nc">TemperMCP9808</span><span class="p">(</span><span class="n">Temper</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="mh">0x18</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addr</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span> <span class="o">=</span> <span class="n">Bus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span> <span class="o">=</span> <span class="n">Temper</span><span class="o">.</span><span class="n">RES_1_2_CELSIUS</span>
 
     <span class="k">def</span> <span class="nf">_derive_res</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
         <span class="n">ares</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">res</span> <span class="o">&gt;=</span> <span class="n">Temper</span><span class="o">.</span><span class="n">RES_1_2_CELSIUS</span><span class="p">:</span>
-            <span class="n">ares</span> <span class="o">=</span> <span class="n">MCP9808</span><span class="o">.</span><span class="n">RES_LOW</span>
+            <span class="n">ares</span> <span class="o">=</span> <span class="n">RES_LOW</span>
         <span class="k">elif</span> <span class="n">res</span> <span class="o">&gt;=</span> <span class="n">Temper</span><span class="o">.</span><span class="n">RES_1_4_CELSIUS</span><span class="p">:</span>
-            <span class="n">ares</span> <span class="o">=</span> <span class="n">MCP9808</span><span class="o">.</span><span class="n">RES_MIDDLE</span>
+            <span class="n">ares</span> <span class="o">=</span> <span class="n">RES_MEDIUM</span>
         <span class="k">elif</span> <span class="n">res</span> <span class="o">&gt;=</span> <span class="n">Temper</span><span class="o">.</span><span class="n">RES_1_8_CELSIUS</span><span class="p">:</span>
-            <span class="n">ares</span> <span class="o">=</span> <span class="n">MCP9808</span><span class="o">.</span><span class="n">RES_HIGH</span>
+            <span class="n">ares</span> <span class="o">=</span> <span class="n">RES_HIGH</span>
         <span class="k">elif</span> <span class="n">res</span> <span class="o">&gt;=</span> <span class="n">Temper</span><span class="o">.</span><span class="n">RES_1_16_CELSIUS</span><span class="p">:</span>
-            <span class="n">ares</span> <span class="o">=</span> <span class="n">MCP9808</span><span class="o">.</span><span class="n">RES_PRECISION</span>
+            <span class="n">ares</span> <span class="o">=</span> <span class="n">RES_PRECISION</span>
 
         <span class="k">if</span> <span class="n">ares</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mcp</span><span class="o">.</span><span class="n">setResolution</span><span class="p">(</span><span class="n">ares</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_addr</span><span class="p">,</span> <span class="n">ares</span><span class="p">)</span>
         <span class="c1"># print(&quot;ares = {}&quot;.format(ares))</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcp</span><span class="o">.</span><span class="n">getTemp</span><span class="p">()</span></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">read_word_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_addr</span><span class="p">,</span> <span class="n">MCP9808_REG_AMBIENT_TEMP</span><span class="p">)</span>
+        <span class="c1"># Swap the bytes</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="o">|</span> <span class="p">(</span><span class="n">result</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span>
+        <span class="c1"># print(&quot;data = {}&quot;.format(data))</span>
+        <span class="c1"># print(&quot;data = {}&quot;.format(hex(data)))</span>
+        <span class="c1"># Check if the temperature is negative</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0x1000</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">data</span> <span class="o">^</span> <span class="mh">0x0FFF</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0x0fff</span>
+        <span class="k">return</span> <span class="n">data</span> <span class="o">/</span> <span class="mf">16.0</span></div>
 
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -146,12 +153,13 @@
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.temperature.mcp9808</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

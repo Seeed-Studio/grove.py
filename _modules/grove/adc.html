@@ -1,35 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>grove.adc &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script src="../../_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -39,7 +26,8 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.adc</a></li> 
       </ul>
     </div>  
 
@@ -50,74 +38,125 @@
             
   <h1>Source code for grove.adc</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1">#</span>
-<span class="c1"># This is the ADC library for Grove Base Hat which used to connect grove sensors for raspberry pi.</span>
+<span class="c1"># The MIT License (MIT)</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+<span class="c1">#</span>
+<span class="c1"># This is the ADC library for Grove Base Hat</span>
+<span class="c1"># which used to connect grove sensors for raspberry pi.</span>
 <span class="c1"># </span>
-<span class="c1"># Grove Base Hat incorparates a micro controller STM32F030F4, raspberry pi does not have ADC unit,</span>
-<span class="c1"># we use an external chip to transmit analog data to raspberry pi.</span>
-<span class="c1">#</span>
-
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">## License</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `Grove Base Hat for RPi      &lt;https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m-p-3126.html&gt;`_</span>
+<span class="sd">    - `Grove Base Hat for RPi Zero &lt;https://www.seeedstudio.com/Grove-Base-Hat-for-Raspberry-Pi-Zero-p-3187.html&gt;`_</span>
 
-<span class="sd">The MIT License (MIT)</span>
+<span class="sd">Grove Base Hat incorparates a micro controller STM32F030F4.</span>
 
-<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
-<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+<span class="sd">Raspberry Pi does not have ADC unit, so we use an external chip</span>
+<span class="sd">to transmit analog data to raspberry pi.</span>
 
-<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="sd">in the Software without restriction, including without limitation the rights</span>
-<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
-<span class="sd">furnished to do so, subject to the following conditions:</span>
+<span class="sd">Examples:</span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">The above copyright notice and this permission notice shall be included in</span>
-<span class="sd">all copies or substantial portions of the Software.</span>
+<span class="sd">        import time</span>
+<span class="sd">        from grove.adc import ADC</span>
 
-<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
-<span class="sd">THE SOFTWARE.</span>
+<span class="sd">        adc = ADC()</span>
+<span class="sd">        while True:</span>
+<span class="sd">            # Read channel 0(Slot A0) voltage</span>
+<span class="sd">            print(adc.read_voltage(0))</span>
+<span class="sd">            time.sleep(1)</span>
+
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">grove.i2c</span>
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ADC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RPI_HAT_NAME&quot;</span><span class="p">,</span> <span class="s2">&quot;RPI_ZERO_HAT_NAME&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RPI_HAT_PID&quot;</span><span class="p">,</span> <span class="s2">&quot;RPI_ZERO_HAT_PID&quot;</span>
+<span class="p">]</span>
+
 <span class="n">RPI_HAT_PID</span>      <span class="o">=</span> <span class="mh">0x0004</span>
 <span class="n">RPI_ZERO_HAT_PID</span> <span class="o">=</span> <span class="mh">0x0005</span>
 <span class="n">RPI_HAT_NAME</span>     <span class="o">=</span> <span class="s1">&#39;Grove Base Hat RPi&#39;</span>
+<span class="sd">&quot;&quot;&quot; The HAT name to compare with return value of :class:`ADC.name` &quot;&quot;&quot;</span>
 <span class="n">RPI_ZERO_HAT_NAME</span><span class="o">=</span> <span class="s1">&#39;Grove Base Hat RPi Zero&#39;</span>
+<span class="sd">&quot;&quot;&quot; The HAT name to compare with return value of :class:`ADC.name` &quot;&quot;&quot;</span>
 
-<span class="c1"># Grove Base Hat for RPI I2C Registers</span>
-<span class="c1"># 0x10 ~ 0x17: ADC raw data</span>
-<span class="c1"># 0x20 ~ 0x27: input voltage</span>
-<span class="c1"># 0x29: output voltage (Grove power supply voltage)</span>
-<span class="c1"># 0x30 ~ 0x37: input voltage / output voltage</span>
-<div class="viewcode-block" id="ADC"><a class="viewcode-back" href="../../index.html#grove.adc.ADC">[docs]</a><span class="k">class</span> <span class="nc">ADC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="mh">0x04</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC">
+<a class="viewcode-back" href="../../grove.adc.html#grove.adc.ADC">[docs]</a>
+<span class="k">class</span> <span class="nc">ADC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class ADC for the ADC unit on Grove Base Hat for RPi.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        address(int): optional, i2c address of the ADC unit, default 0x04</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">grove</span><span class="o">.</span><span class="n">i2c</span><span class="o">.</span><span class="n">Bus</span><span class="p">()</span>
 
-<div class="viewcode-block" id="ADC.read_raw"><a class="viewcode-back" href="../../index.html#grove.adc.ADC.read_raw">[docs]</a>    <span class="k">def</span> <span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.read_raw">
+<a class="viewcode-back" href="../../grove.adc.html#grove.adc.ADC.read_raw">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read the raw data of ADC unit, with 12 bits resolution.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (int): 0 - 7, specify the channel to read</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (int): the adc result, in [0 - 4095]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x10</span> <span class="o">+</span> <span class="n">channel</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span></div>
 
+
     <span class="c1"># read input voltage (mV)</span>
-<div class="viewcode-block" id="ADC.read_voltage"><a class="viewcode-back" href="../../index.html#grove.adc.ADC.read_voltage">[docs]</a>    <span class="k">def</span> <span class="nf">read_voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.read_voltage">
+<a class="viewcode-back" href="../../grove.adc.html#grove.adc.ADC.read_voltage">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read the voltage data of ADC unit.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (int): 0 - 7, specify the channel to read</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (int): the voltage result, in mV</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x20</span> <span class="o">+</span> <span class="n">channel</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span></div>
 
+
     <span class="c1"># input voltage / output voltage (%)</span>
-<div class="viewcode-block" id="ADC.read"><a class="viewcode-back" href="../../index.html#grove.adc.ADC.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.read">
+<a class="viewcode-back" href="../../grove.adc.html#grove.adc.ADC.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read the ratio between channel input voltage and power voltage (most time it&#39;s 3.3V).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (int): 0 - 7, specify the channel to read</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (int): the ratio, in 0.1%</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x30</span> <span class="o">+</span> <span class="n">channel</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span></div>
 
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Hat name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (string): could be :class:`RPI_HAT_NAME` or :class:`RPI_ZERO_HAT_NAME`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="mh">0x0</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">id</span> <span class="o">==</span> <span class="n">RPI_HAT_PID</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">RPI_HAT_NAME</span>
@@ -126,10 +165,35 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="mh">0x3</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Hat firmware version.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (int): firmware version</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_register</span><span class="p">(</span><span class="mh">0x2</span><span class="p">)</span>
 
     <span class="c1"># read 16 bits register</span>
-<div class="viewcode-block" id="ADC.read_register"><a class="viewcode-back" href="../../index.html#grove.adc.ADC.read_register">[docs]</a>    <span class="k">def</span> <span class="nf">read_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.read_register">
+<a class="viewcode-back" href="../../grove.adc.html#grove.adc.ADC.read_register">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read the ADC Core (through I2C) registers</span>
+
+<span class="sd">        Grove Base Hat for RPI I2C Registers</span>
+
+<span class="sd">            - 0x00 ~ 0x01: </span>
+<span class="sd">            - 0x10 ~ 0x17: ADC raw data</span>
+<span class="sd">            - 0x20 ~ 0x27: input voltage</span>
+<span class="sd">            - 0x29: output voltage (Grove power supply voltage)</span>
+<span class="sd">            - 0x30 ~ 0x37: input voltage / output voltage</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n(int): register address.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (int) : 16-bit register value.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_word_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -137,7 +201,9 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check whether I2C enabled and   </span><span class="si">{}</span><span class="s2">  or  </span><span class="si">{}</span><span class="s2">  inserted&quot;</span><span class="o">.</span><span class="n">format</span> \
                     <span class="p">(</span><span class="n">RPI_HAT_NAME</span><span class="p">,</span> <span class="n">RPI_ZERO_HAT_NAME</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-            <span class="k">return</span> <span class="mi">0</span></div></div>
+            <span class="k">return</span> <span class="mi">0</span></div>
+</div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -150,26 +216,27 @@
 
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -179,12 +246,13 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.adc</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

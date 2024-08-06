@@ -1,0 +1,25 @@
+===================================
+``grove.grove_rotary_angle_sensor``
+===================================
+
+.. automodule:: grove.grove_rotary_angle_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_rotary_angle_sensor
+
+
+Classes
+=======
+
+- :py:class:`GroveRotaryAngleSensor`:
+  Grove Rotary Angle Sensor class
+
+
+.. autoclass:: GroveRotaryAngleSensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveRotaryAngleSensor
+      :parts: 1

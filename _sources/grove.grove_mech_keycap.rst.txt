@@ -1,0 +1,25 @@
+===========================
+``grove.grove_mech_keycap``
+===========================
+
+.. automodule:: grove.grove_mech_keycap
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_mech_keycap
+
+
+Classes
+=======
+
+- :py:class:`GroveKeycap`:
+  Grove Mech Keycap class
+
+
+.. autoclass:: GroveKeycap
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveKeycap
+      :parts: 1

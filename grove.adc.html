@@ -1,36 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>grove.adc &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script src="_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="index.html" />
     <link rel="next" title="grove.adc_8chan_12bit" href="grove.adc_8chan_12bit.html" />
     <link rel="prev" title="Welcome to grove.py’s documentation!" href="index.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -45,7 +34,8 @@
         <li class="right" >
           <a href="index.html" title="Welcome to grove.py’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.adc</span></code></a></li> 
       </ul>
     </div>  
 
@@ -54,63 +44,302 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-grove.adc">
-<span id="grove-adc"></span><h1><code class="docutils literal"><span class="pre">grove.adc</span></code><a class="headerlink" href="#module-grove.adc" title="Permalink to this headline">¶</a></h1>
-<p>## License</p>
-<p>The MIT License (MIT)</p>
-<p>Grove Base Hat for the Raspberry Pi, used to connect grove sensors.
-Copyright (C) 2018  Seeed Technology Co.,Ltd.</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the &#8220;Software&#8221;), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.</p>
+  <section id="module-grove.adc">
+<span id="grove-adc"></span><h1><code class="docutils literal notranslate"><span class="pre">grove.adc</span></code><a class="headerlink" href="#module-grove.adc" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>This is the code for</dt><dd><ul class="simple">
+<li><p><a class="reference external" href="https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m-p-3126.html">Grove Base Hat for RPi</a></p></li>
+<li><p><a class="reference external" href="https://www.seeedstudio.com/Grove-Base-Hat-for-Raspberry-Pi-Zero-p-3187.html">Grove Base Hat for RPi Zero</a></p></li>
+</ul>
+</dd>
+</dl>
+<p>Grove Base Hat incorparates a micro controller STM32F030F4.</p>
+<p>Raspberry Pi does not have ADC unit, so we use an external chip
+to transmit analog data to raspberry pi.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.adc</span> <span class="kn">import</span> <span class="n">ADC</span>
+
+<span class="n">adc</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">()</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># Read channel 0(Slot A0) voltage</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">adc</span><span class="o">.</span><span class="n">read_voltage</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
 </div>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#classes" id="id1">Classes</a></p></li>
+<li><p><a class="reference internal" href="#variables" id="id2">Variables</a></p></li>
+</ul>
+</nav>
+<section id="classes">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Classes</a><a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#grove.adc.ADC" title="grove.adc.ADC"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADC</span></code></a>:
+Class ADC for the ADC unit on Grove Base Hat for RPi.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="grove.adc.ADC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grove.adc.</span></span><span class="sig-name descname"><span class="pre">ADC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/adc.html#ADC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.adc.ADC" title="Link to this definition">¶</a></dt>
+<dd><p>Class ADC for the ADC unit on Grove Base Hat for RPi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>address</strong> (<em>int</em>) – optional, i2c address of the ADC unit, default 0x04</p>
+</dd>
+</dl>
+<p class="rubric">Inheritance</p>
+digraph inheritance4c5b4fba04 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;ADC&quot; [URL=&quot;#grove.adc.ADC&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Class ADC for the ADC unit on Grove Base Hat for RPi.&quot;];
+}
+<dl class="py property">
+<dt class="sig sig-object py" id="grove.adc.ADC.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#grove.adc.ADC.name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the Hat name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>could be <a class="reference internal" href="#grove.adc.RPI_HAT_NAME" title="grove.adc.RPI_HAT_NAME"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPI_HAT_NAME</span></code></a> or <a class="reference internal" href="#grove.adc.RPI_ZERO_HAT_NAME" title="grove.adc.RPI_ZERO_HAT_NAME"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPI_ZERO_HAT_NAME</span></code></a></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.adc.ADC.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/adc.html#ADC.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.adc.ADC.read" title="Link to this definition">¶</a></dt>
+<dd><p>Read the ratio between channel input voltage and power voltage (most time it’s 3.3V).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>int</em>) – 0 - 7, specify the channel to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the ratio, in 0.1%</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.adc.ADC.read_raw">
+<span class="sig-name descname"><span class="pre">read_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/adc.html#ADC.read_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.adc.ADC.read_raw" title="Link to this definition">¶</a></dt>
+<dd><p>Read the raw data of ADC unit, with 12 bits resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>int</em>) – 0 - 7, specify the channel to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the adc result, in [0 - 4095]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.adc.ADC.read_register">
+<span class="sig-name descname"><span class="pre">read_register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/adc.html#ADC.read_register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.adc.ADC.read_register" title="Link to this definition">¶</a></dt>
+<dd><p>Read the ADC Core (through I2C) registers</p>
+<p>Grove Base Hat for RPI I2C Registers</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0x00 ~ 0x01:</p></li>
+<li><p>0x10 ~ 0x17: ADC raw data</p></li>
+<li><p>0x20 ~ 0x27: input voltage</p></li>
+<li><p>0x29: output voltage (Grove power supply voltage)</p></li>
+<li><p>0x30 ~ 0x37: input voltage / output voltage</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – register address.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>16-bit register value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grove.adc.ADC.read_voltage">
+<span class="sig-name descname"><span class="pre">read_voltage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grove/adc.html#ADC.read_voltage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grove.adc.ADC.read_voltage" title="Link to this definition">¶</a></dt>
+<dd><p>Read the voltage data of ADC unit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>int</em>) – 0 - 7, specify the channel to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the voltage result, in mV</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="grove.adc.ADC.version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#grove.adc.ADC.version" title="Link to this definition">¶</a></dt>
+<dd><p>Get the Hat firmware version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>firmware version</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Variables</a><a class="headerlink" href="#variables" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#grove.adc.RPI_HAT_NAME" title="grove.adc.RPI_HAT_NAME"><code class="xref py py-data docutils literal notranslate"><span class="pre">RPI_HAT_NAME</span></code></a></p></li>
+<li><p><a class="reference internal" href="#grove.adc.RPI_ZERO_HAT_NAME" title="grove.adc.RPI_ZERO_HAT_NAME"><code class="xref py py-data docutils literal notranslate"><span class="pre">RPI_ZERO_HAT_NAME</span></code></a></p></li>
+<li><p><a class="reference internal" href="#grove.adc.RPI_HAT_PID" title="grove.adc.RPI_HAT_PID"><code class="xref py py-data docutils literal notranslate"><span class="pre">RPI_HAT_PID</span></code></a></p></li>
+<li><p><a class="reference internal" href="#grove.adc.RPI_ZERO_HAT_PID" title="grove.adc.RPI_ZERO_HAT_PID"><code class="xref py py-data docutils literal notranslate"><span class="pre">RPI_ZERO_HAT_PID</span></code></a></p></li>
+</ul>
+<dl class="py data">
+<dt class="sig sig-object py" id="grove.adc.RPI_HAT_NAME">
+<span class="sig-prename descclassname"><span class="pre">grove.adc.</span></span><span class="sig-name descname"><span class="pre">RPI_HAT_NAME</span></span><a class="headerlink" href="#grove.adc.RPI_HAT_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>The HAT name to compare with return value of <a class="reference internal" href="#grove.adc.ADC.name" title="grove.adc.ADC.name"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADC.name</span></code></a></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Grove Base Hat RPi&#39;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="grove.adc.RPI_ZERO_HAT_NAME">
+<span class="sig-prename descclassname"><span class="pre">grove.adc.</span></span><span class="sig-name descname"><span class="pre">RPI_ZERO_HAT_NAME</span></span><a class="headerlink" href="#grove.adc.RPI_ZERO_HAT_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>The HAT name to compare with return value of <a class="reference internal" href="#grove.adc.ADC.name" title="grove.adc.ADC.name"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADC.name</span></code></a></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Grove Base Hat RPi Zero&#39;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="grove.adc.RPI_HAT_PID">
+<span class="sig-prename descclassname"><span class="pre">grove.adc.</span></span><span class="sig-name descname"><span class="pre">RPI_HAT_PID</span></span><a class="headerlink" href="#grove.adc.RPI_HAT_PID" title="Link to this definition">¶</a></dt>
+<dd><p>int([x]) -&gt; integer
+int(x, base=10) -&gt; integer</p>
+<p>Convert a number or string to an integer, or return 0 if no arguments
+are given.  If x is a number, return x.__int__().  For floating point
+numbers, this truncates towards zero.</p>
+<p>If x is not a number or if base is given, then x must be a string,
+bytes, or bytearray instance representing an integer literal in the
+given base.  The literal can be preceded by ‘+’ or ‘-’ and be surrounded
+by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
+Base 0 means to interpret the base from the string as an integer literal.
+&gt;&gt;&gt; int(‘0b100’, base=0)
+4</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="grove.adc.RPI_ZERO_HAT_PID">
+<span class="sig-prename descclassname"><span class="pre">grove.adc.</span></span><span class="sig-name descname"><span class="pre">RPI_ZERO_HAT_PID</span></span><a class="headerlink" href="#grove.adc.RPI_ZERO_HAT_PID" title="Link to this definition">¶</a></dt>
+<dd><p>int([x]) -&gt; integer
+int(x, base=10) -&gt; integer</p>
+<p>Convert a number or string to an integer, or return 0 if no arguments
+are given.  If x is a number, return x.__int__().  For floating point
+numbers, this truncates towards zero.</p>
+<p>If x is not a number or if base is given, then x must be a string,
+bytes, or bytearray instance representing an integer literal in the
+given base.  The literal can be preceded by ‘+’ or ‘-’ and be surrounded
+by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
+Base 0 means to interpret the base from the string as an integer literal.
+&gt;&gt;&gt; int(‘0b100’, base=0)
+4</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>5
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to grove.py&#8217;s documentation!</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="grove.adc_8chan_12bit.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">grove.adc_8chan_12bit</span></code></a></p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">grove.adc</span></code></a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#grove.adc.ADC"><code class="docutils literal notranslate"><span class="pre">ADC</span></code></a><ul>
+<li><a class="reference internal" href="#grove.adc.ADC.name"><code class="docutils literal notranslate"><span class="pre">ADC.name</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.ADC.read"><code class="docutils literal notranslate"><span class="pre">ADC.read()</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.ADC.read_raw"><code class="docutils literal notranslate"><span class="pre">ADC.read_raw()</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.ADC.read_register"><code class="docutils literal notranslate"><span class="pre">ADC.read_register()</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.ADC.read_voltage"><code class="docutils literal notranslate"><span class="pre">ADC.read_voltage()</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.ADC.version"><code class="docutils literal notranslate"><span class="pre">ADC.version</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variables">Variables</a><ul>
+<li><a class="reference internal" href="#grove.adc.RPI_HAT_NAME"><code class="docutils literal notranslate"><span class="pre">RPI_HAT_NAME</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.RPI_ZERO_HAT_NAME"><code class="docutils literal notranslate"><span class="pre">RPI_ZERO_HAT_NAME</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.RPI_HAT_PID"><code class="docutils literal notranslate"><span class="pre">RPI_HAT_PID</span></code></a></li>
+<li><a class="reference internal" href="#grove.adc.RPI_ZERO_HAT_PID"><code class="docutils literal notranslate"><span class="pre">RPI_ZERO_HAT_PID</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to grove.py’s documentation!</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="grove.adc_8chan_12bit.html"
+                          title="next chapter"><code class="docutils literal notranslate"><span class="pre">grove.adc_8chan_12bit</span></code></a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/grove.adc.txt"
+      <li><a href="_sources/grove.adc.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -125,12 +354,13 @@ THE SOFTWARE.</p>
         <li class="right" >
           <a href="index.html" title="Welcome to grove.py’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">grove.py 0.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">grove.adc</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

@@ -1,0 +1,25 @@
+============================
+``grove.grove_water_sensor``
+============================
+
+.. automodule:: grove.grove_water_sensor
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_water_sensor
+
+
+Classes
+=======
+
+- :py:class:`GroveWaterSensor`:
+  Grove Water Sensor class
+
+
+.. autoclass:: GroveWaterSensor
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveWaterSensor
+      :parts: 1

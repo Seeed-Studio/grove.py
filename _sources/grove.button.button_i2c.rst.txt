@@ -1,0 +1,46 @@
+===========================
+``grove.button.button_i2c``
+===========================
+
+.. automodule:: grove.button.button_i2c
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.button.button_i2c
+
+
+Classes
+=======
+
+- :py:class:`ButtonTypedI2c`:
+  I2C Button/Switch Array Class
+
+
+.. autoclass:: ButtonTypedI2c
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ButtonTypedI2c
+      :parts: 1
+
+
+Variables
+=========
+
+- :py:data:`NAME_5_WAY_SWITCH`
+- :py:data:`NAME_6_POS_DIP_SWITCH`
+
+.. autodata:: NAME_5_WAY_SWITCH
+   :annotation:
+
+   .. code-block:: text
+
+      'Grove-5-Way-Switch'
+
+.. autodata:: NAME_6_POS_DIP_SWITCH
+   :annotation:
+
+   .. code-block:: text
+
+      'Grove-6-Pos-DIP-Switch'

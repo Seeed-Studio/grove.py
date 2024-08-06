@@ -1,35 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>grove.grove_button &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
     
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script src="../../_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.6',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="grove.py 0.6 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -39,7 +26,8 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_button</a></li> 
       </ul>
     </div>  
 
@@ -50,45 +38,55 @@
             
   <h1>Source code for grove.grove_button</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1">#</span>
-<span class="c1"># This library is for Grove - Button(https://www.seeedstudio.com/s/Grove-Button-p-766.html)</span>
+<span class="c1"># The MIT License (MIT)</span>
 <span class="c1">#</span>
-<span class="c1"># This is the library for Grove Base Hat which used to connect grove sensors for raspberry pi.</span>
+<span class="c1"># Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd.</span>
 <span class="c1">#</span>
-
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">## License</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `Grove - Button &lt;https://www.seeedstudio.com/s/Grove-Button-p-766.html&gt;`_</span>
 
-<span class="sd">The MIT License (MIT)</span>
+<span class="sd">Examples:</span>
 
-<span class="sd">Grove Base Hat for the Raspberry Pi, used to connect grove sensors.</span>
-<span class="sd">Copyright (C) 2018  Seeed Technology Co.,Ltd. </span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="sd">in the Software without restriction, including without limitation the rights</span>
-<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
-<span class="sd">furnished to do so, subject to the following conditions:</span>
+<span class="sd">        from grove.grove_button import GroveButton</span>
+<span class="sd">        import time</span>
 
-<span class="sd">The above copyright notice and this permission notice shall be included in</span>
-<span class="sd">all copies or substantial portions of the Software.</span>
+<span class="sd">        # connect to pin 5 (slot D5)</span>
+<span class="sd">        PIN = 5</span>
+<span class="sd">        button = GroveButton(PIN)</span>
 
-<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
-<span class="sd">THE SOFTWARE.</span>
+<span class="sd">        def on_press(t):</span>
+<span class="sd">            print(&#39;Button is pressed&#39;)</span>
+<span class="sd">        def on_release(t):</span>
+<span class="sd">            print(&quot;Button is released, pressed for {0} seconds&quot;.format(round(t,6)))</span>
+
+<span class="sd">        button.on_press = on_press</span>
+<span class="sd">        button.on_release = on_release</span>
+
+<span class="sd">        while True:</span>
+<span class="sd">            time.sleep(1)</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">grove.button</span> <span class="k">import</span> <span class="n">Button</span>
-<span class="kn">from</span> <span class="nn">grove.factory</span> <span class="k">import</span> <span class="n">Factory</span>
+<span class="kn">from</span> <span class="nn">grove.button</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">grove.factory</span> <span class="kn">import</span> <span class="n">Factory</span>
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GroveButton&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="GroveButton"><a class="viewcode-back" href="../../index.html#grove.grove_button.GroveButton">[docs]</a><span class="k">class</span> <span class="nc">GroveButton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+<div class="viewcode-block" id="GroveButton">
+<a class="viewcode-back" href="../../grove.grove_button.html#grove.grove_button.GroveButton">[docs]</a>
+<span class="k">class</span> <span class="nc">GroveButton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Grove Button class</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pin(int): the number of gpio/slot your grove device connected.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
         <span class="c1"># High = pressed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__btn</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">getButton</span><span class="p">(</span><span class="s2">&quot;GPIO-HIGH&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__last_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -98,40 +96,84 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">on_press</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Property access with</span>
+<span class="sd">            callback -- a callable function/object,</span>
+<span class="sd">                        will be called when there is a button pressing.</span>
+<span class="sd">            callback prototype:</span>
+<span class="sd">                callback()</span>
+<span class="sd">                Returns: none</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            set</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                obj.on_press = callback</span>
+
+<span class="sd">            get</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                callobj = obj.on_press</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__on_press</span>
 
     <span class="nd">@on_press</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">on_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__on_press</span> <span class="o">=</span> <span class="n">callback</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">on_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Property access with</span>
+<span class="sd">            callback -- a callable function/object,</span>
+<span class="sd">                        will be called when there is a button releasing.</span>
+<span class="sd">            callback prototype:</span>
+<span class="sd">                callback()</span>
+<span class="sd">                Returns: none</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            set</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                obj.on_release = callback</span>
+
+<span class="sd">            get</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                callobj = obj.on_release</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__on_release</span>
 
     <span class="nd">@on_release</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">on_release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__on_release</span> <span class="o">=</span> <span class="n">callback</span>
 
     <span class="k">def</span> <span class="nf">__handle_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_time</span> <span class="o">=</span> <span class="n">evt</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__last_time</span><span class="p">,</span> <span class="n">evt</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
-        <span class="c1"># print(&quot;event index:{} event:{} pressed:{}&quot;.format(evt[&quot;index&quot;], evt[&quot;code&quot;], evt[&quot;pressed&quot;]))</span>
+        <span class="c1"># print(&quot;event index:{} event:{} pressed:{}&quot;</span>
+        <span class="c1">#      .format(evt[&quot;index&quot;], evt[&quot;code&quot;], evt[&quot;pressed&quot;]))</span>
         <span class="k">if</span> <span class="n">evt</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Button</span><span class="o">.</span><span class="n">EV_LEVEL_CHANGED</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">evt</span><span class="p">[</span><span class="s2">&quot;pressed&quot;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__on_press</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__on_press</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__on_press</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__on_release</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__on_release</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__on_release</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+
 
 
 <span class="n">Grove</span> <span class="o">=</span> <span class="n">GroveButton</span>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#grove.grove_button.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">grove.helper</span> <span class="k">import</span> <span class="n">SlotHelper</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">grove.helper</span> <span class="kn">import</span> <span class="n">SlotHelper</span>
     <span class="n">sh</span> <span class="o">=</span> <span class="n">SlotHelper</span><span class="p">(</span><span class="n">SlotHelper</span><span class="o">.</span><span class="n">GPIO</span><span class="p">)</span>
     <span class="n">pin</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">argv2pin</span><span class="p">()</span>
 
@@ -146,33 +188,34 @@
     <span class="n">button</span><span class="o">.</span><span class="n">on_release</span> <span class="o">=</span> <span class="n">on_release</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
     </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -182,12 +225,13 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_button</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Peter Yang.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     </div>
   </body>
 </html>

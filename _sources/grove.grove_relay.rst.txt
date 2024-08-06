@@ -1,0 +1,25 @@
+=====================
+``grove.grove_relay``
+=====================
+
+.. automodule:: grove.grove_relay
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_relay
+
+
+Classes
+=======
+
+- :py:class:`GroveRelay`:
+  Class for Grove - Relay
+
+
+.. autoclass:: GroveRelay
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveRelay
+      :parts: 1

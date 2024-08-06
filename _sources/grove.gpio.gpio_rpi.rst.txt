@@ -1,0 +1,25 @@
+=======================
+``grove.gpio.gpio_rpi``
+=======================
+
+.. automodule:: grove.gpio.gpio_rpi
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.gpio.gpio_rpi
+
+
+Classes
+=======
+
+- :py:class:`GPIO`:
+  Undocumented.
+
+
+.. autoclass:: GPIO
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GPIO
+      :parts: 1

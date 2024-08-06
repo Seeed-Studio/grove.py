@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>grove.grove_current_sensor &#8212; grove.py 0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    
+    <script src="../../_static/documentation_options.js?v=ec806d2c"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_current_sensor</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for grove.grove_current_sensor</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># The MIT License (MIT)</span>
+<span class="c1"># Copyright (C) 2018  Seeed Technology Co.,Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># This is the library for Grove Base Hat</span>
+<span class="c1"># which used to connect grove sensors for Raspberry Pi.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This is the code for</span>
+<span class="sd">    - `Grove - 2.5A DC current sensor  &lt;https://www.seeedstudio.com/Grove-2-5A-DC-Current-Sensor-ACS70331-p-2929.html&gt;`_</span>
+<span class="sd">    - `Grove - 5A AC/DC current sensor &lt;https://www.seeedstudio.com/Grove-5A-DC-AC-Current-Sensor-ACS70331-p-2928.html&gt;`_</span>
+<span class="sd">    - `Grove - 10A current sensor      &lt;https://www.seeedstudio.com/Grove-10A-DC-Current-Sensor-ACS725-p-2927.html&gt;`_</span>
+
+<span class="sd">Examples:</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import time</span>
+<span class="sd">        from grove_current_sensor import Current</span>
+
+<span class="sd">        pin = 0</span>
+<span class="sd">        sensor_type = &quot;2.5A&quot;</span>
+
+<span class="sd">        #if use 10A current sensor input: pin = 0 , sensor_type = &quot;10A&quot;</span>
+<span class="sd">        if (sensor_type == &quot;2.5A&quot;):</span>
+<span class="sd">            sensitivity = 1000.0 / 800.0</span>
+<span class="sd">            Vref = 260</span>
+<span class="sd">        if (sensor_type == &quot;5A_DC&quot;):</span>
+<span class="sd">            sensitivity = 1000.0 / 200.0</span>
+<span class="sd">            Vref = 1498</span>
+<span class="sd">        if (sensor_type == &quot;5A_AC&quot;):</span>
+<span class="sd">            sensitivity = 1000.0 / 200.0</span>
+<span class="sd">            Vref = 1498</span>
+<span class="sd">        if (sensor_type == &quot;10A&quot;):</span>
+<span class="sd">            sensitivity = 1000.0 / 264.0</span>
+<span class="sd">            Vref = 322</span>
+<span class="sd">        averageValue = 500</span>
+
+<span class="sd">        ADC = Current()</span>
+<span class="sd">        while True:</span>
+
+<span class="sd">            if(sensor_type == &quot;5A_AC&quot;):</span>
+<span class="sd">                pin_voltage = ADC.get_nchan_vol_milli_data(pin,averageValue)</span>
+<span class="sd">                current = ADC.get_nchan_AC_current_data(pin,sensitivity,Vref,averageValue)</span>
+<span class="sd">            else:</span>
+<span class="sd">                temp = ADC.get_nchan_current_data(pin,sensitivity,Vref,averageValue)</span>
+<span class="sd">                current = temp[0]</span>
+<span class="sd">                pin_voltage = temp[1]</span>
+<span class="sd">        </span>
+<span class="sd">            current = round(current)</span>
+<span class="sd">            print(&quot;pin_voltage(mV):&quot;)</span>
+<span class="sd">            print(pin_voltage)</span>
+<span class="sd">            print(&quot;current(mA):&quot;)</span>
+<span class="sd">            print(current)</span>
+<span class="sd">            print()</span>
+<span class="sd">            time.sleep(1)</span>
+<span class="sd">    </span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">grove.i2c</span> <span class="kn">import</span> <span class="n">Bus</span>
+
+<span class="n">ADC_DEFAULT_IIC_ADDR</span> <span class="o">=</span> <span class="mh">0X04</span>
+
+<span class="n">ADC_CHAN_NUM</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="n">REG_RAW_DATA_START</span> <span class="o">=</span> <span class="mh">0X10</span>
+<span class="n">REG_VOL_START</span> <span class="o">=</span> <span class="mh">0X20</span>
+<span class="n">REG_RTO_START</span> <span class="o">=</span> <span class="mh">0X30</span>
+
+<span class="n">REG_SET_ADDR</span> <span class="o">=</span> <span class="mh">0XC0</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span><span class="s1">&#39;Bus&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Current">
+<a class="viewcode-back" href="../../grove.grove_current_sensor.html#grove.grove_current_sensor.Current">[docs]</a>
+<span class="k">class</span> <span class="nc">Current</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Grove Current Sensor class</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Current.__init__">
+<a class="viewcode-back" href="../../grove.grove_current_sensor.html#grove.grove_current_sensor.Current.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">bus_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">addr</span><span class="o">=</span><span class="n">ADC_DEFAULT_IIC_ADDR</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Init iic.</span>
+
+<span class="sd">        Args: </span>
+<span class="sd">            bus_num(int): the bus number;</span>
+<span class="sd">            addr(int): iic address;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">Bus</span><span class="p">(</span><span class="n">bus_num</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span></div>
+
+  
+<div class="viewcode-block" id="Current.get_nchan_vol_milli_data">
+<a class="viewcode-back" href="../../grove.grove_current_sensor.html#grove.grove_current_sensor.Current.get_nchan_vol_milli_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_nchan_vol_milli_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">averageValue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get n chanel data with unit mV.</span>
+
+<span class="sd">        :param int n: the adc pin.</span>
+<span class="sd">        :param int averageValue: Average acquisition frequency.</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            int: voltage value</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">averageValue</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span><span class="n">REG_VOL_START</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="o">|</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="n">averageValue</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="Current.get_nchan_current_data">
+<a class="viewcode-back" href="../../grove.grove_current_sensor.html#grove.grove_current_sensor.Current.get_nchan_current_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_nchan_current_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">sensitivity</span><span class="p">,</span><span class="n">Vref</span><span class="p">,</span><span class="n">averageValue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        2.5A/5A DC/10A cunrrent sensor get n chanel data with unit mA.</span>
+
+<span class="sd">        :param int n: the adc pin.</span>
+<span class="sd">        :param float sensitivity: The coefficient by which voltage is converted into current.</span>
+<span class="sd">        :param int Vref: Initial voltage at no load.</span>
+<span class="sd">        :param int averageValue: Average acquisition frequency.</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            int: current value</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">averageValue</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span><span class="n">REG_VOL_START</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="o">|</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="n">averageValue</span>
+        <span class="n">currentVal</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">Vref</span><span class="p">)</span> <span class="o">*</span> <span class="n">sensitivity</span>
+        <span class="k">return</span> <span class="n">currentVal</span><span class="p">,</span><span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="Current.get_nchan_AC_current_data">
+<a class="viewcode-back" href="../../grove.grove_current_sensor.html#grove.grove_current_sensor.Current.get_nchan_AC_current_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_nchan_AC_current_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">sensitivity</span><span class="p">,</span><span class="n">Vref</span><span class="p">,</span><span class="n">averageValue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        5A current sensor AC output and get n chanel data with unit mA.</span>
+
+<span class="sd">        :param int n: the adc pin.</span>
+<span class="sd">        :param float sensitivity: The coefficient by which voltage is converted into current.</span>
+<span class="sd">        :param int Vref: Initial voltage at no load.</span>
+<span class="sd">        :param int averageValue: Average acquisition frequency.</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            int: current value</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">sensorValue</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">averageValue</span><span class="p">):</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addr</span><span class="p">,</span><span class="n">REG_VOL_START</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="o">|</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">val</span> <span class="o">&gt;</span> <span class="n">sensorValue</span><span class="p">):</span>
+                <span class="n">sensorValue</span><span class="o">=</span><span class="n">val</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.00004</span><span class="p">)</span>
+        <span class="n">currentVal</span> <span class="o">=</span> <span class="p">((</span><span class="n">sensorValue</span> <span class="o">-</span> <span class="n">Vref</span><span class="p">)</span> <span class="o">*</span> <span class="n">sensitivity</span><span class="p">)</span><span class="o">*</span><span class="mf">0.707</span>
+        <span class="k">return</span> <span class="n">currentVal</span>   </div>
+</div>
+
+
+<span class="n">ADC</span> <span class="o">=</span> <span class="n">Current</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+
+        <span class="n">pin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sensor_type</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pin</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;2.5A&quot;</span> <span class="ow">or</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;5A_DC&quot;</span> <span class="ow">or</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;5A_AC&quot;</span> <span class="ow">or</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;10A&quot;</span><span class="p">)</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;2.5A&quot;</span><span class="p">):</span>
+                <span class="n">sensitivity</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="mf">800.0</span>
+                <span class="n">Vref</span> <span class="o">=</span> <span class="mi">260</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;5A_DC&quot;</span><span class="p">):</span>
+                <span class="n">sensitivity</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="mf">200.0</span>
+                <span class="n">Vref</span> <span class="o">=</span> <span class="mi">1498</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;5A_AC&quot;</span><span class="p">):</span>
+                <span class="n">sensitivity</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="mf">200.0</span>
+                <span class="n">Vref</span> <span class="o">=</span> <span class="mi">1498</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;10A&quot;</span><span class="p">):</span>
+                <span class="n">sensitivity</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="mf">264.0</span>
+                <span class="n">Vref</span> <span class="o">=</span> <span class="mi">322</span>
+            <span class="n">averageValue</span> <span class="o">=</span> <span class="mi">500</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="s2">&quot;5A_AC&quot;</span><span class="p">):</span>
+                    <span class="n">pin_voltage</span> <span class="o">=</span> <span class="n">ADC</span><span class="o">.</span><span class="n">get_nchan_vol_milli_data</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span><span class="n">averageValue</span><span class="p">)</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="n">ADC</span><span class="o">.</span><span class="n">get_nchan_AC_current_data</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span><span class="n">sensitivity</span><span class="p">,</span><span class="n">Vref</span><span class="p">,</span><span class="n">averageValue</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">ADC</span><span class="o">.</span><span class="n">get_nchan_current_data</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span><span class="n">sensitivity</span><span class="p">,</span><span class="n">Vref</span><span class="p">,</span><span class="n">averageValue</span><span class="p">)</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pin_voltage</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">current</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pin_voltage(mV):&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">pin_voltage</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;current(mA):&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">()</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameter input error!&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter parameters for example: python grove_current_sensor 0 2.5A&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameter1: 0-7&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameter2: 2.5A/5A_DC/5A_AC/10A&quot;</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter parameters for example: python grove_current_sensor 0 2.5A&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameter1: 0-7&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameter2: 2.5A/5A_DC/5A_AC/10A&quot;</span><span class="p">)</span>
+    
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">grove.py 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">grove.grove_current_sensor</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2019, Peter Yang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

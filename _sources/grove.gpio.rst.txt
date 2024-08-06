@@ -1,0 +1,44 @@
+==============
+``grove.gpio``
+==============
+
+.. automodule:: grove.gpio
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   grove.gpio.gpio_rpi
+   grove.gpio.wrapper
+
+.. currentmodule:: grove.gpio
+
+
+Classes
+=======
+
+- :py:class:`GPIO`:
+  Undocumented.
+
+- :py:class:`GPIOWrapper`:
+  Undocumented.
+
+
+.. autoclass:: GPIO
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GPIO
+      :parts: 1
+
+.. autoclass:: GPIOWrapper
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GPIOWrapper
+      :parts: 1

@@ -1,0 +1,25 @@
+===========================
+``grove.grove_tilt_switch``
+===========================
+
+.. automodule:: grove.grove_tilt_switch
+
+   .. contents::
+      :local:
+
+.. currentmodule:: grove.grove_tilt_switch
+
+
+Classes
+=======
+
+- :py:class:`GroveTiltSwitch`:
+  Grove Tilt Switch class
+
+
+.. autoclass:: GroveTiltSwitch
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroveTiltSwitch
+      :parts: 1
