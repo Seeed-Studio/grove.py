@@ -180,7 +180,7 @@ class __factory(object):
         if typ == "JHD1802":
             return JHD1802()
         elif typ == "SH1107G":
-            return SH1107G_SSD1327()
+            return SH1107G()
         else:
             self._avail_list(typ, self.DisplayEnum)
             sys.exit(1)

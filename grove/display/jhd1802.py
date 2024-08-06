@@ -129,7 +129,7 @@ class JHD1802(Display):
 	Returns:
 	    None
         '''
-        print("setCursor: row={}, column={}".format(row,column))
+        # print("setCursor: row={}, column={}".format(row,column))
         self.textCommand((0x40 * row) + (column % 0x10) + 0x80)
 
     def write(self, msg):

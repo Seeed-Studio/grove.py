@@ -18,6 +18,7 @@ _repo_package_url=https://github.com/Seeed-Studio/$_package_name/archive/master.
 
 BLACKLIST=/etc/modprobe.d/raspi-blacklist.conf
 CONFIG=/boot/config.txt
+FIRMWARE_CONFIG=/boot/firmware/config.txt
 if [ $_DEBUG -ne 0 ]; then
 	BLACKLIST=./raspi-blacklist.conf
 	CONFIG=./config.txt
@@ -48,7 +49,12 @@ EOF
 }
 
 get_i2c() {
-	egrep -q "^(device_tree_param|dtparam)=([^,]*,)*i2c(_arm)?(=(on|true|yes|1))?(,.*)?$" $CONFIG
+	# Check if the file /boot/firmware/config.txt exists
+	config_file=$FIRMWARE_CONFIG
+	if [ ! -f $config_file ]; then
+		config_file=$CONFIG
+	fi
+	egrep -q "^(device_tree_param|dtparam)=([^,]*,)*i2c(_arm)?(=(on|true|yes|1))?(,.*)?$" $config_file
 	echo $?
 }
 
@@ -124,9 +130,9 @@ if [ ! -f $_seeed_source_list ]; then
 fi
 
 ### add public GPG key
-if ! apt-key list | egrep "$_seeed_apt_key" > /dev/null; then
-	curl https://seeed-studio.github.io/pi_repo/public.key | apt-key add -
-fi
+# if ! apt-key list | egrep "$_seeed_apt_key" > /dev/null; then
+# 	curl https://seeed-studio.github.io/pi_repo/public.key | apt-key add -
+# fi
 
 
 
@@ -139,7 +145,8 @@ command -v pip3 >/dev/null 2>&1 || { echo "Executable \"pip3\" couldn't be found
 ### Check i2c 
 if [ $(get_i2c) -ne 0 ]; then
 	echo I2C is not enabled.
-	echo Please enable I2C by running raspi-config and selecting Interfacing Options -> I2C
+	echo "Please enable I2C by running raspi-config and selecting Interfacing Options -> I2C"
+	exit 1
 fi
 
 ## install library rpi.gpio

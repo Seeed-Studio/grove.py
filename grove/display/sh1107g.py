@@ -40,7 +40,7 @@ from grove.i2c import Bus
 import sys
 
 # sphinx autoapi required
-__all__ = ["SH1107G_SSD1327"]
+__all__ = ["SH1107G"]
 
 BasicFont = [
         [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00],
@@ -141,9 +141,9 @@ BasicFont = [
         [0x00,0x02,0x05,0x05,0x02,0x00,0x00,0x00],
 ]
 
-class SH1107G_SSD1327(Display):
+class SH1107G(Display):
     '''
-    OLED Display 1.12"(v2) use chip SSD1327 or SH1107G.
+    OLED Display 1.12"(v2) use chip SH1107G.
 
     Args:
         address(int): I2C device address, default to 0x3E.
@@ -162,20 +162,17 @@ class SH1107G_SSD1327(Display):
     _BASE_HIGH_COLUMN_ADDR = 0x10;
     _BASE_PAGE_START_ADDR = 0xB0;
     def __init__(self, address = 0x3C):
-        super(SH1107G_SSD1327, self).__init__()
-        self._bus = Bus(1)
+        super(SH1107G, self).__init__()
+        self._bus = Bus()
         self._addr = address
 
         if self._bus.write_byte(self._addr, 0):
-            print("Check if the OLED SH1107G/SSD1307 inserted, then try again")
+            print("Check if the OLED SH1107G inserted, then try again")
             sys.exit(1)
  
-        id = self._bus.read_byte_data(self._addr, SH1107G_SSD1327._REG_CMD)
+        id = self._bus.read_byte_data(self._addr, SH1107G._REG_CMD)
         # print(" id = 0x{:2x}".format(id))
         self._sh1107 = (id & 0x3F) == 0x07
-        # if not self._sh1107:
-        #     self._ssd1327 = sh1107(self._bus)
-        #     return
 
         blk =     [0xAE]   # Display OFF
         blk.append(0xD5)   # Set Dclk
@@ -203,7 +200,7 @@ class SH1107G_SSD1327(Display):
     def _cmd(self, cmd):
         try:
             self._bus.write_byte_data(self._addr,
-                                    SH1107G_SSD1327._REG_CMD, cmd)
+                                    SH1107G._REG_CMD, cmd)
         except IOError:
             print("*** Check if OLED module inserted ***")
             sys.exit(1)
@@ -215,12 +212,12 @@ class SH1107G_SSD1327(Display):
     def _datas(self, datas):
         length = len(datas)
         data = bytearray(length + 1)
-        data[0] = SH1107G_SSD1327._REG_DATA
+        data[0] = SH1107G._REG_DATA
         for i in range(length):
             data[i + 1] = datas[i]
         try:
             self._bus.write_i2c_block_data(self._addr,
-                                  SH1107G_SSD1327._REG_DATA, datas)
+                                  SH1107G._REG_DATA, datas)
         except IOError:
             print("*** Check if OLED module inserted ***")
             sys.exit(1)
@@ -233,7 +230,7 @@ class SH1107G_SSD1327(Display):
         Returns:
             string: SH1107G/SSD1307 depends your device plugin.
         '''
-        return "SH1107G" # if self._sh1107 else "SSD1327"
+        return "SH1107G"
 
     def type(self):
         '''
@@ -245,21 +242,14 @@ class SH1107G_SSD1327(Display):
         return TYPE_GRAY
 
     def size(self):
-        # if not self._sh1107:
-        #     # Gray OLED 96x96
-        #     return 12, 12
-        # Gray OLED 128x128
         return 16, 16
 
     def clear(self):
         '''
         Clears the screen and positions the cursor in the upper-left corner.
         '''
-        # if not self._sh1107:
-        #     self._ssd1327.clear()
-        #     return
-        zeros = [ 0x0 for dummy in range(SH1107G_SSD1327._TOTAL_BYTES) ]
-        self.draw(zeros, SH1107G_SSD1327._TOTAL_BYTES)
+        zeros = [ 0x0 for dummy in range(SH1107G._TOTAL_BYTES) ]
+        self.draw(zeros, SH1107G._TOTAL_BYTES)
 
     def draw(self, data, bytes):
         '''
@@ -270,21 +260,18 @@ class SH1107G_SSD1327(Display):
             data (list of int): the data to transfer/draw
             bytes (int)       : data size
         '''
-        # if not self._sh1107:
-        #     self._ssd1327.draw(data, bytes)
-        #     return
 
         # all pages fill with data
-        for i in range(SH1107G_SSD1327._PAGE_CNT):
-            if i > bytes / SH1107G_SSD1327._PAGE_BYTES:
+        for i in range(SH1107G._PAGE_CNT):
+            if i > bytes / SH1107G._PAGE_BYTES:
                 return
             self._cmd(self._BASE_PAGE_START_ADDR + i)
             self._cmd(self._BASE_LOW_COLUMN_ADDR)
             self._cmd(self._BASE_HIGH_COLUMN_ADDR)
             # fill one PAGE bytes
-            for k in range(0, SH1107G_SSD1327._PAGE_BYTES, 32):
+            for k in range(0, SH1107G._PAGE_BYTES, 32):
                 # I2C limit to 32 bytes each transfer
-                begin = i * SH1107G_SSD1327._PAGE_BYTES + k
+                begin = i * SH1107G._PAGE_BYTES + k
                 end   = begin + 32
                 self._datas(data[begin:end])
 
@@ -293,9 +280,6 @@ class SH1107G_SSD1327(Display):
         Positions the cursor in the upper-left of the OLED.
         That is, use that location in outputting subsequent text to the display.
         '''
-        # if not self._sh1107:
-        #     self._ssd1327.home()
-        #     return
         self.setCursor(0, 0)
 
     def setCursor(self, row, column):
@@ -310,9 +294,6 @@ class SH1107G_SSD1327(Display):
 	Returns:
 	    None
         '''
-        # if not self._sh1107:
-        #     self._ssd1327.setCursor(row, column)
-        #     return
         self._cmd(self._BASE_PAGE_START_ADDR + row)
         self._cmd(0x08 if column % 2 else self._BASE_LOW_COLUMN_ADDR)
         self._cmd(self._BASE_HIGH_COLUMN_ADDR + (column >> 1))
@@ -336,9 +317,6 @@ class SH1107G_SSD1327(Display):
         Returns:
             None
         '''
-        # if not self._sh1107:
-        #     self._ssd1327.write(msg)
-        #     return
         for i in range(len(msg)):
             self._putchar(msg[i])
 
@@ -349,7 +327,7 @@ class SH1107G_SSD1327(Display):
 def main():
     import time
 
-    oled = SH1107G_SSD1327()
+    oled = SH1107G()
     rows, cols = oled.size()
     print("OLED model: {}".format(oled.name))
     print("OLED type : {} x {}".format(cols, rows))
