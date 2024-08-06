@@ -52,7 +52,7 @@ VEML6070_CMD_READ_MSB					= 0x39 # Read MSB of the data
 class VEML6070():
 	def __init__(self, address = VEML6070_DEFAULT_ADDRESS):
 		self._addr = address
-		self._bus  = Bus(1)
+		self._bus  = Bus()
 		self.write_command()
 	
 	def write_command(self):

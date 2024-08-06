@@ -59,7 +59,7 @@ class JHD1802(Display):
         address(int): I2C device address, default to 0x3E.
     '''
     def __init__(self, address = 0x3E):
-        self._bus = Bus(1)
+        self._bus = Bus()
         self._addr = address
         if self._bus.write_byte(self._addr, 0):
             print("Check if the LCD {} inserted, then try again"

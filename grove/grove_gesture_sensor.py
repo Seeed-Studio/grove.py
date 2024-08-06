@@ -45,11 +45,8 @@ import RPi.GPIO as GPIO
 from grove.i2c import Bus
 
 # use the bus that matches your raspi version
-rev = GPIO.RPI_REVISION
-if rev == 2 or rev == 3:
-    bus = Bus(1)
-else:
-    bus = Bus(0)
+bus = Bus()
+
 
 class gesture:
 	#Registers and variables for the gesture sensor

@@ -94,7 +94,7 @@ H3LIS331DL_SCALE_FS = H3LIS331DL_RAW_DATA_MAX / 4 / ((H3LIS331DL_DEFAULT_RANGE >
 class H3LIS331DL(object):
 	def __init__ (self, address=H3LIS331DL_DEFAULT_ADDRESS):
 		self._addr = address
-		self._bus  = Bus(1)
+		self._bus  = Bus()
 		self.select_datarate()
 		self.select_data_config()
 	

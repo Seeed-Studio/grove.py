@@ -46,7 +46,7 @@ MCP9808_REG_AMBIENT_TEMP = 0x05
 class TemperMCP9808(Temper):
     def __init__(self, address=0x18):
         self._addr = address
-        self._bus = Bus(1)
+        self._bus = Bus()
         self._resolution = Temper.RES_1_2_CELSIUS
 
     def _derive_res(self, res):
