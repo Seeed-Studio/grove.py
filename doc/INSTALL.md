@@ -6,7 +6,7 @@
 ```shell
 # RPi
 echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
-
+```
 - Add public GPG key
 
 ```shell
@@ -14,6 +14,14 @@ curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
 # or
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BB8F40F3
 ```
+
+### Enable the I2C interface.
+```shell
+sudo raspi-config
+```
+- Select Interfacing Options > I2C > Yes > Ok > Finish
+- Enable the I2C interface.
+
 ### In later versions of Python 3, it is recommended to use a virtualenv for isolated package management
 ```shell
 sudo apt install python3-virtualenv
