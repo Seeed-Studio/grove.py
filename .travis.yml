@@ -1,6 +1,6 @@
 deploy:
   true:
-    python: 2.7
+    python: 3.5
     repo: Seeed-Studio/grove.py
     tags: true
   distributions: sdist
@@ -13,5 +13,4 @@ language: python
 python:
 - 3.5
 - 3.4
-- 2.7
 script: echo 'test'
