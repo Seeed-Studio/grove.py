@@ -178,7 +178,7 @@ fi
 ## install library sgp30
 (( r == 0 )) && { pip_install sgp30 'pip3 install sgp30'; r=$?; }
 # install this python repository
-(( r == 0 )) && { pip_install grove.py "pip3 install --upgrade $_repo_package_url"; r=$?; }
+(( r == 0 )) && { pip_install Seeed-grove.py "pip3 install --upgrade $_repo_package_url"; r=$?; }
 (( r == 0 )) && { which grove_button > /dev/null; r=$?; }
 
 (( r != 0 )) && {
