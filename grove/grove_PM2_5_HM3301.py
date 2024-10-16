@@ -33,7 +33,6 @@ THE SOFTWARE.
 
 
 from smbus2 import SMBus , i2c_msg
-from smbus2 import SMBusWrapper
 import time
 
 
@@ -53,12 +52,12 @@ class Seeed_HM3301(object):
         self.PM_10_conctrt_atmosph = 0      #PM10  Atmospheric environment concentration ,unit:ug/m3
 
 
-        with SMBusWrapper(bus_nr) as bus:
+        with SMBus(bus_nr) as bus:
             write = i2c_msg.write(HM3301_DEFAULT_I2C_ADDR,[SELECT_I2C_ADDR])
             bus.i2c_rdwr(write)
 
     def read_data(self):        
-        with SMBusWrapper(1) as bus:
+        with SMBus(1) as bus:
             read = i2c_msg.read(HM3301_DEFAULT_I2C_ADDR,DATA_CNT)
             bus.i2c_rdwr(read)
             return list(read)
@@ -93,7 +92,7 @@ class Seeed_HM3301(object):
         print(" ")
 
 '''
-with SMBusWrapper(1) as bus:
+with SMBus(1) as bus:
     write=i2c_msg.write(0x40,[0x88])
     bus.i2c_rdwr(write)    
     
