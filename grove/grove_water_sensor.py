@@ -70,7 +70,7 @@ def main():
     print('Detecting ...')
     while True:
         value = sensor.value
-        if sensor.value > 800:
+        if sensor.value < 200:
             print("{}, Detected Water.".format(value))
         else:
             print("{}, Dry.".format(value))
