@@ -23,6 +23,11 @@ For beginner or library user only, please install with online method.<br>
 For developer or advanced user, please install [dependencies](doc/INSTALL.md#install-dependencies)
 and then install grove.py with [source code](#install-grovepy).
 
+## dependencies
+```shell
+sudo apt install libbmi088 libbma456
+```
+
 ### Online install
 To install into a virtual environment, first active your virtualenv and type the following command:
 

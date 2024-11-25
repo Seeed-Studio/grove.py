@@ -132,7 +132,7 @@ class GroveIMU9DOFICM20600(object):
 				0)
 
         _akicm.rpi_icm20600_init(self._dev,
-                             dev_path,
+                             dev_path.encode('utf-8'),
                              addr,
                              byref(icm20600_cfg))
 
@@ -185,7 +185,7 @@ class GroveIMU9DOFAK09918(object):
         dev_path = "/dev/i2c-{}".format(Bus().bus)
 
         _akicm.rpi_ak09918_init(self._dev,
-                             dev_path,
+                             dev_path.encode('utf-8'),
                              addr,
                              AK09918_NORMAL)
 
