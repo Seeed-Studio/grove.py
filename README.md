@@ -25,6 +25,11 @@ and then install grove.py with [source code](#install-grovepy).
 
 ## dependencies
 ```shell
+# Add repository
+echo "deb https://seeed-studio.github.io/pi_repo/ stretch main" | sudo tee /etc/apt/sources.list.d/seeed.list
+# Add GPG key
+curl https://seeed-studio.github.io/pi_repo/public.key | sudo apt-key add -
+sudo apt update
 sudo apt install libbmi088 libbma456
 ```
 
