@@ -456,6 +456,14 @@ arg2 - led count,
       <td>y</td>
       <td>I2C</td>
     </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Digital-Light-Sensor-TSL2561.htm">digital light Sensor</a>
+      </td>
+      <td>grove_digital_light_sensor</td>
+      <td>y</td>
+      <td>I2C</td>
+    </tr>
   </table>
 </div>
 
@@ -746,5 +754,16 @@ SI1151 = GroveSi115xSensor()
 while True:
     print('Visible %03d IR %03d' % (SI1151.ReadVisible , SI1151.ReadIR),end=" ")
     print('\r', end='')
+    time.sleep(0.5)
+```
+
+### digitial ligth sensor
+```python
+import time
+from grove.grove_digital_light_sensor import GroveDigitalLight
+
+sensor = GroveDigitalLight()
+while True:
+    print('light: %d' %(sensor.read_light_chan0()))
     time.sleep(0.5)
 ```
