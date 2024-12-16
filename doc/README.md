@@ -448,6 +448,14 @@ arg2 - led count,
 </pre>
       </td>
     </tr>
+    <tr align="center">
+      <td>
+        <a href="https://www.seeedstudio.com/Grove-Sunlight-Sensor.html">sunlight Sensor</a>
+      </td>
+      <td>grove_sunlight_sensor</td>
+      <td>y</td>
+      <td>I2C</td>
+    </tr>
   </table>
 </div>
 
@@ -729,3 +737,14 @@ while True:
     time.sleep(1)
 ```
 
+### sunlight Sensor
+```python
+from grove.grove_sunlight_sensor import GroveSi115xSensor
+import time
+
+SI1151 = GroveSi115xSensor()
+while True:
+    print('Visible %03d IR %03d' % (SI1151.ReadVisible , SI1151.ReadIR),end=" ")
+    print('\r', end='')
+    time.sleep(0.5)
+```
