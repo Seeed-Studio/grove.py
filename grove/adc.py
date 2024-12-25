@@ -54,7 +54,7 @@ class ADC(object):
     Args:
         address(int): optional, i2c address of the ADC unit, default 0x04
     '''
-    def __init__(self, address = 0x08):
+    def __init__(self, address = 0x04):
         self.address = address
         self.bus = grove.i2c.Bus()
 
