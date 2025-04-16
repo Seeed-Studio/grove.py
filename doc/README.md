@@ -464,6 +464,14 @@ arg2 - led count,
       <td>y</td>
       <td>I2C</td>
     </tr>
+    <tr align="center">
+      <td>
+        <a href="https://wiki.seeedstudio.com/Grove-Barometer-High-Accuracy/#resources">Grove - Barometer Sensor</a>
+      </td>
+      <td>Grove_Barometer_hp206f_sensor</td>
+      <td>y</td>
+      <td>I2C</td>
+    </tr>
   </table>
 </div>
 

@@ -7,7 +7,7 @@ grove.py
 [![](https://img.shields.io/pypi/v/Seeed-grove.py.svg)](https://pypi.python.org/pypi/Seeed-grove.py)
 
 Python library for Seeedstudio Grove Devices on embeded Linux platform, especially good on below platforms:
-- [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html) [(Wiki)](http://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
+- [Raspberry Pi](https://www.seeedstudio.com/category/Boards-c-17.html) [(Wiki)](https://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/#software)
 
 <br><br>
 # Architecture

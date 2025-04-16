@@ -32,32 +32,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 
-from grove.i2c import Bus
 import time
+from grove.i2c import Bus
 
 # Class for interacting with the HP20x sensor
 class HP20x:
     def __init__(self):
         # Initialize the I2C bus on Raspberry Pi (bus 1)
-        self.bus = Bus()  
+        self.bus = Bus()
         # I2C address of the HP206F sensor, may need adjustment based on actual situation
-        self.address = 0x76  
+        self.address = 0x76
 
         # I2C device ID when CSB PIN is at VDD level (address is 0x76)
-        self.HP20X_I2C_DEV_ID = (0xEC) >> 1  
+        self.HP20X_I2C_DEV_ID = (0xEC) >> 1
         # I2C device ID when CSB PIN is at GND level (address is 0x77)
-        self.HP20X_I2C_DEV_ID2 = (0XEE) >> 1  
+        self.HP20X_I2C_DEV_ID2 = (0XEE) >> 1
         # Soft reset command for the HP20x sensor
-        self.HP20X_SOFT_RST = 0x06  
+        self.HP20X_SOFT_RST = 0x06
         # Write conversion command for the HP20x sensor
-        self.HP20X_WR_CONVERT_CMD = 0x40  
+        self.HP20X_WR_CONVERT_CMD = 0x40
         # Different oversampling rate (OSR) configurations for conversion
-        self.HP20X_CONVERT_OSR4096 = 0 << 2  
-        self.HP20X_CONVERT_OSR2048 = 1 << 2  
-        self.HP20X_CONVERT_OSR1024 = 2 << 2  
-        self.HP20X_CONVERT_OSR512 = 3 << 2  
-        self.HP20X_CONVERT_OSR256 = 4 << 2  
-        self.HP20X_CONVERT_OSR128 = 5 << 2  
+        self.HP20X_CONVERT_OSR4096 = 0 << 2
+        self.HP20X_CONVERT_OSR2048 = 1 << 2
+        self.HP20X_CONVERT_OSR1024 = 2 << 2
+        self.HP20X_CONVERT_OSR512 = 3 << 2
+        self.HP20X_CONVERT_OSR256 = 4 << 2
+        self.HP20X_CONVERT_OSR128 = 5 << 2
 
         # Commands for reading pressure, altitude, temperature, etc.
         self.HP20X_READ_P = 0x30  # Read pressure command
@@ -68,30 +68,30 @@ class HP20x:
         self.HP20X_READ_CAL = 0X28  # RE-CAL ANALOG command
 
         # Write register mode for the HP20x sensor
-        self.HP20X_WR_REG_MODE = 0xC0  
+        self.HP20X_WR_REG_MODE = 0xC0
         # Read register mode for the HP20x sensor
-        self.HP20X_RD_REG_MODE = 0x80  
+        self.HP20X_RD_REG_MODE = 0x80
 
         # Set the oversampling rate configuration
-        self.OSR_CFG = self.HP20X_CONVERT_OSR1024  
+        self.OSR_CFG = self.HP20X_CONVERT_OSR1024
         # Conversion time corresponding to the oversampling rate (in milliseconds)
-        self.OSR_ConvertTime = 25  
+        self.OSR_ConvertTime = 25
 
     def begin(self):
         # Send a soft reset command to the HP20x sensor
         self.HP20X_IIC_WriteCmd(self.HP20X_SOFT_RST)
         # Wait for 0.1 seconds to ensure the reset operation is completed
-        time.sleep(0.1)  
+        time.sleep(0.1)
 
     def isAvailable(self):
         # Check if the HP20x sensor is available by reading the register at address 0x0F
-        return self.HP20X_IIC_ReadReg(0x0F)  
+        return self.HP20X_IIC_ReadReg(0x0F)
 
     def ReadTemperature(self):
         # Send a conversion command with the specified oversampling rate configuration
         self.HP20X_IIC_WriteCmd(self.HP20X_WR_CONVERT_CMD | self.OSR_CFG)
         # Wait for the conversion time (converted to seconds)
-        time.sleep(self.OSR_ConvertTime / 1000.0)  
+        time.sleep(self.OSR_ConvertTime / 1000.0)
         # Read 3 bytes of raw temperature data from the sensor
         t_raw = self.bus.read_i2c_block_data(self.address, self.HP20X_READ_T, 3)
         # Combine the 3 bytes of data to form a single value
@@ -102,13 +102,13 @@ class HP20x:
             us = (1 << 32)
             t = -1 * (us - t)
         # Return the temperature value in degrees Celsius (divided by 100)
-        return t / 100.0  
+        return t / 100.0
 
     def ReadPressure(self):
         # Send a conversion command with the specified oversampling rate configuration
         self.HP20X_IIC_WriteCmd(self.HP20X_WR_CONVERT_CMD | self.OSR_CFG)
         # Wait for the conversion time (converted to seconds)
-        time.sleep(self.OSR_ConvertTime / 1000.0)  
+        time.sleep(self.OSR_ConvertTime / 1000.0)
         # Read 3 bytes of raw pressure data from the sensor
         p_raw = self.bus.read_i2c_block_data(self.address, self.HP20X_READ_P, 3)
         # Combine the 3 bytes of data to form a single value
@@ -117,13 +117,13 @@ class HP20x:
         if p & 0x800000:
             p |= 0xff000000
         # Return the pressure value in hectopascals (divided by 100)
-        return p / 100.0  
+        return p / 100.0
 
     def ReadAltitude(self):
         # Send a conversion command with the specified oversampling rate configuration
         self.HP20X_IIC_WriteCmd(self.HP20X_WR_CONVERT_CMD | self.OSR_CFG)
         # Wait for the conversion time (converted to seconds)
-        time.sleep(self.OSR_ConvertTime / 1000.0)  
+        time.sleep(self.OSR_ConvertTime / 1000.0)
         # Read 3 bytes of raw altitude data from the sensor
         a_raw = self.bus.read_i2c_block_data(self.address, self.HP20X_READ_A, 3)
         # Combine the 3 bytes of data to form a single value
@@ -134,29 +134,30 @@ class HP20x:
             us = (1 << 32)
             a = -1 * (us - a)
         # Return the altitude value in meters (divided by 100)
-        return a / 100.0  
+        return a / 100.0
 
     def HP20X_IIC_WriteCmd(self, uCmd):
         # Write a command byte to the specified I2C address
-        self.bus.write_byte_data(0,self.address,uCmd)
+        self.bus.write_byte(self.address, uCmd)
 
     def HP20X_IIC_ReadReg(self, bReg):
         # Read a byte from the specified register address
-        return self.bus.read_byte_data(self.address, bReg | self.HP20X_RD_REG_MODE)  
+        return self.bus.read_byte_data(self.address, bReg | self.HP20X_RD_REG_MODE)
+
 
 # Class representing the Kalman filter
 class KalmanFilter:
     def __init__(self):
         # Process noise covariance
-        self.q = 0.01  
+        self.q = 0.01
         # Measurement noise covariance
-        self.r = 0.1  
+        self.r = 0.1
         # Initial estimated value
-        self.x = 0  
+        self.x = 0
         # Initial estimated error covariance
-        self.p = 1  
+        self.p = 1
         # Initial Kalman gain
-        self.k = 0  
+        self.k = 0
 
     def Filter(self, measurement):
         # Prediction step: Update the estimated error covariance
@@ -172,14 +173,14 @@ class KalmanFilter:
 
 
 # Kalman filter for temperature data
-t_filter = KalmanFilter()  
+t_filter = KalmanFilter()
 # Kalman filter for pressure data
-p_filter = KalmanFilter()  
+p_filter = KalmanFilter()
 # Kalman filter for altitude data
-a_filter = KalmanFilter()  
+a_filter = KalmanFilter()
 
 # Create an instance of the HP20x sensor
-hp20x = HP20x()  
+hp20x = HP20x()
 
 
 # Function to simulate the setup process
@@ -187,11 +188,11 @@ def setup():
     print("****HP20x_dev demo by seeed studio****\n")
     print("Calculation formula: H = [8.5(101325-P)]/100 \n")
     # Wait for 0.15 seconds after power-on to stabilize the voltage
-    time.sleep(0.15)  
+    time.sleep(0.15)
     # Initialize the HP20x sensor
     hp20x.begin()
     # Wait for 0.1 seconds
-    time.sleep(0.1)  
+    time.sleep(0.1)
     # Check if the HP20x sensor is available
     ret = hp20x.isAvailable()
     if ret:
@@ -239,3 +240,4 @@ if __name__ == "__main__":
     ret = setup()
     # Start the loop process if the sensor is available
     loop(ret)
+    
