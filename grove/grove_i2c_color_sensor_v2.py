@@ -64,7 +64,7 @@ _GAINS  = (1, 4, 16, 60)
 class GroveI2cColorSensorV2:
     """Driver for Grove I2C Color Sensor (TCS34725)"""
 
-    def __init__(self, bus=None, address=0x29):
+    def __init__(self, bus=1, address=0x29):
         self.address = address
         self.bus = Bus(bus)
 

@@ -49,7 +49,7 @@ class GroveCo2Scd30(object):
     __COMMAND_READ_FIRMWARE_VERSION = 0xd100
     __COMMAND_SOFT_RESET = 0xd304
 
-    def __init__(self, address=0x61, bus=None):
+    def __init__(self, address=0x61, bus=1):
         self.address = address
         self.bus = Bus(bus)
 

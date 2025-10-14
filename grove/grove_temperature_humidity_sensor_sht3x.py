@@ -48,7 +48,7 @@ def CRC(data):
 
 class GroveTemperatureHumiditySensorSHT3x(object):
 
-    def __init__(self, address=0x44, bus=None):
+    def __init__(self, address=0x44, bus=1):
         self.address = address
 
         # I2C bus

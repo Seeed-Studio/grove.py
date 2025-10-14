@@ -34,7 +34,7 @@ from grove.i2c import Bus
 
 
 class GroveTemperatureHumidityAHT20(object):
-    def __init__(self, address=0x38, bus=None):
+    def __init__(self, address=0x38, bus=1):
         self.address = address
 
         # I2C bus

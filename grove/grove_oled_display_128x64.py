@@ -148,7 +148,7 @@ class GroveOledDisplay128x64(object):
     VERTICAL = 0x01
     PAGE = 0x02
 
-    def __init__(self, bus=None, address=0x3C):
+    def __init__(self, bus=1, address=0x3C):
         self.bus = Bus(bus)
         self.address = address
 
