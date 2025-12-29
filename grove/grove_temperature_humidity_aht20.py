@@ -39,14 +39,17 @@ class GroveTemperatureHumidityAHT20(object):
 
         # I2C bus
         self.bus = Bus(bus)
+        
+        # init sensor
+        self.bus.write(self.address, [0xbe, 0x08, 0x00])
+        time.sleep(0.01)  # wait for init
 
     def read(self):
-        self.bus.write_i2c_block_data(self.address, 0x00, [0xac, 0x33, 0x00])
-
+        self.bus.write(self.address, [0xac, 0x33, 0x00])
         # measurement duration < 16 ms
         time.sleep(0.016)
 
-        data = self.bus.read_i2c_block_data(self.address, 0x00, 6)
+        data = self.bus.read(self.address, 6)
 
         humidity = data[1]
         humidity <<= 8
