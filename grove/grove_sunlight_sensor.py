@@ -136,7 +136,7 @@ class GroveSi115xSensor(object):
         
         self.WriteParamData(SI115X_PARAM.ADCCONFIG_2, 0x00) # Small IR
         self.WriteParamData(SI115X_PARAM.ADCSENS_2, 0x80)
-        self.WriteParamData(SI115X_PARAM.ADCPOST_2, 0x0)light
+        self.WriteParamData(SI115X_PARAM.ADCPOST_2, 0x0) #light
         self.WriteParamData(SI115X_PARAM.MEASCONFIG_2, 0)
 
         # Enable Interrupt
